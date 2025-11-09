@@ -22,6 +22,19 @@ void Player::setUp()
     if (!CrouchWalkLeft.loadFromFile("ASSETS\\IMAGES\\CrouchWalkLeft.png"))
         std::cout << "Couldn't load Crouch texture\n";
 
+    if (!JumpRight.loadFromFile("ASSETS\\IMAGES\\JumpRight.png"))
+    {
+        std::cout << "Couldn't load jump texture\n";
+    }
+    if (!FallRight.loadFromFile("ASSETS\\IMAGES\\FallingRight.png"))
+    {
+        std::cout << "Couldn't load jump texture\n";
+    }
+    if (!LandRight.loadFromFile("ASSETS\\IMAGES\\LandRight.png"))
+    {
+        std::cout << "Couldn't load jump texture\n";
+    }
+
     body.setTexture(idleTexture);
     position = sf::Vector2f{ 200.f, 300.f };
     body.setPosition(position);
@@ -58,6 +71,7 @@ void Player::update()
     bool pressingRight = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
     bool pressingLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
     bool crouching = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl);
+    bool Jumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
 
     switch (currentState)
     {
@@ -85,6 +99,13 @@ void Player::update()
             currentFrame = 0;
         }
 
+        if (Jumping)
+        {
+            verticalVelocity = jumpStrength;
+            currentFrame = 0;
+            currentState = MovementState::JUMPING;
+        }
+
        
         break;
 
@@ -102,6 +123,22 @@ void Player::update()
             position.x += speed;
             body.setPosition(position);
         }
+
+        if (Jumping)
+        {
+            verticalVelocity = jumpStrength;
+
+            if (pressingRight)
+                horizontalVelocity = speed;
+            else if (pressingLeft)
+                horizontalVelocity = -speed;
+            else
+                horizontalVelocity = 0;
+
+            currentFrame = 0;
+            currentState = MovementState::JUMPING;
+        }
+
         break;
 
     case MovementState::WALK_LEFT:
@@ -119,10 +156,96 @@ void Player::update()
             body.setPosition(position);
         }
 
+        if (Jumping)
+        {
+            verticalVelocity = jumpStrength;
+
+            if (pressingRight)
+                horizontalVelocity = speed;
+            else if (pressingLeft)
+                horizontalVelocity = -speed;
+            else
+                horizontalVelocity = 0;
+
+            currentFrame = 0;
+            currentState = MovementState::JUMPING;
+        }
+
         break;
 
     case MovementState::JUMPING:
+        body.setTexture(JumpRight);
+        animate(2, 238, 298, false);
+
+
+        if (pressingRight)  horizontalVelocity += airAcceleration;
+        if (pressingLeft)   horizontalVelocity -= airAcceleration;
+
+
+        if (!pressingRight && !pressingLeft)
+            horizontalVelocity *= (1.f - airFriction);
+
+        position.x += horizontalVelocity;
+
+        verticalVelocity += gravity;
+        position.y += verticalVelocity;
+        body.setPosition(position);
+
+        if (verticalVelocity > 0)
+        {
+            currentFrame = 0;
+            currentState = MovementState::FALLING;
+        }
+
         break;
+
+    case MovementState::FALLING:
+        body.setTexture(FallRight);
+
+        animate(2, 238, 298, true);
+
+        if (pressingRight)  horizontalVelocity += airAcceleration;
+        if (pressingLeft)   horizontalVelocity -= airAcceleration;
+
+
+        if (!pressingRight && !pressingLeft)
+            horizontalVelocity *= (1.f - airFriction);
+
+        position.x += horizontalVelocity;
+
+        verticalVelocity += gravity;
+        position.y += verticalVelocity;
+        body.setPosition(position);
+
+        if (position.y >= groundY)
+        {
+            position.y = groundY;
+            body.setPosition(position);
+
+            verticalVelocity = 0;
+            currentFrame = 0;
+            currentState = MovementState::LANDING;
+        }
+        break;
+
+    case MovementState::LANDING:
+        body.setTexture(LandRight);
+
+        if (animate(2, 238, 298, false))
+        {
+            horizontalVelocity = 0.f;
+
+            if (pressingRight)
+                currentState = MovementState::WALK_RIGHT;
+            else if (pressingLeft)
+                currentState = MovementState::WALK_LEFT;
+            else
+                currentState = MovementState::IDLE;
+
+            currentFrame = 0;
+        }
+        break;
+
     case MovementState::CROUCH_IDLE:
         if (!crouching)
         {
@@ -140,6 +263,7 @@ void Player::update()
         }
 
         break;
+
     case MovementState::CROUCH_WALK_RIGHT:
         body.setTexture(CrouchWalkRight);
         animate(20, 238, 298);
@@ -173,7 +297,7 @@ void Player::update()
         //transition states
     case MovementState::IDLE_TO_WALK:
         body.setTexture(idleToWalkTexture);
-        if (animate(5, 238, 298, false))
+        if (animate(2, 238, 298, false))
         {
             if(pressingRight)
             currentState = MovementState::WALK_RIGHT;

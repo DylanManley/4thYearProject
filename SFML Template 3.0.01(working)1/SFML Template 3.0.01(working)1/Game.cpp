@@ -119,7 +119,6 @@ void Game::update(sf::Time t_deltaTime)
 	}
 
 	player.update();
-	render();
 }
 
 /// <summary>
@@ -127,10 +126,14 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
+	m_window.clear(sf::Color::White);
+
 	m_window.draw(background);
+	m_window.draw(platform);
 	m_window.draw(player.body);
+	//m_window.draw(railing);
+
 	m_window.display();
-	m_window.clear();
 }
 
 /// <summary>
@@ -158,13 +161,33 @@ void Game::setupTexts()
 /// </summary>
 void Game::setupSprites()
 {
-	player.setUp();
-	if (!backgroundTex.loadFromFile(("ASSETS\\IMAGES\\temp_background.jpg")))
+	
+	if (!backgroundTex.loadFromFile(("ASSETS\\IMAGES\\temp_background.png")))
 	{
 		std::cout << "still wrong" << std::endl;
 	}
+	background.setTexture(backgroundTex, true);
+	background.setPosition(sf::Vector2f{ 0, -200 });
 
-	background.setTexture(backgroundTex);
+	if (!platformTex.loadFromFile(("ASSETS\\IMAGES\\Platform.png")))
+	{
+		std::cout << "platform not loaded" << std::endl;
+	}
+	platform.setTexture(platformTex, true);
+	platform.setPosition(sf::Vector2f{ 0, 580});
+
+	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))
+	{
+		std::cout << "railing not loaded" << std::endl;
+	}
+	railing.setTexture(railingTex, true);
+	railing.setPosition(sf::Vector2f{ 0, 460 });
+	railing.setScale(sf::Vector2f{ 1, 0.6f });
+
+	player.setUp();
+
+
+	
 }
 
 /// <summary>

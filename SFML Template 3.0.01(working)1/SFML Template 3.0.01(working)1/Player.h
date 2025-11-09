@@ -8,6 +8,8 @@ enum class MovementState
     WALK_RIGHT,
     WALK_LEFT,
     JUMPING,
+    FALLING,
+    LANDING,
     CROUCH_IDLE,
     CROUCH_WALK_RIGHT,
     CROUCH_WALK_LEFT,
@@ -34,6 +36,9 @@ public:
     sf::Texture standUpTexture;
     sf::Texture CrouchWalkRight;
     sf::Texture CrouchWalkLeft;
+    sf::Texture JumpRight;
+    sf::Texture FallRight;
+    sf::Texture LandRight;
     sf::Sprite body{ idleTexture };
 
 private:
@@ -47,6 +52,17 @@ private:
     sf::Vector2f position;
     int speed = 3;
     MovementState currentState = MovementState::IDLE;
+
+
+    float verticalVelocity = 0.f;
+    float gravity = 0.5f;
+    float jumpStrength = -12.f;
+
+    float horizontalVelocity = 0.f;
+    float airAcceleration = 0.2f;
+    float airFriction = 0.05f;
+
+    float groundY = 300.f;
 
     bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
 };

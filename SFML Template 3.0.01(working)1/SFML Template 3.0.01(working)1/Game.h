@@ -51,6 +51,11 @@ private:
 	bool m_DELETEexitGame; // control exiting game
 
 	Player player;
+	sf::Texture platformTex;
+	sf::Sprite platform{ platformTex };
+
+	sf::Texture railingTex;
+	sf::Sprite railing{ railingTex };
 
 };
 
