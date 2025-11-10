@@ -69,7 +69,7 @@ void Game::processEvents()
 	
 	while (const std::optional newEvent = m_window.pollEvent())
 	{
-		if ( newEvent->is<sf::Event::Closed>()) // close window message 
+		if (newEvent->is<sf::Event::Closed>()) // close window message 
 		{
 			m_DELETEexitGame = true;
 		}
@@ -78,6 +78,17 @@ void Game::processEvents()
 			processKeys(newEvent);
 		}
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
+		{
+			if (seeDebug)
+			{
+				seeDebug = false;
+			}
+			else
+			{
+				seeDebug = true;
+			}
+		}
 	}
 }
 
@@ -119,6 +130,9 @@ void Game::update(sf::Time t_deltaTime)
 	}
 
 	player.update();
+	camera.setCenter({player.body.getPosition()});
+	debugView.setCenter({ player.body.getPosition() });
+	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y - 100 });
 }
 
 /// <summary>
@@ -127,11 +141,20 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::White);
+	if (!seeDebug)
+	{
+		m_window.setView(camera);
+	}
+	else
+	{
+		m_window.setView(debugView);
+	}
+	
 
 	m_window.draw(background);
+	m_window.draw(railing);
 	m_window.draw(platform);
 	m_window.draw(player.body);
-	//m_window.draw(railing);
 
 	m_window.display();
 }
@@ -168,6 +191,7 @@ void Game::setupSprites()
 	}
 	background.setTexture(backgroundTex, true);
 	background.setPosition(sf::Vector2f{ 0, -200 });
+	background.setOrigin(sf::Vector2f{ 640, 360 });
 
 	if (!platformTex.loadFromFile(("ASSETS\\IMAGES\\Platform.png")))
 	{
@@ -183,6 +207,9 @@ void Game::setupSprites()
 	railing.setTexture(railingTex, true);
 	railing.setPosition(sf::Vector2f{ 0, 460 });
 	railing.setScale(sf::Vector2f{ 1, 0.6f });
+
+	camera.setSize({ 1280.f, 720.f });
+	debugView.setSize({ 12800, 7200 });
 
 	player.setUp();
 

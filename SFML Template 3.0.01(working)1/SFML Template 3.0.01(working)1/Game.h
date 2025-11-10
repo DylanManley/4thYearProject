@@ -56,6 +56,10 @@ private:
 
 	sf::Texture railingTex;
 	sf::Sprite railing{ railingTex };
+	sf::View camera;
+
+	bool seeDebug = false;
+	sf::View debugView;
 
 };
 
