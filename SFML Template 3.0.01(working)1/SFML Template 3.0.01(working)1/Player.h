@@ -1,23 +1,11 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include "StateMachine.h"
 
-enum class MovementState
-{
-    IDLE,
-    WALK_RIGHT,
-    WALK_LEFT,
-    JUMPING,
-    FALLING,
-    LANDING,
-    CROUCH_IDLE,
-    CROUCH_WALK_RIGHT,
-    CROUCH_WALK_LEFT,
-
-    //transition states
-    IDLE_TO_WALK,
-    IDLE_TO_CROUCH,
-    CROUCH_TO_IDLE
+enum class Direction { 
+    LEFT,
+    RIGHT 
 };
 
 class Player
@@ -28,31 +16,54 @@ public:
     void setUp();
     void update();
 
-    sf::Texture idleTexture;
-    sf::Texture idleToWalkTexture;
-    sf::Texture walkRightTexture;
-    sf::Texture walkLeftTexture;
-    sf::Texture crouchDownTexture;
-    sf::Texture standUpTexture;
-    sf::Texture CrouchWalkRight;
-    sf::Texture CrouchWalkLeft;
-    sf::Texture JumpRight;
-    sf::Texture FallRight;
-    sf::Texture LandRight;
-    sf::Sprite body{ idleTexture };
+    bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
+    void changeState(StateMachine* newState);
 
-private:
+    Direction facing = Direction::RIGHT;
+    bool pressingRight = false;
+    bool pressingLeft = false;
+    bool crouching = false;
+    bool Jumping = false;
+
+    StateMachine* idle;
+    StateMachine* walk;
+    StateMachine* jumping;
+    StateMachine* falling;
+    StateMachine* landing;
+    StateMachine* crouchIdle;
+    StateMachine* crouchWalk;
+
+    //transition states
+    StateMachine* idleToWalk;
+    StateMachine* idleToCrouch;
+    StateMachine* crouchToIdle;
+
+    StateMachine* currentState;
+
+
+    sf::Texture idleTex;
+    sf::Texture idleToWalkTex;
+    sf::Texture walkRightTex;
+    sf::Texture walkLeftTex;
+    sf::Texture crouchDownTex;
+    sf::Texture standUpTex;
+    sf::Texture crouchTex;
+    sf::Texture cWalkRTex;
+    sf::Texture cWalkLTex;
+    sf::Texture JumpRTex;
+    sf::Texture FallRTex;
+    sf::Texture LandRTex;
+    sf::Sprite body{ idleTex };
+
     int currentFrame = 0;
+    sf::Vector2f position;
+    int speed = 3;
+
     float timer = 0.0f;
     float frameTime = 0.06f; 
     bool animationFinished = false;
-    bool crouching = false;
 
     sf::Clock clock;
-    sf::Vector2f position;
-    int speed = 3;
-    MovementState currentState = MovementState::IDLE;
-
 
     float verticalVelocity = 0.f;
     float gravity = 0.5f;
@@ -63,6 +74,4 @@ private:
     float airFriction = 0.05f;
 
     float groundY = 300.f;
-
-    bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
 };
