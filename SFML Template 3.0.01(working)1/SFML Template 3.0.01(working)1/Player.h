@@ -13,6 +13,8 @@ class Player
 public:
     Player() = default;
 
+    void loadTextures();
+    void setStates();
     void setUp();
     void update();
 
@@ -37,23 +39,35 @@ public:
     StateMachine* idleToWalk;
     StateMachine* idleToCrouch;
     StateMachine* crouchToIdle;
+    StateMachine* idleToJump;
 
     StateMachine* currentState;
 
 
-    sf::Texture idleTex;
-    sf::Texture idleToWalkTex;
+    sf::Texture idleRightTex;
+    sf::Texture idleLeftTex;
+    sf::Texture idleToWalkLTex;
+    sf::Texture idleToWalkRTex;
     sf::Texture walkRightTex;
     sf::Texture walkLeftTex;
+
     sf::Texture crouchDownTex;
     sf::Texture standUpTex;
     sf::Texture crouchTex;
     sf::Texture cWalkRTex;
     sf::Texture cWalkLTex;
+
+
+    sf::Texture JumpStartL;
+    sf::Texture JumpStartR;
+    sf::Texture JumpLTex;
     sf::Texture JumpRTex;
+    sf::Texture FallLTex;
     sf::Texture FallRTex;
+    sf::Texture LandLTex;
     sf::Texture LandRTex;
-    sf::Sprite body{ idleTex };
+
+    sf::Sprite body{ idleLeftTex };
 
     int currentFrame = 0;
     sf::Vector2f position;

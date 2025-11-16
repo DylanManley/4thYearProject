@@ -8,7 +8,14 @@ class StateIdle : public StateMachine
 public:
     void enter(Player& p) override
     {
-       p.body.setTexture(p.idleTex);
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.idleRightTex);
+        }
+        else
+        {
+            p.body.setTexture(p.idleLeftTex);
+        }
     }
 
     void update(Player& p) override
@@ -79,13 +86,20 @@ class StateJumping : public StateMachine
 public:
     void enter(Player& p) override
     {
-        p.body.setTexture(p.JumpRTex);
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.JumpRTex);
+        }
+        else
+        {
+            p.body.setTexture(p.JumpLTex);
+        }
         p.currentFrame = 0;
     }
 
     void update(Player& p) override
     {
-        p.animate(2, 238, 298, false);
+        p.animate(4, 238, 298, false);
 
         if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
         if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;
@@ -113,13 +127,21 @@ class StateFalling : public StateMachine
 public:
     void enter(Player& p) override
     {
-        p.body.setTexture(p.FallRTex);
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.FallRTex);
+        }
+        else
+        {
+            p.body.setTexture(p.FallLTex);
+        }
+
         p.currentFrame = 0;
     }
 
     void update(Player& p) override
     {
-        p.animate(2, 238, 298, true);
+        p.animate(3, 238, 298, true);
 
         if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
         if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;
@@ -152,13 +174,21 @@ class StateLanding : public StateMachine
 public:
     void enter(Player& p) override
     {
-        p.body.setTexture(p.LandRTex);
+
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.LandRTex);
+        }
+        else
+        {
+            p.body.setTexture(p.LandLTex);
+        }
         p.currentFrame = 0;
     }
 
     void update(Player& p) override
     {
-        if (p.animate(2, 238, 298, false))
+        if (p.animate(4, 238, 298, false))
         {
             p.horizontalVelocity = 0.f;
 
@@ -253,7 +283,14 @@ public:
     void enter(Player& p) override
     {
         p.currentFrame = 0;
-        p.body.setTexture(p.idleToWalkTex);
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.idleToWalkLTex);
+        }
+        else
+        {
+            p.body.setTexture(p.idleToWalkRTex);
+        }
     }
 
     void update(Player& p) override
@@ -300,6 +337,33 @@ public:
         if (p.animate(5, 238, 298, false))
         {
             p.changeState(p.idle);
+        }
+    }
+};
+
+class StateIdleToJump : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.JumpStartL);
+        }
+        else
+        {
+            p.body.setTexture(p.JumpStartR);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        if (p.animate(3, 238, 298, false))
+        {
+            p.verticalVelocity = p.jumpStrength;
+            p.changeState(p.jumping);
+            p.currentFrame = 0;
         }
     }
 };
