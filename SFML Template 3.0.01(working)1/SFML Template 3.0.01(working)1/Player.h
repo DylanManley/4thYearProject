@@ -25,10 +25,14 @@ public:
     bool pressingRight = false;
     bool pressingLeft = false;
     bool crouching = false;
-    bool Jumping = false;
+    bool isJumping = false;
+    bool running = false;
+    bool justJumped = false;
+    bool isGrounded = false;
 
     StateMachine* idle;
     StateMachine* walk;
+    StateMachine* run;
     StateMachine* jumping;
     StateMachine* falling;
     StateMachine* landing;
@@ -39,7 +43,7 @@ public:
     StateMachine* idleToWalk;
     StateMachine* idleToCrouch;
     StateMachine* crouchToIdle;
-    StateMachine* idleToJump;
+    StateMachine* idleToJump; 
 
     StateMachine* currentState;
 
@@ -56,6 +60,8 @@ public:
     sf::Texture crouchTex;
     sf::Texture cWalkRTex;
     sf::Texture cWalkLTex;
+    sf::Texture runLeftTex;
+    sf::Texture runRightTex;
 
 
     sf::Texture JumpStartL;
@@ -68,6 +74,8 @@ public:
     sf::Texture LandRTex;
 
     sf::Sprite body{ idleLeftTex };
+    sf::RectangleShape collider;
+    
 
     int currentFrame = 0;
     sf::Vector2f position;

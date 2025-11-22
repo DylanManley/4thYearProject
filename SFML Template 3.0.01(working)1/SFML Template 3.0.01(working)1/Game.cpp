@@ -22,7 +22,7 @@ Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{1280, 720}, 32U }, "Knuckle Duster" },
 	m_DELETEexitGame{false} //when true game will exit
 {
-	setupTexts(); // load font 
+	//setupTexts(); // load font 
 	setupSprites(); // load texture
 	setupAudio(); // load sounds
 }
@@ -130,6 +130,7 @@ void Game::update(sf::Time t_deltaTime)
 	}
 
 	player.update();
+	checkCollision(player.collider, platform.collider);
 	camera.setCenter({player.body.getPosition()});
 	debugView.setCenter({ player.body.getPosition() });
 	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y - 100 });
@@ -153,10 +154,23 @@ void Game::render()
 
 	m_window.draw(background);
 	m_window.draw(railing);
-	m_window.draw(platform);
+	platform.Render(m_window);
+	m_window.draw(player.collider);
 	m_window.draw(player.body);
 
 	m_window.display();
+}
+
+void Game::checkCollision(sf::RectangleShape& playerCol, sf::RectangleShape& platformCol)
+{
+	if (platform.isColliding(playerCol, platformCol))
+	{
+		player.isGrounded = true;
+	}
+	else
+	{
+		player.isGrounded = false;
+	}
 }
 
 /// <summary>
@@ -197,8 +211,8 @@ void Game::setupSprites()
 	{
 		std::cout << "platform not loaded" << std::endl;
 	}
-	platform.setTexture(platformTex, true);
-	platform.setPosition(sf::Vector2f{ 0, 580});
+	platform.setup(platformTex, { 0, 580 }, { 1280, 720 });
+
 
 	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))
 	{
@@ -224,3 +238,5 @@ void Game::setupAudio()
 {
 
 }
+
+

@@ -8,6 +8,7 @@ class StateIdle : public StateMachine
 public:
     void enter(Player& p) override
     {
+        p.speed = 3;
         if (p.facing == Direction::RIGHT)
         {
             p.body.setTexture(p.idleRightTex);
@@ -23,12 +24,20 @@ public:
         p.animate(20, 238, 298);
         if (p.pressingRight || p.pressingLeft)
         {
-            p.changeState(p.idleToWalk);
+            if (!p.running)
+            {
+                p.changeState(p.idleToWalk);
+            }
+            else
+            {
+                p.changeState(p.run);
+            }
         }
 
         if (p.crouching) {
             p.changeState(p.idleToCrouch);
         }
+
     }
 };
 
@@ -38,6 +47,8 @@ class StateWalking : public StateMachine
 public:
     void enter(Player& p) override
     {
+        p.speed = 3;
+
         if (p.facing == Direction::RIGHT)
             p.body.setTexture(p.walkRightTex);
         else
@@ -76,16 +87,80 @@ public:
         if (p.crouching) {
             p.changeState(p.idleToCrouch);
         }
+
+        if (p.running)
+        {
+            p.changeState(p.run);
+        }
+
+        if (!p.isGrounded)
+        {
+            p.changeState(p.falling);
+        }
+    }
+    
+};
+
+class StateRunning : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.speed = 10;
+
+        p.currentFrame = 0;
+        if (p.facing == Direction::RIGHT)
+            p.body.setTexture(p.runRightTex);
+        else
+            p.body.setTexture(p.runLeftTex);
+    }
+
+    void update(Player& p) override
+    {
+        p.animate(20, 238, 298);
+
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.runRightTex);
+            p.position.x += p.speed;
+            p.body.setPosition(p.position);
+
+            if (!p.pressingRight)
+            {
+                p.changeState(p.idle);
+            }
+        }
+        else
+        {
+            p.body.setTexture(p.runLeftTex);
+            p.position.x -= p.speed;
+            p.body.setPosition(p.position);
+
+            if (!p.pressingLeft)
+            {
+                p.changeState(p.idle);
+            }
+        }
+
+        if (!p.running)
+        {
+            p.changeState(p.walk);
+        }
+
+        if (p.crouching) {
+            //Slide
+        }
     }
 };
 
 //JUMPING STATES
-
 class StateJumping : public StateMachine
 {
 public:
     void enter(Player& p) override
     {
+        p.horizontalVelocity = p.speed;
+
         if (p.facing == Direction::RIGHT)
         {
             p.body.setTexture(p.JumpRTex);
@@ -95,6 +170,7 @@ public:
             p.body.setTexture(p.JumpLTex);
         }
         p.currentFrame = 0;
+        p.isGrounded = false;
     }
 
     void update(Player& p) override
@@ -157,9 +233,8 @@ public:
         p.body.setPosition(p.position);
 
         // Landing check
-        if (p.position.y >= p.groundY)
+        if (p.isGrounded)
         {
-            p.position.y = p.groundY;
             p.body.setPosition(p.position);
 
             p.verticalVelocity = 0;

@@ -17,6 +17,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "player.h"
+#include "Platform.h"
 
 class Game
 {
@@ -32,6 +33,7 @@ private:
 	void checkKeyboardState();
 	void update(sf::Time t_deltaTime);
 	void render();
+	void checkCollision(sf::RectangleShape& playerCol, sf::RectangleShape& platformCol);
 	
 	void setupTexts();
 	void setupSprites();
@@ -52,7 +54,8 @@ private:
 
 	Player player;
 	sf::Texture platformTex;
-	sf::Sprite platform{ platformTex };
+	Platform platform;
+
 
 	sf::Texture railingTex;
 	sf::Sprite railing{ railingTex };

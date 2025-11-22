@@ -19,6 +19,12 @@ void Player::loadTextures()
     if (!walkLeftTex.loadFromFile("ASSETS\\IMAGES\\Walk_Left.png"))
         std::cout << "Couldn't load Walk texture\n";
 
+    //running
+    if (!runLeftTex.loadFromFile("ASSETS\\IMAGES\\RunL.png"))
+        std::cout << "Couldn't load run texture\n";
+    if (!runRightTex.loadFromFile("ASSETS\\IMAGES\\RunR.png"))
+        std::cout << "Couldn't load run texture\n";
+
     //
     if (!crouchDownTex.loadFromFile("ASSETS\\IMAGES\\IdleToCrouch.png"))
         std::cout << "Couldn't load Crouch texture\n";
@@ -31,7 +37,7 @@ void Player::loadTextures()
     if (!cWalkLTex.loadFromFile("ASSETS\\IMAGES\\CrouchWalkLeft.png"))
         std::cout << "Couldn't load Crouch texture\n";
 
-    //Jumping
+    //isJumping
     if (!JumpStartL.loadFromFile("ASSETS\\IMAGES\\JumpStartL.png"))
         std::cout << "Couldn't load jump texture\n";
     if (!JumpLTex.loadFromFile("ASSETS\\IMAGES\\JumpL.png"))
@@ -56,6 +62,7 @@ void Player::setStates()
 {
     idle = new StateIdle();
     walk = new StateWalking();
+    run = new StateRunning();
     jumping = new StateJumping();
     falling = new StateFalling();
     landing = new StateLanding();
@@ -75,8 +82,13 @@ void Player::setUp()
     setStates();
     currentState = idle;
     idle->enter(*this);
-    position = sf::Vector2f{ 200.f, 300.f };
+    position = sf::Vector2f{ 300.f, 300.f };
     body.setPosition(position);
+    collider.setPosition(position);
+    collider.setFillColor(sf::Color::Green);
+    collider.setSize(sf::Vector2f{ 100,250 });
+    collider.setOrigin(sf::Vector2f{ -60, -50 });
+    std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
 }
 
 bool Player::animate(int frameCount, int frameWidth, int frameHeight, bool loop)
@@ -117,7 +129,11 @@ void Player::update()
     pressingRight = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
     pressingLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A);
     crouching = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl);
-    Jumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
+    isJumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
+    running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
+
+    std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
+    collider.setPosition(position);
 
     if (pressingLeft)
     {
@@ -132,19 +148,25 @@ void Player::update()
     }
 
 
-    if (currentState == walk) 
+    if (currentState == walk || currentState == run) 
     {
-        if (Jumping) {
-            verticalVelocity = jumpStrength;
+        verticalVelocity = jumpStrength;
+        if (isJumping) {
             changeState(jumping);
         }
     }
 
     if (currentState == idle) {
-        if (Jumping) {
+        if (isJumping) {
             changeState(idleToJump);
-            Jumping = false;
+            isJumping = false;
         }
+    }
+
+    if (!isGrounded)
+    {
+        if(currentState != jumping || currentState != idleToJump)
+        changeState(falling);
     }
 
     currentState->update(*this);
