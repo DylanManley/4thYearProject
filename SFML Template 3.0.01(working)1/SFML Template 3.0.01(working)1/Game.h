@@ -33,7 +33,7 @@ private:
 	void checkKeyboardState();
 	void update(sf::Time t_deltaTime);
 	void render();
-	void checkCollision(sf::RectangleShape& playerCol, sf::RectangleShape& platformCol);
+	void checkCollision(sf::RectangleShape& playerCol, Platform& platform);
 	
 	void setupTexts();
 	void setupSprites();
@@ -55,6 +55,8 @@ private:
 	Player player;
 	sf::Texture platformTex;
 	Platform platform;
+	Platform platform2;
+	std::vector<Platform> platforms;
 
 
 	sf::Texture railingTex;

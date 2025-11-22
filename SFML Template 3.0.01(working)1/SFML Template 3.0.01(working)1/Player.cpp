@@ -82,7 +82,7 @@ void Player::setUp()
     setStates();
     currentState = idle;
     idle->enter(*this);
-    position = sf::Vector2f{ 300.f, 300.f };
+    position = sf::Vector2f{ 0.f, 300.f };
     body.setPosition(position);
     collider.setPosition(position);
     collider.setFillColor(sf::Color::Green);
@@ -132,7 +132,8 @@ void Player::update()
     isJumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
     running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
 
-    std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
+    std::cout << "X: " << position.x  << " " << "Y: " << position.y << std::endl;
+    body.setPosition(position);
     collider.setPosition(position);
 
     if (pressingLeft)

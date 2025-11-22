@@ -77,18 +77,6 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
-		{
-			if (seeDebug)
-			{
-				seeDebug = false;
-			}
-			else
-			{
-				seeDebug = true;
-			}
-		}
 	}
 }
 
@@ -103,6 +91,18 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 	if (sf::Keyboard::Key::Escape == newKeypress->code)
 	{
 		m_DELETEexitGame = true; 
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
+	{
+		if (seeDebug)
+		{
+			seeDebug = false;
+		}
+		else
+		{
+			seeDebug = true;
+		}
 	}
 }
 
@@ -130,7 +130,12 @@ void Game::update(sf::Time t_deltaTime)
 	}
 
 	player.update();
-	checkCollision(player.collider, platform.collider);
+	player.isGrounded = false;
+
+	for (auto p : platforms)
+	{
+		(checkCollision(player.collider, p));
+	}
 	camera.setCenter({player.body.getPosition()});
 	debugView.setCenter({ player.body.getPosition() });
 	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y - 100 });
@@ -154,22 +159,51 @@ void Game::render()
 
 	m_window.draw(background);
 	m_window.draw(railing);
-	platform.Render(m_window);
-	m_window.draw(player.collider);
+
+	for (auto& platform : platforms)
+	{
+		platform.Render(m_window);
+	}
+
+	//m_window.draw(player.collider);
 	m_window.draw(player.body);
 
 	m_window.display();
 }
 
-void Game::checkCollision(sf::RectangleShape& playerCol, sf::RectangleShape& platformCol)
+void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 {
-	if (platform.isColliding(playerCol, platformCol))
+	CollisionType col = platform.isColliding(playerCol);
+
+	switch (col)
 	{
+	case CollisionType::Top:
+		if (!player.isGrounded && !player.jumping)
+		{
+			player.verticalVelocity = 0;
+		}
 		player.isGrounded = true;
-	}
-	else
-	{
-		player.isGrounded = false;
+		break;
+
+	case CollisionType::Left:
+		if (player.facing == Direction::RIGHT)
+		{
+			player.speed = 0.f;
+		}
+		break;
+
+	case CollisionType::Right:
+		if (player.facing == Direction::LEFT)
+		{
+			player.speed = 0.f;
+		}
+		break;
+
+	case CollisionType::Bottom:
+		break;
+
+	default:
+		break;
 	}
 }
 
@@ -211,7 +245,11 @@ void Game::setupSprites()
 	{
 		std::cout << "platform not loaded" << std::endl;
 	}
-	platform.setup(platformTex, { 0, 580 }, { 1280, 720 });
+
+	platform.setup(platformTex, { 0, 580 }, { 1280, 100 });
+	platform2.setup(platformTex, { 1280, 480 }, { 1280, 100 });
+
+	platforms = {platform, platform2};
 
 
 	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))

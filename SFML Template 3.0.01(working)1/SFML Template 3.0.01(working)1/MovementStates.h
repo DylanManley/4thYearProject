@@ -65,7 +65,6 @@ public:
         {
             p.body.setTexture(p.walkRightTex);
             p.position.x += p.speed;
-            p.body.setPosition(p.position);
 
             if (!p.pressingRight)
             {
@@ -76,7 +75,6 @@ public:
         {
             p.body.setTexture(p.walkLeftTex);
             p.position.x -= p.speed;
-            p.body.setPosition(p.position);
 
             if (!p.pressingLeft)
             {
@@ -106,7 +104,7 @@ class StateRunning : public StateMachine
 public:
     void enter(Player& p) override
     {
-        p.speed = 10;
+        p.speed = 15;
 
         p.currentFrame = 0;
         if (p.facing == Direction::RIGHT)
@@ -117,13 +115,12 @@ public:
 
     void update(Player& p) override
     {
-        p.animate(20, 238, 298);
+        p.animate(15, 238, 298);
 
         if (p.facing == Direction::RIGHT)
         {
             p.body.setTexture(p.runRightTex);
             p.position.x += p.speed;
-            p.body.setPosition(p.position);
 
             if (!p.pressingRight)
             {
@@ -134,7 +131,6 @@ public:
         {
             p.body.setTexture(p.runLeftTex);
             p.position.x -= p.speed;
-            p.body.setPosition(p.position);
 
             if (!p.pressingLeft)
             {
@@ -159,7 +155,14 @@ class StateJumping : public StateMachine
 public:
     void enter(Player& p) override
     {
-        p.horizontalVelocity = p.speed;
+        if (p.facing == Direction::RIGHT)
+        {
+            p.horizontalVelocity = p.speed;
+        }
+        else
+        {
+            p.horizontalVelocity = -p.speed;
+        }
 
         if (p.facing == Direction::RIGHT)
         {
@@ -170,7 +173,7 @@ public:
             p.body.setTexture(p.JumpLTex);
         }
         p.currentFrame = 0;
-        p.isGrounded = false;
+        //p.isGrounded = false;
     }
 
     void update(Player& p) override
@@ -187,7 +190,6 @@ public:
 
         p.verticalVelocity += p.gravity;
         p.position.y += p.verticalVelocity;
-        p.body.setPosition(p.position);
 
  
         if (p.verticalVelocity > 0)
@@ -230,13 +232,11 @@ public:
 
         p.verticalVelocity += p.gravity;
         p.position.y += p.verticalVelocity;
-        p.body.setPosition(p.position);
+
 
         // Landing check
         if (p.isGrounded)
         {
-            p.body.setPosition(p.position);
-
             p.verticalVelocity = 0;
             p.currentFrame = 0;
             p.changeState(p.landing);
@@ -324,7 +324,6 @@ public:
         {
             p.body.setTexture(p.cWalkRTex);
             p.position.x += p.speed;
-            p.body.setPosition(p.position);
 
             if (!p.pressingRight)
             {
@@ -335,7 +334,6 @@ public:
         {
             p.body.setTexture(p.cWalkLTex);
             p.position.x -= p.speed;
-            p.body.setPosition(p.position);
 
             if (!p.pressingLeft)
             {

@@ -1,11 +1,19 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+enum class CollisionType
+{
+	None,
+	Top,
+	Bottom,
+	Left,
+	Right
+};
 
 class Platform
 {
 public:
 	void setup(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size);
-	bool isColliding(sf::RectangleShape& playerCol, sf::RectangleShape& collider);
+	CollisionType isColliding(sf::RectangleShape& playerCol);
 	void Render(sf::RenderWindow& m_window);
 	sf::RectangleShape collider;
 
