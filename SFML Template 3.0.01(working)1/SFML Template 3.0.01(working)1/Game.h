@@ -56,6 +56,8 @@ private:
 	sf::Texture platformTex;
 	Platform platform;
 	Platform platform2;
+	Platform platform3;
+	Platform platform4;
 	std::vector<Platform> platforms;
 
 

@@ -50,8 +50,12 @@ CollisionType Platform::isColliding(sf::RectangleShape& playerCol)
         return (collideLeft < collideRight) ? CollisionType::Left : CollisionType::Right;
 }
 
-void Platform::Render(sf::RenderWindow& m_window)
+void Platform::Render(sf::RenderWindow& m_window, bool m_debug)
 {
     m_window.draw(*platSprite);
-    //m_window.draw(collider);
+
+    if (m_debug)
+    {
+        m_window.draw(collider);
+    }
 }

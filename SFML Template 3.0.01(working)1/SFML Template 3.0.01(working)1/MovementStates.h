@@ -381,6 +381,7 @@ class StateIdleToCrouch : public StateMachine
 public:
     void enter(Player& p) override
     {
+        p.collider.setScale({ 1, 0.6 });
         p.currentFrame = 0;
         p.body.setTexture(p.crouchDownTex);
     }
@@ -400,6 +401,7 @@ class StateCrouchToIdle : public StateMachine
 public:
     void enter(Player& p) override
     {
+        p.collider.setScale({ 1, 1 });
         p.currentFrame = 0;
         p.body.setTexture(p.standUpTex);
     }

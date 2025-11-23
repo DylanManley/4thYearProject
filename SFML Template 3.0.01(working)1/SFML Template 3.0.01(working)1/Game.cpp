@@ -162,11 +162,10 @@ void Game::render()
 
 	for (auto& platform : platforms)
 	{
-		platform.Render(m_window);
+		platform.Render(m_window, seeDebug);
 	}
 
-	//m_window.draw(player.collider);
-	m_window.draw(player.body);
+	player.Render(m_window, seeDebug);
 
 	m_window.display();
 }
@@ -248,8 +247,10 @@ void Game::setupSprites()
 
 	platform.setup(platformTex, { 0, 580 }, { 1280, 100 });
 	platform2.setup(platformTex, { 1280, 480 }, { 1280, 100 });
+	platform3.setup(platformTex, { 2560, 500 }, { 1280, 100 });
+	platform4.setup(platformTex, { 2800, 30 }, { 1280, 100 });
 
-	platforms = {platform, platform2};
+	platforms = {platform, platform2, platform3, platform4};
 
 
 	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))

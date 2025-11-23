@@ -84,10 +84,11 @@ void Player::setUp()
     idle->enter(*this);
     position = sf::Vector2f{ 0.f, 300.f };
     body.setPosition(position);
+    body.setOrigin({ 119, 298 });
     collider.setPosition(position);
     collider.setFillColor(sf::Color::Green);
     collider.setSize(sf::Vector2f{ 100,250 });
-    collider.setOrigin(sf::Vector2f{ -60, -50 });
+    collider.setOrigin({ 50.f, 250.f });
     std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
 }
 
@@ -122,6 +123,16 @@ void Player::changeState(StateMachine* newState)
     currentState = newState;
     currentFrame = 0;
     currentState->enter(*this);
+}
+
+void Player::Render(sf::RenderWindow& m_window, bool m_debug)
+{
+    if (m_debug)
+    {
+        m_window.draw(collider);
+    }
+
+    m_window.draw(body);
 }
 
 void Player::update()

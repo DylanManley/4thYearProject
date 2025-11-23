@@ -29,6 +29,7 @@ public:
     bool running = false;
     bool justJumped = false;
     bool isGrounded = false;
+    void Render(sf::RenderWindow& m_window, bool m_debug);
 
     StateMachine* idle;
     StateMachine* walk;
@@ -95,5 +96,4 @@ public:
     float airAcceleration = 0.2f;
     float airFriction = 0.05f;
 
-    float groundY = 300.f;
 };
