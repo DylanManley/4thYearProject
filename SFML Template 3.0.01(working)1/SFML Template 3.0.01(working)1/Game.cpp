@@ -138,7 +138,7 @@ void Game::update(sf::Time t_deltaTime)
 	}
 	camera.setCenter({player.body.getPosition().x, player.body.getPosition().y - 200});
 	debugView.setCenter({ player.body.getPosition() });
-	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y - 350 });
+	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150});
 }
 
 /// <summary>
@@ -246,7 +246,7 @@ void Game::setupSprites()
 	}
 	background.setTexture(backgroundTex, true);
 	background.setPosition(sf::Vector2f{ 0, -200 });
-	background.setOrigin(sf::Vector2f{ 640, 360 });
+	background.setOrigin(sf::Vector2f{ 640, 853 });
 	background.setScale(sf::Vector2f{1.5,1.5});
 
 	if (!platformTex.loadFromFile(("ASSETS\\IMAGES\\Platform.png")))

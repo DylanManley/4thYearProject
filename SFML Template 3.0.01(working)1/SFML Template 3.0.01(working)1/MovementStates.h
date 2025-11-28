@@ -388,7 +388,7 @@ public:
 
     void update(Player& p) override
     {
-        p.speed = 1;
+        p.speed = 1.5;
         if (p.animate(5, 238, 298, false))
         {
             p.changeState(p.crouchIdle);
