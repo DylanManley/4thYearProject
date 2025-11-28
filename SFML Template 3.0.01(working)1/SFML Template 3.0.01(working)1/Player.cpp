@@ -82,7 +82,7 @@ void Player::setUp()
     setStates();
     currentState = idle;
     idle->enter(*this);
-    position = sf::Vector2f{ 0.f, 300.f };
+    position = sf::Vector2f{ 0.f, 600.f };
     body.setPosition(position);
     body.setOrigin({ 119, 298 });
     collider.setPosition(position);

@@ -136,9 +136,9 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		(checkCollision(player.collider, p));
 	}
-	camera.setCenter({player.body.getPosition()});
+	camera.setCenter({player.body.getPosition().x, player.body.getPosition().y - 200});
 	debugView.setCenter({ player.body.getPosition() });
-	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y - 100 });
+	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y - 350 });
 }
 
 /// <summary>
@@ -188,6 +188,7 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		if (player.facing == Direction::RIGHT)
 		{
 			player.speed = 0.f;
+			player.horizontalVelocity = 0.f;
 		}
 		break;
 
@@ -195,10 +196,17 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		if (player.facing == Direction::LEFT)
 		{
 			player.speed = 0.f;
+			player.horizontalVelocity = 0.f;
 		}
 		break;
 
 	case CollisionType::Bottom:
+		if (player.isGrounded)
+		{
+			player.crouching = true;
+			player.changeState(player.idleToCrouch);
+			player.verticalVelocity = 0;
+		}
 		break;
 
 	default:
@@ -239,6 +247,7 @@ void Game::setupSprites()
 	background.setTexture(backgroundTex, true);
 	background.setPosition(sf::Vector2f{ 0, -200 });
 	background.setOrigin(sf::Vector2f{ 640, 360 });
+	background.setScale(sf::Vector2f{1.5,1.5});
 
 	if (!platformTex.loadFromFile(("ASSETS\\IMAGES\\Platform.png")))
 	{
