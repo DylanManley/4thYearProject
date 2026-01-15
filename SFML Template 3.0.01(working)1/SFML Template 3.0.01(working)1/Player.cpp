@@ -194,7 +194,7 @@ void Player::update()
 
     if (!isGrounded)
     {
-        if(currentState != jumping || currentState != idleToJump)
+        if(currentState != jumping || currentState != idleToJump || currentState!= slide || currentState != SlideToRun)
         changeState(falling);
     }
 

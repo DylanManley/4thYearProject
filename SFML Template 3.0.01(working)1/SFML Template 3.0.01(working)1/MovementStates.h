@@ -358,6 +358,7 @@ public:
             p.body.setTexture(p.slideLTex);
 
         p.currentFrame = 0;
+        p.slideVelocity = p.speed;
     }
 
     void update(Player& p) override
@@ -365,19 +366,25 @@ public:
         p.animate(3, 238, 298);
 
         if (p.facing == Direction::RIGHT)
-        {
-            p.position.x += p.speed;
-        }
+            p.position.x += p.slideVelocity;
         else
-        {
-            p.position.x -= p.speed;
-        }
+            p.position.x -= p.slideVelocity;
 
-        if (!p.crouching)
+        p.slideVelocity -= p.slideDeceleration;
+        if (p.slideVelocity < 0)
+            p.slideVelocity = 0;
+
+        if (p.slideVelocity == 0 || !p.crouching)
         {
             p.changeState(p.SlideToRun);
         }
     }
+};
+
+class StatewallSlide : public StateMachine
+{
+public:
+
 };
 
 
@@ -481,7 +488,7 @@ class StateRunToSlide : public StateMachine
 public:
     void enter(Player& p) override
     {
-        p.collider.setScale({ 1, 0.6 });
+        p.collider.setScale({ 2.2, 0.3 });
         p.currentFrame = 0;
         if (p.facing == Direction::LEFT)
         {

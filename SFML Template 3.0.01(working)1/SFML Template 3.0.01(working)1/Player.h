@@ -106,4 +106,7 @@ public:
     float airAcceleration = 0.2f;
     float airFriction = 0.05f;
 
+    float slideVelocity;
+    float slideDeceleration = 0.1f;
+
 };

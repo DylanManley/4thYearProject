@@ -152,7 +152,7 @@ void Game::render()
 	}
 	else
 	{
-		m_window.setView(debugView);
+		m_window.setView(camera);
 	}
 	
 
