@@ -144,7 +144,7 @@ public:
         }
 
         if (p.crouching) {
-            //Slide
+            p.changeState(p.RunToSlide);
         }
     }
 };
@@ -347,6 +347,39 @@ public:
     }
 };
 
+class StateSlide : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        if (p.facing == Direction::RIGHT)
+            p.body.setTexture(p.slideRTex);
+        else
+            p.body.setTexture(p.slideLTex);
+
+        p.currentFrame = 0;
+    }
+
+    void update(Player& p) override
+    {
+        p.animate(3, 238, 298);
+
+        if (p.facing == Direction::RIGHT)
+        {
+            p.position.x += p.speed;
+        }
+        else
+        {
+            p.position.x -= p.speed;
+        }
+
+        if (!p.crouching)
+        {
+            p.changeState(p.SlideToRun);
+        }
+    }
+};
+
 
 
 //TRANSITION STATES
@@ -441,4 +474,60 @@ public:
             p.currentFrame = 0;
         }
     }
+};
+
+class StateRunToSlide : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.collider.setScale({ 1, 0.6 });
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.slideStartLTex);
+        }
+        else
+        {
+            p.body.setTexture(p.slideStartRTex);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        if (p.animate(5, 238, 298, false))
+        {
+            p.changeState(p.slide);
+        }
+    }
+
+};
+
+
+class StateSlideToRun : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.collider.setScale({ 1, 1 });
+
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.slideEndLTex);
+        }
+        else
+        {
+            p.body.setTexture(p.slideEndRTex);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        if (p.animate(3, 238, 298, false))
+        {
+            p.changeState(p.run);
+        }
+    }
+
 };

@@ -25,7 +25,7 @@ void Player::loadTextures()
     if (!runRightTex.loadFromFile("ASSETS\\IMAGES\\RunR.png"))
         std::cout << "Couldn't load run texture\n";
 
-    //
+    //Crouching and Sliding
     if (!crouchDownTex.loadFromFile("ASSETS\\IMAGES\\IdleToCrouch.png"))
         std::cout << "Couldn't load Crouch texture\n";
     if (!standUpTex.loadFromFile("ASSETS\\IMAGES\\CrouchToIdle.png"))
@@ -36,6 +36,20 @@ void Player::loadTextures()
         std::cout << "Couldn't load Crouch texture\n";
     if (!cWalkLTex.loadFromFile("ASSETS\\IMAGES\\CrouchWalkLeft.png"))
         std::cout << "Couldn't load Crouch texture\n";
+
+    if (!slideStartRTex.loadFromFile("ASSETS\\IMAGES\\slide_startR.png"))
+        std::cout << "Couldn't load slide texture\n";
+    if (!slideStartLTex.loadFromFile("ASSETS\\IMAGES\\slide_startL.png"))
+        std::cout << "Couldn't load slide texture\n";
+    if (!slideEndRTex.loadFromFile("ASSETS\\IMAGES\\slide_EndR.png"))
+        std::cout << "Couldn't load slide texture\n";
+    if (!slideEndLTex.loadFromFile("ASSETS\\IMAGES\\slide_EndL.png"))
+        std::cout << "Couldn't load slide texture\n";
+    if (!slideRTex.loadFromFile("ASSETS\\IMAGES\\SlideR.png"))
+        std::cout << "Couldn't load slide texture\n";
+    if (!slideLTex.loadFromFile("ASSETS\\IMAGES\\SlideL.png"))
+        std::cout << "Couldn't load slide texture\n";
+
 
     //isJumping
     if (!JumpStartL.loadFromFile("ASSETS\\IMAGES\\JumpStartL.png"))
@@ -68,12 +82,15 @@ void Player::setStates()
     landing = new StateLanding();
     crouchIdle = new StateCrouchIdle();
     crouchWalk = new StateCrouchWalking();
+    slide = new StateSlide();
 
     //Transition states
     idleToWalk = new StateIdleToWalk();
     idleToCrouch = new StateIdleToCrouch();
     crouchToIdle = new StateCrouchToIdle();
     idleToJump = new StateIdleToJump();
+    RunToSlide = new StateRunToSlide();
+    SlideToRun = new StateSlideToRun();
 }
 
 void Player::setUp()

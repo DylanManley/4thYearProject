@@ -39,12 +39,15 @@ public:
     StateMachine* landing;
     StateMachine* crouchIdle;
     StateMachine* crouchWalk;
+    StateMachine* slide;
 
     //transition states
     StateMachine* idleToWalk;
     StateMachine* idleToCrouch;
     StateMachine* crouchToIdle;
     StateMachine* idleToJump; 
+    StateMachine* RunToSlide;
+    StateMachine* SlideToRun;
 
     StateMachine* currentState;
 
@@ -63,6 +66,13 @@ public:
     sf::Texture cWalkLTex;
     sf::Texture runLeftTex;
     sf::Texture runRightTex;
+
+    sf::Texture slideStartLTex;
+    sf::Texture slideStartRTex;
+    sf::Texture slideLTex;
+    sf::Texture slideRTex;
+    sf::Texture slideEndLTex;
+    sf::Texture slideEndRTex;
 
 
     sf::Texture JumpStartL;
