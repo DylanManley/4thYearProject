@@ -233,7 +233,6 @@ public:
         p.verticalVelocity += p.gravity;
         p.position.y += p.verticalVelocity;
 
-
         // Landing check
         if (p.isGrounded)
         {
@@ -381,10 +380,31 @@ public:
     }
 };
 
-class StatewallSlide : public StateMachine
+class StateWallSlide : public StateMachine
 {
 public:
+    void enter(Player& p) override
+    {
+        if (p.facing == Direction::RIGHT)
+            p.body.setTexture(p.wallSlideRTex);
+        else
+            p.body.setTexture(p.wallSlideRTex);
 
+        p.currentFrame = 0;
+    }
+
+    void update(Player& p) override
+    {
+        p.verticalVelocity += (p.gravity * 0.2);
+        p.position.y += p.verticalVelocity;
+
+        p.animate(3, 238, 298);
+
+        if (p.isGrounded)
+        {
+            p.changeState(p.wallSlideEnd);
+        }
+    }
 };
 
 
@@ -534,6 +554,71 @@ public:
         if (p.animate(3, 238, 298, false))
         {
             p.changeState(p.run);
+        }
+    }
+
+};
+
+class StateWallSlideStart : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.WallSlideStartLTex);
+        }
+        else
+        {
+            p.body.setTexture(p.WallSlideStartRTex);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        p.verticalVelocity += (p.gravity * 0.2);
+        p.position.y += p.verticalVelocity;
+
+        if (p.animate(3, 238, 298, false))
+        {
+            p.changeState(p.wallSlide);
+        }
+
+        if (p.isGrounded)
+        {
+            p.changeState(p.wallSlideEnd);
+        }
+    }
+
+};
+
+class StateWallSlideEnd : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.WallSlideLEndTex);
+        }
+        else
+        {
+            p.body.setTexture(p.wallSlideREndTex);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        if (p.animate(3, 238, 298, false))
+        {
+            p.changeState(p.idle);
+        }
+        
+        if (p.isGrounded)
+        {
+            p.changeState(p.idle);
         }
     }
 

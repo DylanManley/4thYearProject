@@ -40,6 +40,7 @@ public:
     StateMachine* crouchIdle;
     StateMachine* crouchWalk;
     StateMachine* slide;
+    StateMachine* wallSlide;
 
     //transition states
     StateMachine* idleToWalk;
@@ -48,6 +49,8 @@ public:
     StateMachine* idleToJump; 
     StateMachine* RunToSlide;
     StateMachine* SlideToRun;
+    StateMachine* wallSlideStart;
+    StateMachine* wallSlideEnd;
 
     StateMachine* currentState;
 
@@ -74,7 +77,6 @@ public:
     sf::Texture slideEndLTex;
     sf::Texture slideEndRTex;
 
-
     sf::Texture JumpStartL;
     sf::Texture JumpStartR;
     sf::Texture JumpLTex;
@@ -83,6 +85,13 @@ public:
     sf::Texture FallRTex;
     sf::Texture LandLTex;
     sf::Texture LandRTex;
+
+    sf::Texture WallSlideStartLTex;
+    sf::Texture WallSlideStartRTex;
+    sf::Texture wallSlideLTex;
+    sf::Texture wallSlideRTex;
+    sf::Texture WallSlideLEndTex;
+    sf::Texture wallSlideREndTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;

@@ -70,6 +70,21 @@ void Player::loadTextures()
         std::cout << "Couldn't load jump texture\n";
     if (!LandLTex.loadFromFile("ASSETS\\IMAGES\\LandL.png"))
         std::cout << "Couldn't load jump texture\n";
+
+    //WallSliding
+    if (!WallSlideStartRTex.loadFromFile("ASSETS\\IMAGES\\wallSlideRStart.png"))
+        std::cout << "Couldn't load wallslide texture\n";
+    if (!WallSlideStartLTex.loadFromFile("ASSETS\\IMAGES\\wallSlideLStart.png"))
+        std::cout << "Couldn't load wallslide texture\n";
+    if (!wallSlideREndTex.loadFromFile("ASSETS\\IMAGES\\wallSlideREnd.png"))
+        std::cout << "Couldn't load wallslide texture\n";
+    if (!WallSlideLEndTex.loadFromFile("ASSETS\\IMAGES\\wallSlideLEnd.png"))
+        std::cout << "Couldn't load wallslide texture\n";
+    if (!wallSlideRTex.loadFromFile("ASSETS\\IMAGES\\wallSlideR.png"))
+        std::cout << "Couldn't load wallslide texture\n";
+    if (!wallSlideLTex.loadFromFile("ASSETS\\IMAGES\\wallSlideL.png"))
+        std::cout << "Couldn't load wallslide texture\n";
+
 }
 
 void Player::setStates()
@@ -83,6 +98,7 @@ void Player::setStates()
     crouchIdle = new StateCrouchIdle();
     crouchWalk = new StateCrouchWalking();
     slide = new StateSlide();
+    wallSlide = new StateWallSlide();
 
     //Transition states
     idleToWalk = new StateIdleToWalk();
@@ -91,6 +107,8 @@ void Player::setStates()
     idleToJump = new StateIdleToJump();
     RunToSlide = new StateRunToSlide();
     SlideToRun = new StateSlideToRun();
+    wallSlideStart = new StateWallSlideStart();
+    wallSlideEnd = new StateWallSlideEnd();
 }
 
 void Player::setUp()
@@ -194,8 +212,13 @@ void Player::update()
 
     if (!isGrounded)
     {
-        if(currentState != jumping || currentState != idleToJump || currentState!= slide || currentState != SlideToRun)
-        changeState(falling);
+        if (currentState != jumping &&
+            currentState != idleToJump &&
+            currentState != wallSlideStart &&
+            currentState != wallSlide)
+        {
+            changeState(falling);
+        }
     }
 
     currentState->update(*this);

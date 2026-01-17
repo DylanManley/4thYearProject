@@ -16,7 +16,8 @@ CollisionType Platform::isColliding(sf::RectangleShape& playerCol)
     sf::FloatRect playerBounds = playerCol.getGlobalBounds();
     sf::FloatRect platformBounds = collider.getGlobalBounds();
 
-    if (!playerBounds.findIntersection(platformBounds))
+    auto intersection = playerBounds.findIntersection(platformBounds);
+    if (!intersection.has_value())
         return CollisionType::None;
 
     // Player bounds
@@ -35,7 +36,7 @@ CollisionType Platform::isColliding(sf::RectangleShape& playerCol)
     float platformLeft = platPos.x;
     float platformRight = platPos.x + platSize.x;
 
-    // Collisions
+    // collision distances
     float collideTop = playerBottom - platformTop;
     float collideBottom = platformBottom - playerTop;
     float collideLeft = playerRight - platformLeft;

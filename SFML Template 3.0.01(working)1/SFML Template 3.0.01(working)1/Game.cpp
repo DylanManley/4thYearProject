@@ -188,6 +188,13 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		{
 			player.speed = 0.f;
 			player.horizontalVelocity = 0.f;
+			player.slideVelocity = 0.f;
+
+			if (player.currentState == player.falling)
+			{
+				player.changeState(player.wallSlideStart);
+				std::cout << "ENTER wallSlideStart\n";
+			}
 		}
 		break;
 
@@ -196,6 +203,13 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		{
 			player.speed = 0.f;
 			player.horizontalVelocity = 0.f;
+			player.slideVelocity = 0.f;
+
+			if (player.currentState == player.falling)
+			{
+				player.changeState(player.wallSlideStart);
+
+			}
 		}
 		break;
 
