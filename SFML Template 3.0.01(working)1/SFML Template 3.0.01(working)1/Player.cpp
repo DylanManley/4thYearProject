@@ -217,6 +217,7 @@ void Player::update()
             currentState != wallSlideStart &&
             currentState != wallSlide)
         {
+            collider.setScale({ 1, 1 });
             changeState(falling);
         }
     }
