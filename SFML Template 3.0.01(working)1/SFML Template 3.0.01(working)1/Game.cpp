@@ -271,8 +271,9 @@ void Game::setupSprites()
 	platform2.setup(platformTex, { 1280, 480 }, { 1280, 100 });
 	platform3.setup(platformTex, { 2560, 500 }, { 1280, 100 });
 	platform4.setup(platformTex, { 2800, 30 }, { 1280, 100 });
+	platform5.setup(platformTex, { 950, -80 }, { 1280, 100 });
 
-	platforms = {platform, platform2, platform3, platform4};
+	platforms = {platform, platform2, platform3, platform4, platform5};
 
 
 	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))

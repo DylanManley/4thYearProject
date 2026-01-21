@@ -83,7 +83,13 @@ void Player::loadTextures()
     if (!wallSlideRTex.loadFromFile("ASSETS\\IMAGES\\wallSlideR.png"))
         std::cout << "Couldn't load wallslide texture\n";
     if (!wallSlideLTex.loadFromFile("ASSETS\\IMAGES\\wallSlideL.png"))
+        std::cout << "Couldn't load wall jump texture\n";
+
+    //wallJumping
+    if (!wallJumpRTex.loadFromFile("ASSETS\\IMAGES\\wallJumpR.png"))
         std::cout << "Couldn't load wallslide texture\n";
+    if (!wallJumpLTex.loadFromFile("ASSETS\\IMAGES\\wallJumpL.png"))
+        std::cout << "Couldn't load wall jump texture\n";
 
 }
 
@@ -109,6 +115,7 @@ void Player::setStates()
     SlideToRun = new StateSlideToRun();
     wallSlideStart = new StateWallSlideStart();
     wallSlideEnd = new StateWallSlideEnd();
+    wallJump = new StateWallJump();
 }
 
 void Player::setUp()
@@ -199,7 +206,14 @@ void Player::update()
     {
         verticalVelocity = jumpStrength;
         if (isJumping) {
-            changeState(jumping);
+            if(currentState == wallSlide)
+            {
+              changeState(wallJump);
+            }
+            else
+            {
+                changeState(jumping);
+            }
         }
     }
 
@@ -215,7 +229,8 @@ void Player::update()
         if (currentState != jumping &&
             currentState != idleToJump &&
             currentState != wallSlideStart &&
-            currentState != wallSlide)
+            currentState != wallSlide &&
+            currentState != wallJump)
         {
             collider.setScale({ 1, 1 });
             changeState(falling);

@@ -388,7 +388,9 @@ public:
         if (p.facing == Direction::RIGHT)
             p.body.setTexture(p.wallSlideRTex);
         else
-            p.body.setTexture(p.wallSlideRTex);
+            p.body.setTexture(p.wallSlideLTex);
+
+        p.verticalVelocity = 0;
 
         p.currentFrame = 0;
     }
@@ -400,9 +402,62 @@ public:
 
         p.animate(3, 238, 298);
 
+        if (p.isJumping)
+        {
+            p.changeState(p.wallJump);
+        }
+
         if (p.isGrounded)
         {
             p.changeState(p.wallSlideEnd);
+        }
+    }
+};
+
+class StateWallJump: public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.wallJumpLTex);
+            p.facing = Direction::LEFT;
+        }
+        else
+        {
+            p.body.setTexture(p.wallJumpRTex);
+            p.facing = Direction::RIGHT;
+        }
+
+        p.currentFrame = 0;
+    }
+
+    void update(Player& p) override
+    {
+
+        if (p.facing == Direction::LEFT)
+        {
+            p.horizontalVelocity -= 3;
+        }
+        else
+        {
+            p.horizontalVelocity += 3;
+        }
+
+        p.verticalVelocity -= p.gravity + 1;
+        p.position.y += p.verticalVelocity;
+
+        p.position.y += p.verticalVelocity;
+        p.position.x += p.horizontalVelocity;
+
+
+
+
+        if (p.animate(3, 238, 298, false))
+        {
+            p.changeState(p.falling);
+            p.currentFrame = 0;
         }
     }
 };

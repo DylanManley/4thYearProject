@@ -41,6 +41,7 @@ public:
     StateMachine* crouchWalk;
     StateMachine* slide;
     StateMachine* wallSlide;
+    StateMachine* wallJump;
 
     //transition states
     StateMachine* idleToWalk;
@@ -92,6 +93,8 @@ public:
     sf::Texture wallSlideRTex;
     sf::Texture WallSlideLEndTex;
     sf::Texture wallSlideREndTex;
+    sf::Texture wallJumpLTex;
+    sf::Texture wallJumpRTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;

@@ -58,6 +58,7 @@ private:
 	Platform platform2;
 	Platform platform3;
 	Platform platform4;
+	Platform platform5;
 	std::vector<Platform> platforms;
 
 
