@@ -462,6 +462,50 @@ public:
     }
 };
 
+class StateClimb : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        if (p.facing == Direction::RIGHT)
+        {
+            p.body.setTexture(p.climbRTex);
+        }
+        else
+        {
+            p.body.setTexture(p.climbLTex);
+        }
+        p.isGrounded = true;
+    }
+
+    void update(Player& p) override
+    {
+
+        if (p.currentFrame < 5)
+        {
+            p.position.y -= 10;
+        }
+        
+        if (p.currentFrame <= 7)
+        {
+            if(p.facing == Direction::RIGHT)
+            {
+                p.position.x += 1;
+            }
+            else
+            {
+                p.position.x -= 1;
+            }
+        }
+
+        if (p.animate(9, 238, 298, false))
+        {
+            p.changeState(p.idle);
+            p.currentFrame = 0;
+        }
+    }
+};
+
 
 
 //TRANSITION STATES

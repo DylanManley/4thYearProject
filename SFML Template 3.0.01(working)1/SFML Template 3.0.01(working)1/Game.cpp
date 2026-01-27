@@ -152,7 +152,7 @@ void Game::render()
 	}
 	else
 	{
-		m_window.setView(camera);
+		m_window.setView(debugView);
 	}
 	
 
@@ -173,14 +173,52 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 {
 	CollisionType col = platform.isColliding(playerCol);
 
+	float platformTop = platform.collider.getGlobalBounds().position.y;
+	float playerHeight = playerCol.getSize().y;
+	float playerBottom = playerCol.getPosition().y + playerHeight;
+
 	switch (col)
 	{
 	case CollisionType::Top:
 		if (!player.isGrounded && !player.jumping)
 		{
-			player.verticalVelocity = 0;
+			player.verticalVelocity += player.gravity;
+			playerBottom = platformTop;
 		}
 		player.isGrounded = true;
+
+		if (playerBottom < platformTop)
+		{
+			playerBottom = platformTop;
+		}
+		break;
+
+	case CollisionType::TopLeft:
+		if (player.facing == Direction::RIGHT)
+		{
+			player.speed = 0.f;
+			player.horizontalVelocity = 0.f;
+			player.slideVelocity = 0.f;
+
+			if (player.currentState == player.falling)
+			{
+				player.changeState(player.climb);
+			}
+		}
+		break;
+
+	case CollisionType::TopRight:
+		if (player.facing == Direction::LEFT)
+		{
+			player.speed = 0.f;
+			player.horizontalVelocity = 0.f;
+			player.slideVelocity = 0.f;
+
+			if (player.currentState == player.falling)
+			{
+				player.changeState(player.climb);
+			}
+		}
 		break;
 
 	case CollisionType::Left:
@@ -193,7 +231,6 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 			if (player.currentState == player.falling)
 			{
 				player.changeState(player.wallSlideStart);
-				std::cout << "ENTER wallSlideStart\n";
 			}
 		}
 		break;
@@ -208,7 +245,6 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 			if (player.currentState == player.falling)
 			{
 				player.changeState(player.wallSlideStart);
-
 			}
 		}
 		break;
@@ -218,7 +254,12 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		{
 			player.crouching = true;
 			player.changeState(player.idleToCrouch);
+		}
+		else
+		{
 			player.verticalVelocity = 0;
+			player.verticalVelocity += player.gravity;
+			player.changeState(player.falling);
 		}
 		break;
 
@@ -271,7 +312,7 @@ void Game::setupSprites()
 	platform2.setup(platformTex, { 1280, 480 }, { 1280, 100 });
 	platform3.setup(platformTex, { 2560, 500 }, { 1280, 100 });
 	platform4.setup(platformTex, { 2800, 30 }, { 1280, 100 });
-	platform5.setup(platformTex, { 950, -80 }, { 1280, 100 });
+	platform5.setup(platformTex, { 950, -75 }, { 1280, 100 });
 
 	platforms = {platform, platform2, platform3, platform4, platform5};
 

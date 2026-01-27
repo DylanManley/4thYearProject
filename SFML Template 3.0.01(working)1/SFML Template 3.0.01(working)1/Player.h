@@ -52,6 +52,7 @@ public:
     StateMachine* SlideToRun;
     StateMachine* wallSlideStart;
     StateMachine* wallSlideEnd;
+    StateMachine* climb;
 
     StateMachine* currentState;
 
@@ -95,6 +96,8 @@ public:
     sf::Texture wallSlideREndTex;
     sf::Texture wallJumpLTex;
     sf::Texture wallJumpRTex;
+    sf::Texture climbLTex;
+    sf::Texture climbRTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;

@@ -91,6 +91,12 @@ void Player::loadTextures()
     if (!wallJumpLTex.loadFromFile("ASSETS\\IMAGES\\wallJumpL.png"))
         std::cout << "Couldn't load wall jump texture\n";
 
+    //wallClimb
+    if (!climbLTex.loadFromFile("ASSETS\\IMAGES\\climbL.png"))
+        std::cout << "Couldnt load climb Texture\n";
+    if (!climbRTex.loadFromFile("ASSETS\\IMAGES\\climbR.png"))
+        std::cout << "Couldnt load climb Texture\n";
+
 }
 
 void Player::setStates()
@@ -105,6 +111,7 @@ void Player::setStates()
     crouchWalk = new StateCrouchWalking();
     slide = new StateSlide();
     wallSlide = new StateWallSlide();
+    climb = new StateClimb();
 
     //Transition states
     idleToWalk = new StateIdleToWalk();
@@ -230,7 +237,8 @@ void Player::update()
             currentState != idleToJump &&
             currentState != wallSlideStart &&
             currentState != wallSlide &&
-            currentState != wallJump)
+            currentState != wallJump &&
+            currentState != climb)
         {
             collider.setScale({ 1, 1 });
             changeState(falling);
