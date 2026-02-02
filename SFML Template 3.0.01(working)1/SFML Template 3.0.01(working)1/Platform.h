@@ -5,8 +5,6 @@ enum class CollisionType
 {
 	None,
 	Top,
-	TopLeft,
-	TopRight,
 	Bottom,
 	Left,
 	Right

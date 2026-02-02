@@ -101,6 +101,9 @@ public:
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;
+    sf::RectangleShape headSensor;
+
+    bool headHit = false;
     
 
     int currentFrame = 0;

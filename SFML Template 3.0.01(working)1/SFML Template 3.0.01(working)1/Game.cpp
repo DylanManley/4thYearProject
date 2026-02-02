@@ -152,7 +152,7 @@ void Game::render()
 	}
 	else
 	{
-		m_window.setView(debugView);
+		m_window.setView(camera);
 	}
 	
 
@@ -193,34 +193,6 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		}
 		break;
 
-	case CollisionType::TopLeft:
-		if (player.facing == Direction::RIGHT)
-		{
-			player.speed = 0.f;
-			player.horizontalVelocity = 0.f;
-			player.slideVelocity = 0.f;
-
-			if (player.currentState == player.falling)
-			{
-				player.changeState(player.climb);
-			}
-		}
-		break;
-
-	case CollisionType::TopRight:
-		if (player.facing == Direction::LEFT)
-		{
-			player.speed = 0.f;
-			player.horizontalVelocity = 0.f;
-			player.slideVelocity = 0.f;
-
-			if (player.currentState == player.falling)
-			{
-				player.changeState(player.climb);
-			}
-		}
-		break;
-
 	case CollisionType::Left:
 		if (player.facing == Direction::RIGHT)
 		{
@@ -228,10 +200,15 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 			player.horizontalVelocity = 0.f;
 			player.slideVelocity = 0.f;
 
-			if (player.currentState == player.falling)
+			if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
 			{
-				player.changeState(player.wallSlideStart);
+				player.changeState(player.wallSlide);
 			}
+			else
+			{
+				player.changeState(player.climb);
+			}
+
 		}
 		break;
 
@@ -242,9 +219,13 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 			player.horizontalVelocity = 0.f;
 			player.slideVelocity = 0.f;
 
-			if (player.currentState == player.falling)
+			if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
 			{
-				player.changeState(player.wallSlideStart);
+				player.changeState(player.wallSlide);
+			}
+			else
+			{
+				player.changeState(player.climb);
 			}
 		}
 		break;

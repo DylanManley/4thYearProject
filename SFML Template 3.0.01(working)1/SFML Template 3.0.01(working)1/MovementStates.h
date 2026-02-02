@@ -483,7 +483,7 @@ public:
 
         if (p.currentFrame < 5)
         {
-            p.position.y -= 10;
+            p.position.y -= 3;
         }
         
         if (p.currentFrame <= 7)

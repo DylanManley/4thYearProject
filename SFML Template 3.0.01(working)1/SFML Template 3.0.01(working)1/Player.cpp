@@ -132,13 +132,18 @@ void Player::setUp()
     currentState = idle;
     idle->enter(*this);
     position = sf::Vector2f{ 0.f, 600.f };
+
     body.setPosition(position);
     body.setOrigin({ 119, 298 });
+
     collider.setPosition(position);
     collider.setFillColor(sf::Color::Green);
     collider.setSize(sf::Vector2f{ 100,250 });
     collider.setOrigin({ 50.f, 250.f });
-    std::cout << "X: " << position.x << "Y: " << position.y << std::endl;
+    
+    headSensor.setPosition(sf::Vector2f{ position.x + 12, position.y + 100 });
+    headSensor.setFillColor(sf::Color::Blue);
+    headSensor.setSize(sf::Vector2f{ 50 , 10 });
 }
 
 bool Player::animate(int frameCount, int frameWidth, int frameHeight, bool loop)
@@ -179,6 +184,7 @@ void Player::Render(sf::RenderWindow& m_window, bool m_debug)
     if (m_debug)
     {
         m_window.draw(collider);
+        m_window.draw(headSensor);
     }
 
     m_window.draw(body);
@@ -206,6 +212,15 @@ void Player::update()
     {
         !pressingLeft;
         facing = Direction::RIGHT;
+    }
+
+    if (facing == Direction::LEFT)
+    {
+        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
+    }
+    else
+    {
+        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
     }
 
 
