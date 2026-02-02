@@ -183,49 +183,70 @@ void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
 		if (!player.isGrounded && !player.jumping)
 		{
 			player.verticalVelocity += player.gravity;
-			playerBottom = platformTop;
+			player.position.y = platform.collider.getPosition().y + platform.collider.getSize().y;
 		}
 		player.isGrounded = true;
 
 		if (playerBottom < platformTop)
 		{
-			playerBottom = platformTop;
+			player.position.y++;
 		}
+
 		break;
 
 	case CollisionType::Left:
+
+		if (player.currentState == player.climb || player.currentState == player.wallSlide)
+			break;
+
 		if (player.facing == Direction::RIGHT)
 		{
 			player.speed = 0.f;
 			player.horizontalVelocity = 0.f;
 			player.slideVelocity = 0.f;
 
-			if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
+			if (player.currentState == player.falling)
 			{
-				player.changeState(player.wallSlide);
-			}
-			else
-			{
-				player.changeState(player.climb);
+				if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
+				{
+					player.changeState(player.wallSlide);
+					break;
+				}
+				else
+				{
+					player.position.y = platformTop + player.collider.getSize().y;
+					player.changeState(player.climb);
+					break;
+				}
 			}
 
 		}
 		break;
 
 	case CollisionType::Right:
+
+		if (player.currentState == player.climb || player.currentState == player.wallSlide)
+			break;
+
 		if (player.facing == Direction::LEFT)
 		{
 			player.speed = 0.f;
 			player.horizontalVelocity = 0.f;
 			player.slideVelocity = 0.f;
 
-			if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
+			if (player.currentState == player.falling)
 			{
-				player.changeState(player.wallSlide);
-			}
-			else
-			{
-				player.changeState(player.climb);
+				if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
+				{
+					player.changeState(player.wallSlide);
+					break;
+				}
+				else
+				{
+					player.position.y = platformTop + player.collider.getSize().y;
+					player.changeState(player.climb);
+					break;
+				}
 			}
 		}
 		break;

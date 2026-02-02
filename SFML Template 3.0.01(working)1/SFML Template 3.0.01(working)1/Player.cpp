@@ -216,11 +216,11 @@ void Player::update()
 
     if (facing == Direction::LEFT)
     {
-        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
+        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 270 });
     }
     else
     {
-        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
+        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 270 });
     }
 
 

@@ -483,7 +483,7 @@ public:
 
         if (p.currentFrame < 5)
         {
-            p.position.y -= 3;
+            p.position.y -= 14;
         }
         
         if (p.currentFrame <= 7)
@@ -676,7 +676,7 @@ public:
 
     void update(Player& p) override
     {
-        p.verticalVelocity += (p.gravity * 0.2);
+        p.verticalVelocity += (p.gravity * 0.6);
         p.position.y += p.verticalVelocity;
 
         if (p.animate(3, 238, 298, false))
