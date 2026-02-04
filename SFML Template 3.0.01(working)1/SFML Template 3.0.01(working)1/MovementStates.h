@@ -255,6 +255,11 @@ public:
             p.currentFrame = 0;
             p.changeState(p.landing);
         }
+
+        if (p.attacking)
+        {
+            p.changeState(p.dropKick);
+        }
     }
 };
 
@@ -388,7 +393,7 @@ public:
         if (p.slideVelocity < 0)
             p.slideVelocity = 0;
 
-        if (p.slideVelocity == 0 || !p.crouching)
+        if (p.slideVelocity == 0 || !p.crouching && !p.attacking)
         {
             p.changeState(p.SlideToRun);
         }
@@ -761,6 +766,47 @@ public:
         if (p.animate(7, 238, 298, false))
         {
             p.changeState(p.idle);
+        }
+    }
+};
+
+class StateDropKick : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.collider.setScale({ 2.2, 0.3 });
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.dropKickLTex);
+        }
+        else
+        {
+            p.body.setTexture(p.dropKickRTex);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        p.animate(7, 238, 298, false);
+
+
+        if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
+        if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;
+
+        if (!p.pressingRight && !p.pressingLeft)
+            p.horizontalVelocity *= (1.f - p.airFriction);
+
+        p.position.x += p.horizontalVelocity;
+
+
+        p.verticalVelocity += (p.gravity /2) ;
+        p.position.y += p.verticalVelocity;
+    
+        if (p.isGrounded)
+        {
+            p.changeState(p.slide);
         }
     }
 };

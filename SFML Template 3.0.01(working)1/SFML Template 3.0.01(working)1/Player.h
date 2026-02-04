@@ -57,7 +57,9 @@ public:
     StateMachine* wallSlideEnd;
     StateMachine* climb;
 
+    //Combat States
     StateMachine* punch;
+    StateMachine* dropKick;
 
     StateMachine* currentState;
 
@@ -108,6 +110,8 @@ public:
     //Combat Textures
     sf::Texture punchRTex;
     sf::Texture punchLTex;
+    sf::Texture dropKickLTex;
+    sf::Texture dropKickRTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;

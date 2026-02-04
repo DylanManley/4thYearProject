@@ -102,9 +102,13 @@ void Player::loadMovementTextures()
 void Player::loadCombatTextures()
 {
     if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\punchL.png"))
-        std::cout << "Couldnt load climb Texture\n";
+        std::cout << "Couldnt load puch Texture\n";
     if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\punchR.png"))
-        std::cout << "Couldnt load climb Texture\n";
+        std::cout << "Couldnt load punch Texture\n";
+    if (!dropKickLTex.loadFromFile("ASSETS\\IMAGES\\dropKickL.png"))
+        std::cout << "Couldnt load drop kick Texture\n";
+    if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\dropKickR.png"))
+        std::cout << "Couldnt load drop kick Texture\n";
 }
 
 void Player::setStates()
@@ -135,6 +139,7 @@ void Player::setStates()
 
     //Combat States
     punch = new StatePunch();
+    dropKick = new StateDropKick();
 }
 
 void Player::setUp()
@@ -267,7 +272,8 @@ void Player::update()
             currentState != wallSlideStart &&
             currentState != wallSlide &&
             currentState != wallJump &&
-            currentState != climb)
+            currentState != climb &&
+            currentState != dropKick)
         {
             collider.setScale({ 1, 1 });
             changeState(falling);
