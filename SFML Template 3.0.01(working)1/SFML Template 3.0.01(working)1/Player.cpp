@@ -1,9 +1,9 @@
 #include "Movementstates.h"
 #include <iostream>
 
-void Player::loadTextures()
+void Player::loadMovementTextures()
 {
-    // Load all textures
+    // Load all movement textures
 
     //Idle and Walk
     if (!idleLeftTex.loadFromFile("ASSETS\\IMAGES\\IdleLeft.png"))
@@ -99,8 +99,17 @@ void Player::loadTextures()
 
 }
 
+void Player::loadCombatTextures()
+{
+    if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\punchL.png"))
+        std::cout << "Couldnt load climb Texture\n";
+    if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\punchR.png"))
+        std::cout << "Couldnt load climb Texture\n";
+}
+
 void Player::setStates()
 {
+    //Movement States
     idle = new StateIdle();
     walk = new StateWalking();
     run = new StateRunning();
@@ -123,11 +132,15 @@ void Player::setStates()
     wallSlideStart = new StateWallSlideStart();
     wallSlideEnd = new StateWallSlideEnd();
     wallJump = new StateWallJump();
+
+    //Combat States
+    punch = new StatePunch();
 }
 
 void Player::setUp()
 {
-    loadTextures();
+    loadMovementTextures();
+    loadCombatTextures();
     setStates();
     currentState = idle;
     idle->enter(*this);
@@ -197,6 +210,7 @@ void Player::update()
     crouching = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LControl);
     isJumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
     running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
+    attacking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
 
     std::cout << "X: " << position.x  << " " << "Y: " << position.y << std::endl;
     body.setPosition(position);
@@ -216,11 +230,11 @@ void Player::update()
 
     if (facing == Direction::LEFT)
     {
-        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 270 });
+        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
     }
     else
     {
-        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 270 });
+        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
     }
 
 

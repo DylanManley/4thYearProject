@@ -13,7 +13,8 @@ class Player
 public:
     Player() = default;
 
-    void loadTextures();
+    void loadMovementTextures();
+    void loadCombatTextures();
     void setStates();
     void setUp();
     void update();
@@ -29,8 +30,10 @@ public:
     bool running = false;
     bool justJumped = false;
     bool isGrounded = false;
+    bool attacking = false;
     void Render(sf::RenderWindow& m_window, bool m_debug);
 
+    //movement states
     StateMachine* idle;
     StateMachine* walk;
     StateMachine* run;
@@ -54,9 +57,11 @@ public:
     StateMachine* wallSlideEnd;
     StateMachine* climb;
 
+    StateMachine* punch;
+
     StateMachine* currentState;
 
-
+    //Movement Textures
     sf::Texture idleRightTex;
     sf::Texture idleLeftTex;
     sf::Texture idleToWalkLTex;
@@ -99,11 +104,14 @@ public:
     sf::Texture climbLTex;
     sf::Texture climbRTex;
 
+
+    //Combat Textures
+    sf::Texture punchRTex;
+    sf::Texture punchLTex;
+
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;
     sf::RectangleShape headSensor;
-
-    bool headHit = false;
     
 
     int currentFrame = 0;

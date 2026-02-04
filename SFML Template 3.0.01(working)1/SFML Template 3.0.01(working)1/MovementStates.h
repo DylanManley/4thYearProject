@@ -38,6 +38,11 @@ public:
             p.changeState(p.idleToCrouch);
         }
 
+        if (p.attacking)
+        {
+            p.changeState(p.punch);
+        }
+
     }
 };
 
@@ -95,6 +100,11 @@ public:
         {
             p.changeState(p.falling);
         }
+
+        if (p.attacking)
+        {
+            p.changeState(p.punch);
+        }
     }
     
 };
@@ -145,6 +155,11 @@ public:
 
         if (p.crouching) {
             p.changeState(p.RunToSlide);
+        }
+
+        if (p.attacking)
+        {
+            p.changeState(p.punch);
         }
     }
 };
@@ -721,4 +736,31 @@ public:
         }
     }
 
+};
+
+
+//combat states(MOVE TO OWN FILE LATER)
+class StatePunch : public StateMachine
+{
+public:
+    void enter(Player& p) override
+    {
+        p.currentFrame = 0;
+        if (p.facing == Direction::LEFT)
+        {
+            p.body.setTexture(p.punchLTex);
+        }
+        else
+        {
+            p.body.setTexture(p.punchRTex);
+        }
+    }
+
+    void update(Player& p) override
+    {
+        if (p.animate(7, 238, 298, false))
+        {
+            p.changeState(p.idle);
+        }
+    }
 };
