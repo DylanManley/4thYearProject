@@ -60,7 +60,6 @@ private:
 	bool m_DELETEexitGame; // control exiting game
 
 	Player player;
-	sf::Texture platformTex;
 	Level level;
 
 	GameState gameState = GameState::MENU;
@@ -71,9 +70,6 @@ private:
 	sf::Sprite title{ titleTex };
 	sf::Texture titleOptionsTex;
 	sf::Sprite titleOptions{ titleOptionsTex };
-
-	sf::Texture railingTex;
-	sf::Sprite railing{ railingTex };
 	sf::View camera;
 
 	bool seeDebug = false;

@@ -175,11 +175,7 @@ void Game::render()
 		{
 			m_window.setView(debugView);
 		}
-
-
 		m_window.draw(background);
-		m_window.draw(railing);
-
 		level.render(m_window, seeDebug);
 
 		player.Render(m_window, seeDebug);
@@ -246,22 +242,7 @@ void Game::setupSprites()
 	background.setOrigin(sf::Vector2f{ 640, 853 });
 	background.setScale(sf::Vector2f{1.5,1.5});
 
-	if (!platformTex.loadFromFile(("ASSETS\\IMAGES\\Platform.png")))
-	{
-		std::cout << "platform not loaded" << std::endl;
-	}
-
-	level.load(platformTex);
-
-
-	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))
-	{
-		std::cout << "railing not loaded" << std::endl;
-	}
-	railing.setTexture(railingTex, true);
-	railing.setPosition(sf::Vector2f{ 0, 460 });
-	railing.setScale(sf::Vector2f{ 1, 0.6f });
-
+	level.setupTextures();
 	camera.setSize({ 1280.f, 720.f });
 	debugView.setSize({ 12800, 7200 });
 
