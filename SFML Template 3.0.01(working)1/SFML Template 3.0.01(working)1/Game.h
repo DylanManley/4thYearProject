@@ -19,6 +19,13 @@
 #include "player.h"
 #include "level.h"
 
+enum class GameState
+{
+	MENU,
+	GAMEPLAY,
+};
+
+
 class Game
 {
 public:
@@ -55,6 +62,15 @@ private:
 	Player player;
 	sf::Texture platformTex;
 	Level level;
+
+	GameState gameState = GameState::MENU;
+
+	sf::Texture titleScreenTex;
+	sf::Sprite titleScreen{ titleScreenTex };
+	sf::Texture titleTex;
+	sf::Sprite title{ titleTex };
+	sf::Texture titleOptionsTex;
+	sf::Sprite titleOptions{ titleOptionsTex };
 
 	sf::Texture railingTex;
 	sf::Sprite railing{ railingTex };

@@ -128,14 +128,28 @@ void Game::update(sf::Time t_deltaTime)
 		m_window.close();
 	}
 
-	player.update();
-	player.isGrounded = false;
+	switch (gameState)
+	{
+	case GameState::MENU:
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
+		{
+			gameState = GameState::GAMEPLAY;
+		}
+		break;
+	case GameState::GAMEPLAY:
+		player.update();
+		player.isGrounded = false;
+		level.checkCollisions(player);
 
-	level.checkCollisions(player);
+		camera.setCenter({ player.body.getPosition().x, player.body.getPosition().y - 200 });
+		debugView.setCenter({ player.body.getPosition() });
+		background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150 });
+		break;
+	default:
+		break;
+	}
 
-	camera.setCenter({player.body.getPosition().x, player.body.getPosition().y - 200});
-	debugView.setCenter({ player.body.getPosition() });
-	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150});
+	
 }
 
 /// <summary>
@@ -143,23 +157,37 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(sf::Color::White);
-	if (!seeDebug)
+	m_window.clear(sf::Color::Black);
+
+	switch (gameState)
 	{
-		m_window.setView(camera);
-	}
-	else
-	{
-		m_window.setView(debugView);
+	case GameState::MENU:
+		m_window.draw(titleScreen);
+		m_window.draw(titleOptions);
+		m_window.draw(title);
+		break;
+	case GameState::GAMEPLAY:
+		if (!seeDebug)
+		{
+			m_window.setView(camera);
+		}
+		else
+		{
+			m_window.setView(debugView);
+		}
+
+
+		m_window.draw(background);
+		m_window.draw(railing);
+
+		level.render(m_window, seeDebug);
+
+		player.Render(m_window, seeDebug);
+		break;
+	default:
+		break;
 	}
 	
-
-	m_window.draw(background);
-	m_window.draw(railing);
-
-	level.render(m_window, seeDebug);
-
-	player.Render(m_window, seeDebug);
 
 	m_window.display();
 }
@@ -189,6 +217,25 @@ void Game::setupTexts()
 /// </summary>
 void Game::setupSprites()
 {
+	if (!titleScreenTex.loadFromFile(("ASSETS\\IMAGES\\TitleScreen.png")))
+	{
+		std::cout << "error loading title screen" << std::endl;
+	}
+	titleScreen.setTexture(titleScreenTex, true);
+
+	if (!titleTex.loadFromFile(("ASSETS\\IMAGES\\Title.png")))
+	{
+		std::cout << "error loading title" << std::endl;
+	}
+	title.setTexture(titleTex, true);
+
+	if (!titleOptionsTex.loadFromFile(("ASSETS\\IMAGES\\TitleOptions.png")))
+	{
+		std::cout << "error loading title" << std::endl;
+	}
+	titleOptions.setTexture(titleOptionsTex, true);
+	titleOptions.setScale(sf::Vector2f{ 0.5,0.5 });
+	titleOptions.setPosition(sf::Vector2f{ 70, 500 });
 	
 	if (!backgroundTex.loadFromFile(("ASSETS\\IMAGES\\temp_background.png")))
 	{
