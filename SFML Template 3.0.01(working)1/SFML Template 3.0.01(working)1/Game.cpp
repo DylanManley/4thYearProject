@@ -131,10 +131,8 @@ void Game::update(sf::Time t_deltaTime)
 	player.update();
 	player.isGrounded = false;
 
-	for (auto p : platforms)
-	{
-		(checkCollision(player.collider, p));
-	}
+	level.checkCollisions(player);
+
 	camera.setCenter({player.body.getPosition().x, player.body.getPosition().y - 200});
 	debugView.setCenter({ player.body.getPosition() });
 	background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150});
@@ -152,122 +150,18 @@ void Game::render()
 	}
 	else
 	{
-		m_window.setView(camera);
+		m_window.setView(debugView);
 	}
 	
 
 	m_window.draw(background);
 	m_window.draw(railing);
 
-	for (auto& platform : platforms)
-	{
-		platform.Render(m_window, seeDebug);
-	}
+	level.render(m_window, seeDebug);
 
 	player.Render(m_window, seeDebug);
 
 	m_window.display();
-}
-
-void Game::checkCollision(sf::RectangleShape& playerCol, Platform& platform)
-{
-	CollisionType col = platform.isColliding(playerCol);
-
-	float platformTop = platform.collider.getGlobalBounds().position.y;
-	float playerHeight = playerCol.getSize().y;
-	float playerBottom = playerCol.getPosition().y + playerHeight;
-
-	switch (col)
-	{
-	case CollisionType::Top:
-		if (!player.isGrounded && !player.jumping)
-		{
-			player.verticalVelocity += player.gravity;
-			player.position.y = platform.collider.getPosition().y + platform.collider.getSize().y;
-		}
-		player.isGrounded = true;
-
-		if (playerBottom < platformTop)
-		{
-			player.position.y++;
-		}
-
-		break;
-
-	case CollisionType::Left:
-
-		if (player.currentState == player.climb || player.currentState == player.wallSlide)
-			break;
-
-		if (player.facing == Direction::RIGHT)
-		{
-			player.speed = 0.f;
-			player.horizontalVelocity = 0.f;
-			player.slideVelocity = 0.f;
-
-			if (player.currentState == player.falling)
-			{
-				if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
-				{
-					player.changeState(player.wallSlide);
-					break;
-				}
-				else
-				{
-					player.position.y = platformTop + player.collider.getSize().y;
-					player.changeState(player.climb);
-					break;
-				}
-			}
-
-		}
-		break;
-
-	case CollisionType::Right:
-
-		if (player.currentState == player.climb || player.currentState == player.wallSlide)
-			break;
-
-		if (player.facing == Direction::LEFT)
-		{
-			player.speed = 0.f;
-			player.horizontalVelocity = 0.f;
-			player.slideVelocity = 0.f;
-
-			if (player.currentState == player.falling)
-			{
-				if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
-				{
-					player.changeState(player.wallSlide);
-					break;
-				}
-				else
-				{
-					player.position.y = platformTop + player.collider.getSize().y;
-					player.changeState(player.climb);
-					break;
-				}
-			}
-		}
-		break;
-
-	case CollisionType::Bottom:
-		if (player.isGrounded)
-		{
-			player.crouching = true;
-			player.changeState(player.idleToCrouch);
-		}
-		else
-		{
-			player.verticalVelocity = 0;
-			player.verticalVelocity += player.gravity;
-			player.changeState(player.falling);
-		}
-		break;
-
-	default:
-		break;
-	}
 }
 
 /// <summary>
@@ -310,13 +204,7 @@ void Game::setupSprites()
 		std::cout << "platform not loaded" << std::endl;
 	}
 
-	platform.setup(platformTex, { 0, 580 }, { 1280, 100 });
-	platform2.setup(platformTex, { 1280, 480 }, { 1280, 100 });
-	platform3.setup(platformTex, { 2560, 500 }, { 1280, 100 });
-	platform4.setup(platformTex, { 2800, 30 }, { 1280, 100 });
-	platform5.setup(platformTex, { 950, -75 }, { 1280, 100 });
-
-	platforms = {platform, platform2, platform3, platform4, platform5};
+	level.load(platformTex);
 
 
 	if (!railingTex.loadFromFile(("ASSETS\\IMAGES\\Rail.png")))

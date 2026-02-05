@@ -17,7 +17,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "player.h"
-#include "Platform.h"
+#include "level.h"
 
 class Game
 {
@@ -54,13 +54,7 @@ private:
 
 	Player player;
 	sf::Texture platformTex;
-	Platform platform;
-	Platform platform2;
-	Platform platform3;
-	Platform platform4;
-	Platform platform5;
-	std::vector<Platform> platforms;
-
+	Level level;
 
 	sf::Texture railingTex;
 	sf::Sprite railing{ railingTex };
