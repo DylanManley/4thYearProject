@@ -188,7 +188,7 @@ public:
             p.body.setTexture(p.JumpLTex);
         }
         p.currentFrame = 0;
-        //p.isGrounded = false;
+
     }
 
     void update(Player& p) override

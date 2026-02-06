@@ -269,6 +269,7 @@ void Player::update()
     {
         if (currentState != jumping &&
             currentState != idleToJump &&
+            currentState != landing &&
             currentState != wallSlideStart &&
             currentState != wallSlide &&
             currentState != wallJump &&

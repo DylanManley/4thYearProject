@@ -24,7 +24,7 @@ static int BackgroundTemplate[Level::Height][Level::Width] =
 {
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,3,1,1,2,1,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 1,1,2,1,1,2,1,1,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -64,7 +64,7 @@ void Level::load()
             if (backgroundData[y][x] == 1)
             {
                 sf::Sprite sprite(railingTex);
-                sprite.setPosition(sf::Vector2f{static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) });
+                sprite.setPosition(sf::Vector2f{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) });
                 backgroundSprites[y][x] = std::move(sprite);
             }
             else if (backgroundData[y][x] == 2)
@@ -152,6 +152,11 @@ void Level::checkCollisions(Player& player)
     tileX = std::clamp(tileX, 0, Width - 1);
     tileY = std::clamp(tileY, 0, Height - 1);
 
+    bool onGround = false;
+    sf::FloatRect playerBounds = player.collider.getGlobalBounds();
+    float playerBottom = playerBounds.position.y + playerBounds.size.y;
+
+    // Check tiles around player
     for (int y = tileY - 1; y <= tileY + 1; ++y)
     {
         if (y < 0 || y >= Height) continue;
@@ -161,56 +166,83 @@ void Level::checkCollisions(Player& player)
 
             if (levelData[y][x] == 1)
             {
+                sf::FloatRect platformBounds = tiles[y][x].collider.getGlobalBounds();
+                float platformTop = platformBounds.position.y;
+
+                float distanceToTop = playerBottom - platformTop;
+
+                if (distanceToTop >= -5.0f && distanceToTop <= 5.0f)
+                {
+                    float playerLeft = playerBounds.position.x;
+                    float playerRight = playerBounds.position.x + playerBounds.size.x;
+                    float platformLeft = platformBounds.position.x;
+                    float platformRight = platformBounds.position.x + platformBounds.size.x;
+
+                    if (playerRight > platformLeft && playerLeft < platformRight)
+                    {
+                        onGround = true;
+                    }
+                }
+
                 handleCollision(player, tiles[y][x]);
             }
         }
     }
+
+    player.isGrounded = onGround;
 }
 
 void Level::handleCollision(Player& player, Platform& platform)
 {
     CollisionType col = platform.isColliding(player.collider);
+    sf::FloatRect platformBounds = platform.collider.getGlobalBounds();
+    sf::FloatRect playerBounds = player.collider.getGlobalBounds();
 
-    float platformTop = platform.collider.getGlobalBounds().position.y;
-    float playerHeight = player.collider.getSize().y;
-    float playerBottom = player.collider.getPosition().y + playerHeight;
+    float platformTop = platformBounds.position.y;
+    float playerBottom = playerBounds.position.y + playerBounds.size.y;
+    float playerTop = playerBounds.position.y;
 
     switch (col)
     {
     case CollisionType::Top:
-        if (!player.isGrounded && !player.jumping)
-        {
-            player.verticalVelocity += player.gravity;
-            player.position.y = platform.collider.getPosition().y + platform.collider.getSize().y;
-        }
         player.isGrounded = true;
+        player.verticalVelocity = 0.f;
+        player.position.y = platformTop;
 
-        if (playerBottom < platformTop)
-        {
-            player.position.y++;
-        }
+        if (player.currentState == player.climb)
+            break;
+
+        if (player.currentState == player.wallSlide && !player.isGrounded)
+            break;
+
         break;
 
     case CollisionType::Left:
+
         if (player.currentState == player.climb || player.currentState == player.wallSlide)
             break;
 
         if (player.facing == Direction::RIGHT)
         {
+            float platformLeft = platformBounds.position.x;
+            float playerWidth = playerBounds.size.x;
+            player.position.x = platformLeft - (playerWidth / 2.0f);
+
+
             player.speed = 0.f;
             player.horizontalVelocity = 0.f;
             player.slideVelocity = 0.f;
 
             if (player.currentState == player.falling)
             {
-                if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
+                if (player.headSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
                 {
                     player.changeState(player.wallSlide);
                     break;
                 }
                 else
                 {
-                    player.position.y = platformTop + player.collider.getSize().y;
+                    player.position.y = platformTop + playerBounds.size.y;
                     player.changeState(player.climb);
                     break;
                 }
@@ -219,7 +251,8 @@ void Level::handleCollision(Player& player, Platform& platform)
         break;
 
     case CollisionType::Right:
-        if (player.currentState == player.climb || player.currentState == player.wallSlide)
+
+        if (player.currentState == player.climb || player.currentState == player.wallSlide && player.isGrounded)
             break;
 
         if (player.facing == Direction::LEFT)
@@ -228,16 +261,20 @@ void Level::handleCollision(Player& player, Platform& platform)
             player.horizontalVelocity = 0.f;
             player.slideVelocity = 0.f;
 
+            float platformRight = platformBounds.position.x + platformBounds.size.x;
+            float playerWidth = playerBounds.size.x;
+            player.position.x = platformRight + (playerWidth / 2.0f);
+
             if (player.currentState == player.falling)
             {
-                if (player.headSensor.getGlobalBounds().findIntersection(platform.collider.getGlobalBounds()).has_value())
+                if (player.headSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
                 {
                     player.changeState(player.wallSlide);
                     break;
                 }
                 else
                 {
-                    player.position.y = platformTop + player.collider.getSize().y;
+                    player.position.y = platformTop + playerBounds.size.y;
                     player.changeState(player.climb);
                     break;
                 }
@@ -246,6 +283,9 @@ void Level::handleCollision(Player& player, Platform& platform)
         break;
 
     case CollisionType::Bottom:
+        if (player.currentState == player.wallSlide && !player.isGrounded)
+            break;
+
         if (player.isGrounded)
         {
             player.crouching = true;

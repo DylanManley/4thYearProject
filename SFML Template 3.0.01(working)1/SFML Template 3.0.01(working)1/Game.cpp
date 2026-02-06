@@ -137,9 +137,8 @@ void Game::update(sf::Time t_deltaTime)
 		}
 		break;
 	case GameState::GAMEPLAY:
-		player.update();
-		player.isGrounded = false;
 		level.checkCollisions(player);
+		player.update();
 
 		camera.setCenter({ player.body.getPosition().x, player.body.getPosition().y - 200 });
 		debugView.setCenter({ player.body.getPosition() });
