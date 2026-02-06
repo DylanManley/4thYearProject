@@ -26,6 +26,8 @@ private:
     int backgroundData[Height][Width];
 
     sf::Texture platformTex;
+    sf::Texture houseWall;
+    sf::Texture houseWindow;
 
     //background details
     sf::Texture railingTex;
