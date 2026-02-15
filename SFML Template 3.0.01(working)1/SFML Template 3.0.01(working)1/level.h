@@ -28,6 +28,8 @@ private:
     sf::Texture platformTex;
     sf::Texture houseWall;
     sf::Texture houseWindow;
+    sf::Texture roofWall;
+    sf::Texture roofWindow;
 
     //background details
     sf::Texture railingTex;
