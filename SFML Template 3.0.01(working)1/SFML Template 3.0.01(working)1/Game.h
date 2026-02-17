@@ -18,6 +18,7 @@
 #include <SFML/Audio.hpp>
 #include "player.h"
 #include "level.h"
+#include "Enemy.h"
 
 enum class GameState
 {
@@ -40,7 +41,6 @@ private:
 	void checkKeyboardState();
 	void update(sf::Time t_deltaTime);
 	void render();
-	void checkCollision(sf::RectangleShape& playerCol, Platform& platform);
 	
 	void setupTexts();
 	void setupSprites();
@@ -61,6 +61,7 @@ private:
 
 	Player player;
 	Level level;
+	Enemy enemy1;
 
 	GameState gameState = GameState::MENU;
 

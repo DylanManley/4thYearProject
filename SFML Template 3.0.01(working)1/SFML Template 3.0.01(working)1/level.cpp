@@ -24,8 +24,8 @@ static int BackgroundTemplate[Level::Height][Level::Width] =
 {
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,3,1,1,2,1,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,3,1,1,2,1,1,1,2,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 1,1,2,1,1,2,1,1,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -53,6 +53,7 @@ void Level::setupTextures()
     railLampPost.loadFromFile("ASSETS\\IMAGES\\railLampPost.png");
     hallway.loadFromFile("ASSETS\\IMAGES\\hallway.png");
     hallway2.loadFromFile("ASSETS\\IMAGES\\hallway2.png");
+    roofVents.loadFromFile("ASSETS\\IMAGES\\roofVents.png");
 
     load();
 }
@@ -93,6 +94,12 @@ void Level::load()
             else if (backgroundData[y][x] == 5)
             {
                 sf::Sprite sprite(hallway2);
+                sprite.setPosition(sf::Vector2f{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) });
+                backgroundSprites[y][x] = std::move(sprite);
+            }
+            else if (backgroundData[y][x] == 6)
+            {
+                sf::Sprite sprite(roofVents);
                 sprite.setPosition(sf::Vector2f{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) });
                 backgroundSprites[y][x] = std::move(sprite);
             }

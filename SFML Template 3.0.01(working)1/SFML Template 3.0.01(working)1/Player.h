@@ -139,4 +139,10 @@ public:
     float slideVelocity;
     float slideDeceleration = 0.1f;
 
+    //combat
+    int health = 100;
+    int damage = 5;
+    sf::RectangleShape hitSensor;
+
+
 };

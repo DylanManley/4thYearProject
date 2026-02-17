@@ -17,6 +17,8 @@ public:
         {
             p.body.setTexture(p.idleLeftTex);
         }
+
+        p.hitSensor.setSize(sf::Vector2f{ 50 , 15 });
     }
 
     void update(Player& p) override
@@ -378,6 +380,8 @@ public:
 
         p.currentFrame = 0;
         p.slideVelocity = p.speed;
+
+        p.hitSensor.setSize(sf::Vector2f{ 50, 50 });
     }
 
     void update(Player& p) override
@@ -385,9 +389,15 @@ public:
         p.animate(3, 238, 298);
 
         if (p.facing == Direction::RIGHT)
+        {
             p.position.x += p.slideVelocity;
+            p.hitSensor.setPosition(sf::Vector2f{ p.position.x + 100, p.position.y - 50});
+        }
         else
+        {
             p.position.x -= p.slideVelocity;
+            p.hitSensor.setPosition(sf::Vector2f{p.position.x - 100, p.position.y - 50});
+        }
 
         p.slideVelocity -= p.slideDeceleration;
         if (p.slideVelocity < 0)
@@ -510,11 +520,11 @@ public:
         {
             if(p.facing == Direction::RIGHT)
             {
-                p.position.x += 1;
+                p.position.x += 3;
             }
             else
             {
-                p.position.x -= 1;
+                p.position.x -= 3;
             }
         }
 
@@ -641,6 +651,7 @@ public:
 
     void update(Player& p) override
     {
+
         if (p.animate(5, 238, 298, false))
         {
             p.changeState(p.slide);
@@ -785,12 +796,23 @@ public:
         {
             p.body.setTexture(p.dropKickRTex);
         }
+
+        p.hitSensor.setSize(sf::Vector2f{ 50, 50 });
     }
 
     void update(Player& p) override
     {
         p.animate(7, 238, 298, false);
 
+
+        if (p.facing == Direction::RIGHT)
+        {
+            p.hitSensor.setPosition(sf::Vector2f{ p.position.x + 100, p.position.y - 50 });
+        }
+        else
+        {
+            p.hitSensor.setPosition(sf::Vector2f{ p.position.x - 100, p.position.y - 50 });
+        }
 
         if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
         if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;

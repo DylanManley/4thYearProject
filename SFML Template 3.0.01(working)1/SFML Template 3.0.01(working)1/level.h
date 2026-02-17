@@ -37,4 +37,5 @@ private:
     sf::Texture hallway2;
     sf::Texture lampPost;
     sf::Texture railLampPost;
+    sf::Texture roofVents;
 };

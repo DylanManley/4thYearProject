@@ -139,6 +139,15 @@ void Game::update(sf::Time t_deltaTime)
 	case GameState::GAMEPLAY:
 		level.checkCollisions(player);
 		player.update();
+		enemy1.update();
+
+		if (player.hitSensor.getGlobalBounds().findIntersection(enemy1.collider.getGlobalBounds()))
+		{
+			if (player.attacking)
+			{
+				enemy1.takeDamage(5);
+			}
+		}
 
 		camera.setCenter({ player.body.getPosition().x, player.body.getPosition().y - 200 });
 		debugView.setCenter({ player.body.getPosition() });
@@ -172,10 +181,11 @@ void Game::render()
 		}
 		else
 		{
-			m_window.setView(debugView);
+			m_window.setView(camera);
 		}
 		m_window.draw(background);
 		level.render(m_window, seeDebug);
+		enemy1.render(m_window, seeDebug);
 
 		player.Render(m_window, seeDebug);
 		break;
@@ -246,8 +256,7 @@ void Game::setupSprites()
 	debugView.setSize({ 12800, 7200 });
 
 	player.setUp();
-
-
+	enemy1.setup(sf::Vector2f{ 1365, 1530 }, 20);
 	
 }
 
