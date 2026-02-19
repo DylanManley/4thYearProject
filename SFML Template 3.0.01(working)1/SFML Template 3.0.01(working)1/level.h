@@ -28,8 +28,12 @@ private:
     sf::Texture platformTex;
     sf::Texture houseWall;
     sf::Texture houseWindow;
+    sf::Texture houseWindow2;
     sf::Texture roofWall;
     sf::Texture roofWindow;
+    sf::Texture roofWindow2;
+    sf::Texture halfRoof;
+    sf::Texture crawlSpace;
 
     //background details
     sf::Texture railingTex;
@@ -38,4 +42,5 @@ private:
     sf::Texture lampPost;
     sf::Texture railLampPost;
     sf::Texture roofVents;
+    sf::Texture vent;
 };

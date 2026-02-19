@@ -23,6 +23,8 @@
 
 #include <iostream>
 #include "Game.h"
+#include <cstdlib>
+#include <ctime>
 
 /// <summary>
 /// main enrtry point
@@ -30,6 +32,8 @@
 /// <returns>success or failure</returns>
 int main()
 {
+	std::srand(std::time(nullptr));
+
 	Game game;
 	game.run();
 

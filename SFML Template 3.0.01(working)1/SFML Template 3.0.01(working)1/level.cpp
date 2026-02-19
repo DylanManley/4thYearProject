@@ -5,12 +5,12 @@ static int levelTemplate[Level::Height][Level::Width] =
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,2,2,3,2,3,3,2,2,0,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,2,2,3,2,3,3,2,2,4,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,2,2,3,2,2,3,2,2,2,3,2,2,3,2,0,0,0,0,2,2,3,3,2,3,2,2,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,2,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
     { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2,2,2,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,0,0,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,2,2,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,3,2,2,3,2,2,3,2,2,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -29,9 +29,9 @@ static int BackgroundTemplate[Level::Height][Level::Width] =
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 1,1,2,1,1,2,1,1,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,7,7,7,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
     { 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
@@ -45,15 +45,22 @@ void Level::setupTextures()
     platformTex.loadFromFile("ASSETS\\IMAGES\\Platform.png");
     houseWall.loadFromFile("ASSETS\\IMAGES\\brickWall.png");
     houseWindow.loadFromFile("ASSETS\\IMAGES\\brickWallWindow.png");
+    houseWindow2.loadFromFile("ASSETS\\IMAGES\\brickWallWindow2.png");
     roofWindow.loadFromFile("ASSETS\\IMAGES\\RoofWallWindow.png");
+    roofWindow2.loadFromFile("ASSETS\\IMAGES\\RoofWallWindow2.png");
     roofWall.loadFromFile("ASSETS\\IMAGES\\RoofWall.png");
+    halfRoof.loadFromFile("ASSETS\\IMAGES\\RoofWallSlab.png");
+    crawlSpace.loadFromFile("ASSETS\\IMAGES\\crawlspace.png");
 
+
+    //backgrounds
     railingTex.loadFromFile("ASSETS\\IMAGES\\Rail.png");
     lampPost.loadFromFile("ASSETS\\IMAGES\\lampPost.png");
     railLampPost.loadFromFile("ASSETS\\IMAGES\\railLampPost.png");
     hallway.loadFromFile("ASSETS\\IMAGES\\hallway.png");
     hallway2.loadFromFile("ASSETS\\IMAGES\\hallway2.png");
     roofVents.loadFromFile("ASSETS\\IMAGES\\roofVents.png");
+    vent.loadFromFile("ASSETS\\IMAGES\\vent.jpg");
 
     load();
 }
@@ -103,6 +110,12 @@ void Level::load()
                 sprite.setPosition(sf::Vector2f{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) });
                 backgroundSprites[y][x] = std::move(sprite);
             }
+            else if (backgroundData[y][x] == 7)
+            {
+                sf::Sprite sprite(vent);
+                sprite.setPosition(sf::Vector2f{ static_cast<float>(x * TileWidth), static_cast<float>(y * TileHeight) });
+                backgroundSprites[y][x] = std::move(sprite);
+            }
             else
             {
                 backgroundSprites[y][x].reset();
@@ -146,22 +159,50 @@ void Level::load()
             }
             else if (levelData[y][x] == 3)
             {
+                int lit = rand() % 2;
+
                 sf::Vector2f pos(x * TileWidth, y * TileHeight);
 
                 sf::Vector2f size(TileWidth, TileHeight);
 
                 if (y < 1)
                 {
-                    tiles[y][x].setup(roofWindow, pos, size);
+                    if (lit == 1)
+                        tiles[y][x].setup(roofWindow, pos, size);
+                    else
+                        tiles[y][x].setup(roofWindow2, pos, size);
+
                 }
                 else if (levelData[y - 1][x] == 0)
                 {
-                    tiles[y][x].setup(roofWindow, pos, size);
+                        if (lit == 1)
+                            tiles[y][x].setup(roofWindow, pos, size);
+                        else
+                            tiles[y][x].setup(roofWindow2, pos, size);
                 }
                 else
                 {
-                    tiles[y][x].setup(houseWindow, pos, size);
+                        if (lit == 1)
+                            tiles[y][x].setup(houseWindow, pos, size);
+                        else
+                            tiles[y][x].setup(houseWindow2, pos, size);
                 }
+            }
+            else if (levelData[y][x] == 4)
+            {
+                sf::Vector2f pos(x* TileWidth, y* TileHeight + (TileHeight/2));
+
+                sf::Vector2f size(TileWidth, TileHeight);
+
+                tiles[y][x].setup(halfRoof, pos, size);
+            }
+            else if (levelData[y][x] == 5)
+            {
+                sf::Vector2f pos(x * TileWidth, y * TileHeight);
+
+                sf::Vector2f size(TileWidth, TileHeight);
+
+                tiles[y][x].setup(crawlSpace, pos, size);
             }
         }
     }

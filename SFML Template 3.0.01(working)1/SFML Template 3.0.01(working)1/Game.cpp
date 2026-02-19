@@ -181,7 +181,7 @@ void Game::render()
 		}
 		else
 		{
-			m_window.setView(camera);
+			m_window.setView(debugView);
 		}
 		m_window.draw(background);
 		level.render(m_window, seeDebug);
