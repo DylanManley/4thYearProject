@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Entity.h"
 #include "StateMachine.h"
 
 
@@ -6,43 +6,43 @@
 class StateIdle : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.speed = 3;
-        if (p.facing == Direction::RIGHT)
+        e.speed = 3;
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.idleRightTex);
+            e.body.setTexture(e.idleRightTex);
         }
         else
         {
-            p.body.setTexture(p.idleLeftTex);
+            e.body.setTexture(e.idleLeftTex);
         }
 
-        p.hitSensor.setSize(sf::Vector2f{ 50 , 15 });
+        e.hitSensor.setSize(sf::Vector2f{ 50 , 15 });
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(20, 238, 298);
-        if (p.pressingRight || p.pressingLeft)
+        e.animate(20, 238, 298);
+        if (e.pressingRight || e.pressingLeft)
         {
-            if (!p.running)
+            if (!e.running)
             {
-                p.changeState(p.idleToWalk);
+                e.changeState(e.idleToWalk);
             }
             else
             {
-                p.changeState(p.run);
+                e.changeState(e.run);
             }
         }
 
-        if (p.crouching) {
-            p.changeState(p.idleToCrouch);
+        if (e.crouching) {
+            e.changeState(e.idleToCrouch);
         }
 
-        if (p.attacking)
+        if (e.attacking)
         {
-            p.changeState(p.punch);
+            e.changeState(e.punch);
         }
 
     }
@@ -52,60 +52,60 @@ public:
 class StateWalking : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.speed = 3;
+        e.speed = 3;
 
-        if (p.facing == Direction::RIGHT)
-            p.body.setTexture(p.walkRightTex);
+        if (e.facing == Direction::RIGHT)
+            e.body.setTexture(e.walkRightTex);
         else
-            p.body.setTexture(p.walkLeftTex);
+            e.body.setTexture(e.walkLeftTex);
 
-        p.currentFrame = 0;
+        e.currentFrame = 0;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(20, 238, 298);
+        e.animate(20, 238, 298);
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.walkRightTex);
-            p.position.x += p.speed;
+            e.body.setTexture(e.walkRightTex);
+            e.position.x += e.speed;
 
-            if (!p.pressingRight)
+            if (!e.pressingRight)
             {
-                p.changeState(p.idle);
+                e.changeState(e.idle);
             }
         }
         else
         {
-            p.body.setTexture(p.walkLeftTex);
-            p.position.x -= p.speed;
+            e.body.setTexture(e.walkLeftTex);
+            e.position.x -= e.speed;
 
-            if (!p.pressingLeft)
+            if (!e.pressingLeft)
             {
-                p.changeState(p.idle);
+                e.changeState(e.idle);
             }
         }
 
-        if (p.crouching) {
-            p.changeState(p.idleToCrouch);
+        if (e.crouching) {
+            e.changeState(e.idleToCrouch);
         }
 
-        if (p.running)
+        if (e.running)
         {
-            p.changeState(p.run);
+            e.changeState(e.run);
         }
 
-        if (!p.isGrounded)
+        if (!e.isGrounded)
         {
-            p.changeState(p.falling);
+            e.changeState(e.falling);
         }
 
-        if (p.attacking)
+        if (e.attacking)
         {
-            p.changeState(p.punch);
+            e.changeState(e.punch);
         }
     }
     
@@ -114,54 +114,54 @@ public:
 class StateRunning : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.speed = 15;
+        e.speed = 15;
 
-        p.currentFrame = 0;
-        if (p.facing == Direction::RIGHT)
-            p.body.setTexture(p.runRightTex);
+        e.currentFrame = 0;
+        if (e.facing == Direction::RIGHT)
+            e.body.setTexture(e.runRightTex);
         else
-            p.body.setTexture(p.runLeftTex);
+            e.body.setTexture(e.runLeftTex);
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(15, 238, 298);
+        e.animate(15, 238, 298);
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.runRightTex);
-            p.position.x += p.speed;
+            e.body.setTexture(e.runRightTex);
+            e.position.x += e.speed;
 
-            if (!p.pressingRight)
+            if (!e.pressingRight)
             {
-                p.changeState(p.idle);
+                e.changeState(e.idle);
             }
         }
         else
         {
-            p.body.setTexture(p.runLeftTex);
-            p.position.x -= p.speed;
+            e.body.setTexture(e.runLeftTex);
+            e.position.x -= e.speed;
 
-            if (!p.pressingLeft)
+            if (!e.pressingLeft)
             {
-                p.changeState(p.idle);
+                e.changeState(e.idle);
             }
         }
 
-        if (!p.running)
+        if (!e.running)
         {
-            p.changeState(p.walk);
+            e.changeState(e.walk);
         }
 
-        if (p.crouching) {
-            p.changeState(p.RunToSlide);
+        if (e.crouching) {
+            e.changeState(e.RunToSlide);
         }
 
-        if (p.attacking)
+        if (e.attacking)
         {
-            p.changeState(p.punch);
+            e.changeState(e.punch);
         }
     }
 };
@@ -170,49 +170,49 @@ public:
 class StateJumping : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.horizontalVelocity = p.speed;
+            e.horizontalVelocity = e.speed;
         }
         else
         {
-            p.horizontalVelocity = -p.speed;
+            e.horizontalVelocity = -e.speed;
         }
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.JumpRTex);
+            e.body.setTexture(e.JumpRTex);
         }
         else
         {
-            p.body.setTexture(p.JumpLTex);
+            e.body.setTexture(e.JumpLTex);
         }
-        p.currentFrame = 0;
+        e.currentFrame = 0;
 
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(4, 238, 298, false);
+        e.animate(4, 238, 298, false);
 
-        if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
-        if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;
+        if (e.pressingRight) e.horizontalVelocity += e.airAcceleration;
+        if (e.pressingLeft)  e.horizontalVelocity -= e.airAcceleration;
 
-        if (!p.pressingRight && !p.pressingLeft)
-            p.horizontalVelocity *= (1.f - p.airFriction);
+        if (!e.pressingRight && !e.pressingLeft)
+            e.horizontalVelocity *= (1.f - e.airFriction);
 
-        p.position.x += p.horizontalVelocity;
+        e.position.x += e.horizontalVelocity;
 
-        p.verticalVelocity += p.gravity;
-        p.position.y += p.verticalVelocity;
+        e.verticalVelocity += e.gravity;
+        e.position.y += e.verticalVelocity;
 
  
-        if (p.verticalVelocity > 0)
+        if (e.verticalVelocity > 0)
         {
-            p.currentFrame = 0;
-            p.changeState(p.falling);
+            e.currentFrame = 0;
+            e.changeState(e.falling);
         }
     }
 };
@@ -220,47 +220,47 @@ public:
 class StateFalling : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.FallRTex);
+            e.body.setTexture(e.FallRTex);
         }
         else
         {
-            p.body.setTexture(p.FallLTex);
+            e.body.setTexture(e.FallLTex);
         }
 
-        p.currentFrame = 0;
+        e.currentFrame = 0;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(3, 238, 298, true);
+        e.animate(3, 238, 298, true);
 
-        if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
-        if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;
+        if (e.pressingRight) e.horizontalVelocity += e.airAcceleration;
+        if (e.pressingLeft)  e.horizontalVelocity -= e.airAcceleration;
 
-        if (!p.pressingRight && !p.pressingLeft)
-            p.horizontalVelocity *= (1.f - p.airFriction);
+        if (!e.pressingRight && !e.pressingLeft)
+            e.horizontalVelocity *= (1.f - e.airFriction);
 
-        p.position.x += p.horizontalVelocity;
+        e.position.x += e.horizontalVelocity;
 
 
-        p.verticalVelocity += p.gravity;
-        p.position.y += p.verticalVelocity;
+        e.verticalVelocity += e.gravity;
+        e.position.y += e.verticalVelocity;
 
         // Landing check
-        if (p.isGrounded)
+        if (e.isGrounded)
         {
-            p.verticalVelocity = 0;
-            p.currentFrame = 0;
-            p.changeState(p.landing);
+            e.verticalVelocity = 0;
+            e.currentFrame = 0;
+            e.changeState(e.landing);
         }
 
-        if (p.attacking)
+        if (e.attacking)
         {
-            p.changeState(p.dropKick);
+            e.changeState(e.dropKick);
         }
     }
 };
@@ -268,34 +268,34 @@ public:
 class StateLanding : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.LandRTex);
+            e.body.setTexture(e.LandRTex);
         }
         else
         {
-            p.body.setTexture(p.LandLTex);
+            e.body.setTexture(e.LandLTex);
         }
-        p.currentFrame = 0;
+        e.currentFrame = 0;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        if (p.animate(4, 238, 298, false))
+        if (e.animate(4, 238, 298, false))
         {
-            p.horizontalVelocity = 0.f;
+            e.horizontalVelocity = 0.f;
 
-            if (p.pressingRight)
-                p.changeState(p.walk);
-            else if (p.pressingLeft)
-                p.changeState(p.walk);
+            if (e.pressingRight)
+                e.changeState(e.walk);
+            else if (e.pressingLeft)
+                e.changeState(e.walk);
             else
-                p.changeState(p.idle);
+                e.changeState(e.idle);
 
-            p.currentFrame = 0;
+            e.currentFrame = 0;
         }
     }
 };
@@ -304,22 +304,22 @@ public:
 class StateCrouchIdle : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.body.setTexture(p.crouchTex);
+        e.body.setTexture(e.crouchTex);
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(5, 238, 298);
-        if (p.pressingRight || p.pressingLeft)
+        e.animate(5, 238, 298);
+        if (e.pressingRight || e.pressingLeft)
         {
-            p.changeState(p.crouchWalk);
+            e.changeState(e.crouchWalk);
         }
 
-        if (p.crouching)
+        if (e.crouching)
         {
-            p.changeState(p.crouchToIdle);
+            e.changeState(e.crouchToIdle);
         }
     }
 };
@@ -327,43 +327,43 @@ public:
 class StateCrouchWalking : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
-            p.body.setTexture(p.cWalkRTex);
+        if (e.facing == Direction::RIGHT)
+            e.body.setTexture(e.cWalkRTex);
         else
-            p.body.setTexture(p.cWalkLTex);
+            e.body.setTexture(e.cWalkLTex);
 
-        p.currentFrame = 0;
+        e.currentFrame = 0;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(20, 238, 298);
+        e.animate(20, 238, 298);
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.cWalkRTex);
-            p.position.x += p.speed;
+            e.body.setTexture(e.cWalkRTex);
+            e.position.x += e.speed;
 
-            if (!p.pressingRight)
+            if (!e.pressingRight)
             {
-                p.changeState(p.crouchIdle);
+                e.changeState(e.crouchIdle);
             }
         }
         else
         {
-            p.body.setTexture(p.cWalkLTex);
-            p.position.x -= p.speed;
+            e.body.setTexture(e.cWalkLTex);
+            e.position.x -= e.speed;
 
-            if (!p.pressingLeft)
+            if (!e.pressingLeft)
             {
-                p.changeState(p.crouchIdle);
+                e.changeState(e.crouchIdle);
             }
         }
 
-        if (p.crouching) {
-            p.changeState(p.crouchToIdle);
+        if (e.crouching) {
+            e.changeState(e.crouchToIdle);
         }
     }
 };
@@ -371,41 +371,41 @@ public:
 class StateSlide : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
-            p.body.setTexture(p.slideRTex);
+        if (e.facing == Direction::RIGHT)
+            e.body.setTexture(e.slideRTex);
         else
-            p.body.setTexture(p.slideLTex);
+            e.body.setTexture(e.slideLTex);
 
-        p.currentFrame = 0;
-        p.slideVelocity = p.speed;
+        e.currentFrame = 0;
+        e.slideVelocity = e.speed;
 
-        p.hitSensor.setSize(sf::Vector2f{ 50, 50 });
+        e.hitSensor.setSize(sf::Vector2f{ 50, 50 });
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(3, 238, 298);
+        e.animate(3, 238, 298);
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.position.x += p.slideVelocity;
-            p.hitSensor.setPosition(sf::Vector2f{ p.position.x + 100, p.position.y - 50});
+            e.position.x += e.slideVelocity;
+            e.hitSensor.setPosition(sf::Vector2f{ e.position.x + 100, e.position.y - 50});
         }
         else
         {
-            p.position.x -= p.slideVelocity;
-            p.hitSensor.setPosition(sf::Vector2f{p.position.x - 100, p.position.y - 50});
+            e.position.x -= e.slideVelocity;
+            e.hitSensor.setPosition(sf::Vector2f{e.position.x - 100, e.position.y - 50});
         }
 
-        p.slideVelocity -= p.slideDeceleration;
-        if (p.slideVelocity < 0)
-            p.slideVelocity = 0;
+        e.slideVelocity -= e.slideDeceleration;
+        if (e.slideVelocity < 0)
+            e.slideVelocity = 0;
 
-        if (p.slideVelocity == 0 || !p.crouching && !p.attacking)
+        if (e.slideVelocity == 0 || !e.crouching && !e.attacking)
         {
-            p.changeState(p.SlideToRun);
+            e.changeState(e.SlideToRun);
         }
     }
 };
@@ -413,33 +413,33 @@ public:
 class StateWallSlide : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
-            p.body.setTexture(p.wallSlideRTex);
+        if (e.facing == Direction::RIGHT)
+            e.body.setTexture(e.wallSlideRTex);
         else
-            p.body.setTexture(p.wallSlideLTex);
+            e.body.setTexture(e.wallSlideLTex);
 
-        p.verticalVelocity = 0;
+        e.verticalVelocity = 0;
 
-        p.currentFrame = 0;
+        e.currentFrame = 0;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.verticalVelocity += (p.gravity * 0.2);
-        p.position.y += p.verticalVelocity;
+        e.verticalVelocity += (e.gravity * 0.2);
+        e.position.y += e.verticalVelocity;
 
-        p.animate(3, 238, 298);
+        e.animate(3, 238, 298);
 
-        if (p.isJumping)
+        if (e.isJumping)
         {
-            p.changeState(p.wallJump);
+            e.changeState(e.wallJump);
         }
 
-        if (p.isGrounded)
+        if (e.isGrounded)
         {
-            p.changeState(p.wallSlideEnd);
+            e.changeState(e.wallSlideEnd);
         }
     }
 };
@@ -447,47 +447,47 @@ public:
 class StateWallJump: public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.wallJumpLTex);
-            p.facing = Direction::LEFT;
+            e.body.setTexture(e.wallJumpLTex);
+            e.facing = Direction::LEFT;
         }
         else
         {
-            p.body.setTexture(p.wallJumpRTex);
-            p.facing = Direction::RIGHT;
+            e.body.setTexture(e.wallJumpRTex);
+            e.facing = Direction::RIGHT;
         }
 
-        p.currentFrame = 0;
+        e.currentFrame = 0;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
 
-        if (p.facing == Direction::LEFT)
+        if (e.facing == Direction::LEFT)
         {
-            p.horizontalVelocity -= 3;
+            e.horizontalVelocity -= 3;
         }
         else
         {
-            p.horizontalVelocity += 3;
+            e.horizontalVelocity += 3;
         }
 
-        p.verticalVelocity -= p.gravity + 1;
-        p.position.y += p.verticalVelocity;
+        e.verticalVelocity -= e.gravity + 1;
+        e.position.y += e.verticalVelocity;
 
-        p.position.y += p.verticalVelocity;
-        p.position.x += p.horizontalVelocity;
-
-
+        e.position.y += e.verticalVelocity;
+        e.position.x += e.horizontalVelocity;
 
 
-        if (p.animate(3, 238, 298, false))
+
+
+        if (e.animate(3, 238, 298, false))
         {
-            p.changeState(p.falling);
-            p.currentFrame = 0;
+            e.changeState(e.falling);
+            e.currentFrame = 0;
         }
     }
 };
@@ -495,43 +495,43 @@ public:
 class StateClimb : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.body.setTexture(p.climbRTex);
+            e.body.setTexture(e.climbRTex);
         }
         else
         {
-            p.body.setTexture(p.climbLTex);
+            e.body.setTexture(e.climbLTex);
         }
-        p.isGrounded = true;
+        e.isGrounded = true;
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
 
-        if (p.currentFrame < 5)
+        if (e.currentFrame < 5)
         {
-            p.position.y -= 14;
+            e.position.y -= 14;
         }
         
-        if (p.currentFrame <= 7)
+        if (e.currentFrame <= 7)
         {
-            if(p.facing == Direction::RIGHT)
+            if(e.facing == Direction::RIGHT)
             {
-                p.position.x += 3;
+                e.position.x += 3;
             }
             else
             {
-                p.position.x -= 3;
+                e.position.x -= 3;
             }
         }
 
-        if (p.animate(9, 238, 298, false))
+        if (e.animate(9, 238, 298, false))
         {
-            p.changeState(p.idle);
-            p.currentFrame = 0;
+            e.changeState(e.idle);
+            e.currentFrame = 0;
         }
     }
 };
@@ -542,25 +542,25 @@ public:
 class StateIdleToWalk : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.idleToWalkLTex);
+            e.body.setTexture(e.idleToWalkLTex);
         }
         else
         {
-            p.body.setTexture(p.idleToWalkRTex);
+            e.body.setTexture(e.idleToWalkRTex);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        if (p.animate(3, 238, 298, false))
+        if (e.animate(3, 238, 298, false))
         {
-            p.changeState(p.walk);
-            p.currentFrame = 0;
+            e.changeState(e.walk);
+            e.currentFrame = 0;
         }
     }
 };
@@ -568,19 +568,19 @@ public:
 class StateIdleToCrouch : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.collider.setScale({ 1, 0.6 });
-        p.currentFrame = 0;
-        p.body.setTexture(p.crouchDownTex);
+        e.collider.setScale({ 1, 0.6 });
+        e.currentFrame = 0;
+        e.body.setTexture(e.crouchDownTex);
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.speed = 1.5;
-        if (p.animate(5, 238, 298, false))
+        e.speed = 1.5;
+        if (e.animate(5, 238, 298, false))
         {
-            p.changeState(p.crouchIdle);
+            e.changeState(e.crouchIdle);
         }
     }
 };
@@ -588,19 +588,19 @@ public:
 class StateCrouchToIdle : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.collider.setScale({ 1, 1 });
-        p.currentFrame = 0;
-        p.body.setTexture(p.standUpTex);
+        e.collider.setScale({ 1, 1 });
+        e.currentFrame = 0;
+        e.body.setTexture(e.standUpTex);
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.speed = 3;
-        if (p.animate(5, 238, 298, false))
+        e.speed = 3;
+        if (e.animate(5, 238, 298, false))
         {
-            p.changeState(p.idle);
+            e.changeState(e.idle);
         }
     }
 };
@@ -608,26 +608,26 @@ public:
 class StateIdleToJump : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.JumpStartL);
+            e.body.setTexture(e.JumpStartL);
         }
         else
         {
-            p.body.setTexture(p.JumpStartR);
+            e.body.setTexture(e.JumpStartR);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        if (p.animate(3, 238, 298, false))
+        if (e.animate(3, 238, 298, false))
         {
-            p.verticalVelocity = p.jumpStrength;
-            p.changeState(p.jumping);
-            p.currentFrame = 0;
+            e.verticalVelocity = e.jumpStrength;
+            e.changeState(e.jumping);
+            e.currentFrame = 0;
         }
     }
 };
@@ -635,26 +635,26 @@ public:
 class StateRunToSlide : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.collider.setScale({ 2.2, 0.3 });
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.collider.setScale({ 2.2, 0.3 });
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.slideStartLTex);
+            e.body.setTexture(e.slideStartLTex);
         }
         else
         {
-            p.body.setTexture(p.slideStartRTex);
+            e.body.setTexture(e.slideStartRTex);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
 
-        if (p.animate(5, 238, 298, false))
+        if (e.animate(5, 238, 298, false))
         {
-            p.changeState(p.slide);
+            e.changeState(e.slide);
         }
     }
 
@@ -664,26 +664,26 @@ public:
 class StateSlideToRun : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.collider.setScale({ 1, 1 });
+        e.collider.setScale({ 1, 1 });
 
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.slideEndLTex);
+            e.body.setTexture(e.slideEndLTex);
         }
         else
         {
-            p.body.setTexture(p.slideEndRTex);
+            e.body.setTexture(e.slideEndRTex);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        if (p.animate(3, 238, 298, false))
+        if (e.animate(3, 238, 298, false))
         {
-            p.changeState(p.run);
+            e.changeState(e.run);
         }
     }
 
@@ -692,32 +692,32 @@ public:
 class StateWallSlideStart : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.WallSlideStartLTex);
+            e.body.setTexture(e.WallSlideStartLTex);
         }
         else
         {
-            p.body.setTexture(p.WallSlideStartRTex);
+            e.body.setTexture(e.WallSlideStartRTex);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.verticalVelocity += (p.gravity * 0.6);
-        p.position.y += p.verticalVelocity;
+        e.verticalVelocity += (e.gravity * 0.6);
+        e.position.y += e.verticalVelocity;
 
-        if (p.animate(3, 238, 298, false))
+        if (e.animate(3, 238, 298, false))
         {
-            p.changeState(p.wallSlide);
+            e.changeState(e.wallSlide);
         }
 
-        if (p.isGrounded)
+        if (e.isGrounded)
         {
-            p.changeState(p.wallSlideEnd);
+            e.changeState(e.wallSlideEnd);
         }
     }
 
@@ -726,29 +726,29 @@ public:
 class StateWallSlideEnd : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.WallSlideLEndTex);
+            e.body.setTexture(e.WallSlideLEndTex);
         }
         else
         {
-            p.body.setTexture(p.wallSlideREndTex);
+            e.body.setTexture(e.wallSlideREndTex);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        if (p.animate(3, 238, 298, false))
+        if (e.animate(3, 238, 298, false))
         {
-            p.changeState(p.idle);
+            e.changeState(e.idle);
         }
         
-        if (p.isGrounded)
+        if (e.isGrounded)
         {
-            p.changeState(p.idle);
+            e.changeState(e.idle);
         }
     }
 
@@ -759,24 +759,24 @@ public:
 class StatePunch : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.punchLTex);
+            e.body.setTexture(e.punchLTex);
         }
         else
         {
-            p.body.setTexture(p.punchRTex);
+            e.body.setTexture(e.punchRTex);
         }
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        if (p.animate(7, 238, 298, false))
+        if (e.animate(7, 238, 298, false))
         {
-            p.changeState(p.idle);
+            e.changeState(e.idle);
         }
     }
 };
@@ -784,51 +784,51 @@ public:
 class StateDropKick : public StateMachine
 {
 public:
-    void enter(Player& p) override
+    void enter(Entity& e) override
     {
-        p.collider.setScale({ 2.2, 0.3 });
-        p.currentFrame = 0;
-        if (p.facing == Direction::LEFT)
+        e.collider.setScale({ 2.2, 0.3 });
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
         {
-            p.body.setTexture(p.dropKickLTex);
+            e.body.setTexture(e.dropKickLTex);
         }
         else
         {
-            p.body.setTexture(p.dropKickRTex);
+            e.body.setTexture(e.dropKickRTex);
         }
 
-        p.hitSensor.setSize(sf::Vector2f{ 50, 50 });
+        e.hitSensor.setSize(sf::Vector2f{ 50, 50 });
     }
 
-    void update(Player& p) override
+    void update(Entity& e) override
     {
-        p.animate(7, 238, 298, false);
+        e.animate(7, 238, 298, false);
 
 
-        if (p.facing == Direction::RIGHT)
+        if (e.facing == Direction::RIGHT)
         {
-            p.hitSensor.setPosition(sf::Vector2f{ p.position.x + 100, p.position.y - 50 });
+            e.hitSensor.setPosition(sf::Vector2f{ e.position.x + 100, e.position.y - 50 });
         }
         else
         {
-            p.hitSensor.setPosition(sf::Vector2f{ p.position.x - 100, p.position.y - 50 });
+            e.hitSensor.setPosition(sf::Vector2f{ e.position.x - 100, e.position.y - 50 });
         }
 
-        if (p.pressingRight) p.horizontalVelocity += p.airAcceleration;
-        if (p.pressingLeft)  p.horizontalVelocity -= p.airAcceleration;
+        if (e.pressingRight) e.horizontalVelocity += e.airAcceleration;
+        if (e.pressingLeft)  e.horizontalVelocity -= e.airAcceleration;
 
-        if (!p.pressingRight && !p.pressingLeft)
-            p.horizontalVelocity *= (1.f - p.airFriction);
+        if (!e.pressingRight && !e.pressingLeft)
+            e.horizontalVelocity *= (1.f - e.airFriction);
 
-        p.position.x += p.horizontalVelocity;
+        e.position.x += e.horizontalVelocity;
 
 
-        p.verticalVelocity += (p.gravity /2) ;
-        p.position.y += p.verticalVelocity;
+        e.verticalVelocity += (e.gravity /2) ;
+        e.position.y += e.verticalVelocity;
     
-        if (p.isGrounded)
+        if (e.isGrounded)
         {
-            p.changeState(p.slide);
+            e.changeState(e.slide);
         }
     }
 };

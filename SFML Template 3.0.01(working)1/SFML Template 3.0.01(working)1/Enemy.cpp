@@ -1,21 +1,7 @@
 #include "Enemy.h"
 #include <iostream>
 
-void Enemy::setup(sf::Vector2f position, int health)
-{
-	collider.setPosition(position);
-	collider.setFillColor(sf::Color::Red);
-	collider.setSize(sf::Vector2f{ 100,250 });
-	collider.setOrigin({ 50.f, 250.f });
-}
 
-void Enemy::render(sf::RenderWindow& window, bool showDeug)
-{
-	if (!dead)
-	{
-		window.draw(collider);
-	}
-}
 
 void Enemy::takeDamage(int damage)
 {
@@ -38,9 +24,26 @@ void Enemy::takeDamage(int damage)
 
 void Enemy::update()
 {
-    if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 1.0f)
+    if (!isGrounded)
+    {
+        if (currentState != jumping &&
+            currentState != idleToJump &&
+            currentState != landing &&
+            currentState != wallSlideStart &&
+            currentState != wallSlide &&
+            currentState != wallJump &&
+            currentState != climb &&
+            currentState != dropKick)
+        {
+            collider.setScale({ 1, 1 });
+            changeState(falling);
+        }
+    }
+
+    if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 0.6f)
     {
         canTakeDamage = true;
     }
 
+    currentState->update(*this);
 }

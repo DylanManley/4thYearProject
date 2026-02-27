@@ -1,14 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include "Entity.h"
 
-class Enemy
+class Enemy : public  Entity
 {
 public:
-	sf::RectangleShape collider;
-
-	void setup(sf::Vector2f position, int health);
+	void update() override;
 	void takeDamage(int damage);
-	void update();
-	void render(sf::RenderWindow& window, bool showDeug);
 
 private:
 	int health = 20;

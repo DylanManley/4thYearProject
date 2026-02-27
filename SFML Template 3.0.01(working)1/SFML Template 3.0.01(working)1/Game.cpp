@@ -185,7 +185,7 @@ void Game::render()
 		}
 		m_window.draw(background);
 		level.render(m_window, seeDebug);
-		enemy1.render(m_window, seeDebug);
+		enemy1.Render(m_window, seeDebug);
 
 		player.Render(m_window, seeDebug);
 		break;
@@ -256,7 +256,7 @@ void Game::setupSprites()
 	debugView.setSize({ 12800, 7200 });
 
 	player.setUp();
-	enemy1.setup(sf::Vector2f{ 1365, 1530 }, 20);
+	enemy1.setUp();
 	
 }
 
