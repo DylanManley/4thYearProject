@@ -222,7 +222,6 @@ class StateFalling : public StateMachine
 public:
     void enter(Entity& e) override
     {
-        e.fallTimer.start();
         if (e.facing == Direction::RIGHT)
         {
             e.body.setTexture(e.FallRTex);
@@ -238,6 +237,7 @@ public:
     void update(Entity& e) override
     {
         e.animate(3, 238, 298, true);
+        e.fallTimer = e.fallTimer + 1;
 
         if (e.pressingRight) e.horizontalVelocity += e.airAcceleration;
         if (e.pressingLeft)  e.horizontalVelocity -= e.airAcceleration;
@@ -255,11 +255,6 @@ public:
         // Landing check
         if (e.isGrounded)
         {
-            if (e.fallTimer.getElapsedTime().asSeconds() < 3)
-            {
-
-            }
-
             e.verticalVelocity = 0;
             e.currentFrame = 0;
             e.changeState(e.landing);
@@ -277,7 +272,6 @@ class StateLanding : public StateMachine
 public:
     void enter(Entity& e) override
     {
-
         if (e.facing == Direction::RIGHT)
         {
             e.body.setTexture(e.LandRTex);
@@ -291,6 +285,13 @@ public:
 
     void update(Entity& e) override
     {
+
+        if (e.fallTimer >= e.fatalFall)
+        {
+            e.changeState(e.dead);
+        }
+        e.fallTimer = 0;
+
         if (e.animate(4, 238, 298, false))
         {
             e.horizontalVelocity = 0.f;
@@ -422,6 +423,7 @@ class StateWallSlide : public StateMachine
 public:
     void enter(Entity& e) override
     {
+        e.fallTimer = 0;
         if (e.facing == Direction::RIGHT)
             e.body.setTexture(e.wallSlideRTex);
         else
@@ -504,6 +506,8 @@ class StateClimb : public StateMachine
 public:
     void enter(Entity& e) override
     {
+        e.fallTimer = 0;
+
         if (e.facing == Direction::RIGHT)
         {
             e.body.setTexture(e.climbRTex);

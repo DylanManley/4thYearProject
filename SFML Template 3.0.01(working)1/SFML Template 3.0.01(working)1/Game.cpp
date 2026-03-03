@@ -149,6 +149,11 @@ void Game::update(sf::Time t_deltaTime)
 			}
 		}
 
+		if (player.isDead)
+		{
+			gameState = GameState::MENU;
+		}
+
 		camera.setCenter({ player.body.getPosition().x, player.body.getPosition().y - 200 });
 		debugView.setCenter({ player.body.getPosition() });
 		background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150 });

@@ -9,9 +9,9 @@ void Player::update()
     isJumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
     running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
     attacking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+    bool suicide = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P);
 
-    std::cout << "X pos: " << position.x << " " << "Y pos: " << position.y << std::endl;
-
+    std::cout << fallTimer << std::endl;
     body.setPosition(position);
     collider.setPosition(position);
 
@@ -78,11 +78,17 @@ void Player::update()
             currentState != wallSlide &&
             currentState != wallJump &&
             currentState != climb &&
-            currentState != dropKick)
+            currentState != dropKick &&
+            currentState != dead)
         {
             collider.setScale({ 1, 1 });
             changeState(falling);
         }
+    }
+
+    if (suicide)
+    {
+        changeState(dead);
     }
 
     currentState->update(*this);

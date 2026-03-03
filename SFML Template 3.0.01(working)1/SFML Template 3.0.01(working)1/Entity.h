@@ -130,7 +130,8 @@ public:
     bool animationFinished = false;
 
     sf::Clock clock;
-    sf::Clock fallTimer;
+    int fallTimer = 0;
+    int fatalFall = 60;
 
     float verticalVelocity = 0.f;
     float gravity = 0.5f;

@@ -8,7 +8,6 @@ public:
 	void takeDamage(int damage);
 
 private:
-	int health = 20;
 	bool canTakeDamage = true;
 	sf::Clock damageClock;
 };
