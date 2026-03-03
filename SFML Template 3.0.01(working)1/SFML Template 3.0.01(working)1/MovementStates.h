@@ -222,6 +222,7 @@ class StateFalling : public StateMachine
 public:
     void enter(Entity& e) override
     {
+        e.fallTimer.start();
         if (e.facing == Direction::RIGHT)
         {
             e.body.setTexture(e.FallRTex);
@@ -250,9 +251,15 @@ public:
         e.verticalVelocity += e.gravity;
         e.position.y += e.verticalVelocity;
 
+
         // Landing check
         if (e.isGrounded)
         {
+            if (e.fallTimer.getElapsedTime().asSeconds() < 3)
+            {
+
+            }
+
             e.verticalVelocity = 0;
             e.currentFrame = 0;
             e.changeState(e.landing);
@@ -829,6 +836,31 @@ public:
         if (e.isGrounded)
         {
             e.changeState(e.slide);
+        }
+    }
+};
+
+class StateDeath : public StateMachine
+{
+public:
+    void enter(Entity& e) override
+    {
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
+        {
+            e.body.setTexture(e.deathLTex);
+        }
+        else
+        {
+            e.body.setTexture(e.deathRTex);
+        }
+    }
+
+    void update(Entity& e) override
+    {
+        if (e.animate(25, 238, 298, false))
+        {
+            e.isDead = true;
         }
     }
 };

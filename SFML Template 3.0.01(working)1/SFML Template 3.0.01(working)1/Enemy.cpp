@@ -5,7 +5,7 @@
 
 void Enemy::takeDamage(int damage)
 {
-    if (!canTakeDamage || dead)
+    if (!canTakeDamage)
         return;
 
     health -= damage;
@@ -14,7 +14,7 @@ void Enemy::takeDamage(int damage)
     if (health <= 0)
     {
         health = 0;
-        dead = true;
+        isDead = true;
         std::cout << "THIS ENEMY IS DEAD" << std::endl;
     }
 

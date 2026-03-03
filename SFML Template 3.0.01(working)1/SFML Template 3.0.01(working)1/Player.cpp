@@ -1,4 +1,5 @@
 #include "player.h"
+#include <iostream>
 
 void Player::update()
 {
@@ -8,6 +9,8 @@ void Player::update()
     isJumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
     running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
     attacking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+
+    std::cout << "X pos: " << position.x << " " << "Y pos: " << position.y << std::endl;
 
     body.setPosition(position);
     collider.setPosition(position);

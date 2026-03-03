@@ -61,6 +61,7 @@ public:
     //Combat States
     StateMachine* punch;
     StateMachine* dropKick;
+    StateMachine* dead;
 
     StateMachine* currentState;
 
@@ -107,12 +108,13 @@ public:
     sf::Texture climbLTex;
     sf::Texture climbRTex;
 
-
     //Combat Textures
     sf::Texture punchRTex;
     sf::Texture punchLTex;
     sf::Texture dropKickLTex;
     sf::Texture dropKickRTex;
+    sf::Texture deathLTex;
+    sf::Texture deathRTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;
@@ -128,6 +130,7 @@ public:
     bool animationFinished = false;
 
     sf::Clock clock;
+    sf::Clock fallTimer;
 
     float verticalVelocity = 0.f;
     float gravity = 0.5f;
@@ -144,4 +147,5 @@ public:
     int health = 100;
     int damage = 5;
     sf::RectangleShape hitSensor;
+    bool isDead = false;
 };

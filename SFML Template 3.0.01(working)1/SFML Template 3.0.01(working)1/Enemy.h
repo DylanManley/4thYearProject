@@ -9,7 +9,6 @@ public:
 
 private:
 	int health = 20;
-	bool dead = false;
 	bool canTakeDamage = true;
 	sf::Clock damageClock;
 };

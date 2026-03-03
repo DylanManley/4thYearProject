@@ -110,6 +110,10 @@ void Entity::loadCombatTextures()
         std::cout << "Couldnt load drop kick Texture\n";
     if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\Player\\dropKickR.png"))
         std::cout << "Couldnt load drop kick Texture\n";
+    if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathL.png"))
+        std::cout << "Couldnt load drop kick Texture\n";
+    if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathR.png"))
+        std::cout << "Couldnt load drop kick Texture\n";
 }
 
 void Entity::setStates()
@@ -141,6 +145,7 @@ void Entity::setStates()
     //Combat States
     punch = new StatePunch();
     dropKick = new StateDropKick();
+    dead = new StateDeath();
 }
 
 void Entity::setUp()
@@ -150,7 +155,7 @@ void Entity::setUp()
     setStates();
     currentState = idle;
     idle->enter(*this);
-    position = sf::Vector2f{ 0.f, 600.f };
+    position = sf::Vector2f{ 300.f, 1530.f };
 
     body.setPosition(position);
     body.setOrigin({ 119, 298 });
