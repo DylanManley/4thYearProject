@@ -62,7 +62,6 @@ private:
 	Player player;
 	Level level;
 	Enemy enemy1;
-
 	GameState gameState = GameState::MENU;
 
 	sf::Texture titleScreenTex;

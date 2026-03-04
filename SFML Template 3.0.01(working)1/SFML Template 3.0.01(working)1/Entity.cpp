@@ -148,14 +148,14 @@ void Entity::setStates()
     dead = new StateDeath();
 }
 
-void Entity::setUp()
+void Entity::setUp(sf::Vector2f t_position)
 {
     loadMovementTextures();
     loadCombatTextures();
     setStates();
     currentState = idle;
     idle->enter(*this);
-    position = sf::Vector2f{ 300.f, 1530.f };
+    position = sf::Vector2f{t_position};
 
     body.setPosition(position);
     body.setOrigin({ 119, 298 });

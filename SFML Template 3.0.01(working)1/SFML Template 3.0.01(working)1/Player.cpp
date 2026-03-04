@@ -11,7 +11,7 @@ void Player::update()
     attacking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
     bool suicide = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P);
 
-    std::cout << fallTimer << std::endl;
+    std::cout << "Pos X: " << position.x << " Pos Y: " << position.y << std::endl;
     body.setPosition(position);
     collider.setPosition(position);
 

@@ -16,7 +16,7 @@ public:
     virtual void loadMovementTextures();
     virtual void loadCombatTextures();
     virtual void setStates();
-    virtual void setUp();
+    virtual void setUp(sf::Vector2f t_position);
 
     virtual bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
     virtual void changeState(StateMachine* newState);

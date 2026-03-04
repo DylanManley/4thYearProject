@@ -247,7 +247,7 @@ void Game::setupSprites()
 	titleOptions.setTexture(titleOptionsTex, true);
 	titleOptions.setScale(sf::Vector2f{ 0.5,0.5 });
 	titleOptions.setPosition(sf::Vector2f{ 70, 500 });
-	
+
 	if (!backgroundTex.loadFromFile(("ASSETS\\IMAGES\\temp_background.png")))
 	{
 		std::cout << "still wrong" << std::endl;
@@ -255,14 +255,15 @@ void Game::setupSprites()
 	background.setTexture(backgroundTex, true);
 	background.setPosition(sf::Vector2f{ 0, -200 });
 	background.setOrigin(sf::Vector2f{ 640, 853 });
-	background.setScale(sf::Vector2f{1.5,1.5});
+	background.setScale(sf::Vector2f{ 1.5,1.5 });
 
 	level.setupTextures();
 	camera.setSize({ 1280.f, 720.f });
 	debugView.setSize({ 12800, 7200 });
 
-	player.setUp();
-	enemy1.setUp();
+	player.setUp({300.f, 1530.f});
+	enemy1.setUp({ 300.f, 1530.f });
+
 	
 }
 

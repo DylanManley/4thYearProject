@@ -31,7 +31,9 @@ void Enemy::update(Entity& player)
     if (pressingLeft)
     {
         if (currentState != wallSlide &&
-            currentState != slide)
+            currentState != slide &&
+            currentState != jumping &&
+            currentState != falling)
         {
             !pressingRight;
             facing = Direction::LEFT;
@@ -41,7 +43,9 @@ void Enemy::update(Entity& player)
     if (pressingRight)
     {
         if (currentState != wallSlide &&
-            currentState != slide)
+            currentState != slide &&
+            currentState != jumping &&
+            currentState != falling)
         {
             !pressingLeft;
             facing = Direction::RIGHT;

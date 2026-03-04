@@ -508,7 +508,10 @@ class StateClimb : public StateMachine
 public:
     void enter(Entity& e) override
     {
-        e.fallTimer = 0;
+        if (!e.isDead)
+        {
+            e.fallTimer = 0;
+        }
 
         if (e.facing == Direction::RIGHT)
         {
