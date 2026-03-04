@@ -11,22 +11,22 @@ void Platform::setup(sf::Texture &texture, sf::Vector2f position, sf::Vector2f c
     collider.setPosition(position);
 }
 
-CollisionType Platform::isColliding(sf::RectangleShape& playerCol)
+CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)
 {
-    sf::FloatRect playerBounds = playerCol.getGlobalBounds();
+    sf::FloatRect EntityBounds = EntityCol.getGlobalBounds();
     sf::FloatRect platformBounds = collider.getGlobalBounds();
 
-    auto intersection = playerBounds.findIntersection(platformBounds);
+    auto intersection = EntityBounds.findIntersection(platformBounds);
     if (!intersection.has_value())
         return CollisionType::None;
 
-    // Player bounds
-    sf::Vector2f playPos = playerBounds.position;
-    sf::Vector2f playSize = playerBounds.size;
-    float playerTop = playPos.y;
-    float playerBottom = playPos.y + playSize.y;
-    float playerLeft = playPos.x;
-    float playerRight = playPos.x + playSize.x;
+    // Entity bounds
+    sf::Vector2f EntPos = EntityBounds.position;
+    sf::Vector2f EntSize = EntityBounds.size;
+    float EntityTop = EntPos.y;
+    float EntityBottom = EntPos.y + EntSize.y;
+    float EntityLeft = EntPos.x;
+    float EntityRight = EntPos.x + EntSize.x;
 
     // Platform bounds
     sf::Vector2f platPos = platformBounds.position;
@@ -37,10 +37,10 @@ CollisionType Platform::isColliding(sf::RectangleShape& playerCol)
     float platformRight = platPos.x + platSize.x;
 
     // collision distances
-    float collideTop = playerBottom - platformTop;
-    float collideBottom = platformBottom - playerTop;
-    float collideLeft = playerRight - platformLeft;
-    float collideRight = platformRight - playerLeft;
+    float collideTop = EntityBottom - platformTop;
+    float collideBottom = platformBottom - EntityTop;
+    float collideLeft = EntityRight - platformLeft;
+    float collideRight = platformRight - EntityLeft;
 
     float overlapX = std::min(collideLeft, collideRight);
     float overlapY = std::min(collideTop, collideBottom);

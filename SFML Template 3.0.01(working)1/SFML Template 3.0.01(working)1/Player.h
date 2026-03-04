@@ -6,5 +6,5 @@
 class Player : public Entity
 {
 public:
-	void update() override;
+	void update();
 };

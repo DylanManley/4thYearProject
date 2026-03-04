@@ -138,8 +138,9 @@ void Game::update(sf::Time t_deltaTime)
 		break;
 	case GameState::GAMEPLAY:
 		level.checkCollisions(player);
+		level.checkCollisions(enemy1);
 		player.update();
-		enemy1.update();
+		enemy1.update(player);
 
 		if (player.hitSensor.getGlobalBounds().findIntersection(enemy1.collider.getGlobalBounds()))
 		{

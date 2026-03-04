@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Enemy.h"
 #include "StateMachine.h"
 
 
@@ -456,6 +457,7 @@ public:
 class StateWallJump: public StateMachine
 {
 public:
+
     void enter(Entity& e) override
     {
         if (e.facing == Direction::RIGHT)

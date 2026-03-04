@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Platform.h"
-#include "Player.h"
+#include "Entity.h"
 
 class Level
 {
@@ -15,8 +15,8 @@ public:
     void setupTextures();
     void load();
     void render(sf::RenderWindow& window, bool debug);
-    void checkCollisions(Player& player);
-    void handleCollision(Player& player, Platform& platform);
+    void checkCollisions(Entity& entity);
+    void handleCollision(Entity& entity, Platform& platform);
 
 private:
     Platform tiles[Height][Width];

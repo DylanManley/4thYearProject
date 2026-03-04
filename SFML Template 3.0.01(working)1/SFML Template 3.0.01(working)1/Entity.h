@@ -17,7 +17,6 @@ public:
     virtual void loadCombatTextures();
     virtual void setStates();
     virtual void setUp();
-    virtual void update() = 0;
 
     virtual bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
     virtual void changeState(StateMachine* newState);
@@ -131,7 +130,7 @@ public:
 
     sf::Clock clock;
     int fallTimer = 0;
-    int fatalFall = 60;
+    int fatalFall = 73;
 
     float verticalVelocity = 0.f;
     float gravity = 0.5f;

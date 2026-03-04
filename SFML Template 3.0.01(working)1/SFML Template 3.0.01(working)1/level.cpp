@@ -233,21 +233,21 @@ void Level::render(sf::RenderWindow& window, bool debug)
     }
 }
 
-void Level::checkCollisions(Player& player)
+void Level::checkCollisions(Entity& entity)
 {
-    sf::Vector2f playerPos = player.collider.getPosition();
+    sf::Vector2f entityPos = entity.collider.getPosition();
 
-    int tileX = static_cast<int>(playerPos.x / TileWidth);
-    int tileY = static_cast<int>(playerPos.y / TileHeight);
+    int tileX = static_cast<int>(entityPos.x / TileWidth);
+    int tileY = static_cast<int>(entityPos.y / TileHeight);
 
     tileX = std::clamp(tileX, 0, Width - 1);
     tileY = std::clamp(tileY, 0, Height - 1);
 
     bool onGround = false;
-    sf::FloatRect playerBounds = player.collider.getGlobalBounds();
-    float playerBottom = playerBounds.position.y + playerBounds.size.y;
+    sf::FloatRect entityBounds = entity.collider.getGlobalBounds();
+    float entityBottom = entityBounds.position.y + entityBounds.size.y;
 
-    // Check tiles around player
+    // Check tiles around entity
     for (int y = tileY - 1; y <= tileY + 1; ++y)
     {
         if (y < 0 || y >= Height) continue;
@@ -260,81 +260,81 @@ void Level::checkCollisions(Player& player)
                 sf::FloatRect platformBounds = tiles[y][x].collider.getGlobalBounds();
                 float platformTop = platformBounds.position.y;
 
-                float distanceToTop = playerBottom - platformTop;
+                float distanceToTop = entityBottom - platformTop;
 
                 if (distanceToTop >= -5.0f && distanceToTop <= 5.0f)
                 {
-                    float playerLeft = playerBounds.position.x;
-                    float playerRight = playerBounds.position.x + playerBounds.size.x;
+                    float entityLeft = entityBounds.position.x;
+                    float entityRight = entityBounds.position.x + entityBounds.size.x;
                     float platformLeft = platformBounds.position.x;
                     float platformRight = platformBounds.position.x + platformBounds.size.x;
 
-                    if (playerRight > platformLeft && playerLeft < platformRight)
+                    if (entityRight > platformLeft && entityLeft < platformRight)
                     {
                         onGround = true;
                     }
                 }
 
-                handleCollision(player, tiles[y][x]);
+                handleCollision(entity, tiles[y][x]);
             }
         }
     }
 
-    player.isGrounded = onGround;
+    entity.isGrounded = onGround;
 }
 
-void Level::handleCollision(Player& player, Platform& platform)
+void Level::handleCollision(Entity& entity, Platform& platform)
 {
-    CollisionType col = platform.isColliding(player.collider);
+    CollisionType col = platform.isColliding(entity.collider);
     sf::FloatRect platformBounds = platform.collider.getGlobalBounds();
-    sf::FloatRect playerBounds = player.collider.getGlobalBounds();
+    sf::FloatRect entityBounds = entity.collider.getGlobalBounds();
 
     float platformTop = platformBounds.position.y;
-    float playerBottom = playerBounds.position.y + playerBounds.size.y;
-    float playerTop = playerBounds.position.y;
+    float entityBottom = entityBounds.position.y + entityBounds.size.y;
+    float entityTop = entityBounds.position.y;
 
     switch (col)
     {
     case CollisionType::Top:
-        player.isGrounded = true;
-        player.verticalVelocity = 0.f;
-        player.position.y = platformTop;
+        entity.isGrounded = true;
+        entity.verticalVelocity = 0.f;
+        entity.position.y = platformTop;
 
-        if (player.currentState == player.climb)
+        if (entity.currentState == entity.climb)
             break;
 
-        if (player.currentState == player.wallSlide && !player.isGrounded)
+        if (entity.currentState == entity.wallSlide && !entity.isGrounded)
             break;
 
         break;
 
     case CollisionType::Left:
 
-        if (player.currentState == player.climb || player.currentState == player.wallSlide)
+        if (entity.currentState == entity.climb || entity.currentState == entity.wallSlide)
             break;
 
-        if (player.facing == Direction::RIGHT)
+        if (entity.facing == Direction::RIGHT)
         {
             float platformLeft = platformBounds.position.x;
-            float playerWidth = playerBounds.size.x;
-            player.position.x = platformLeft - (playerWidth / 2.0f);
+            float entityWidth = entityBounds.size.x;
+            entity.position.x = platformLeft - (entityWidth / 2.0f);
 
 
-            player.speed = 0.f;
-            player.horizontalVelocity = 0.f;
-            player.slideVelocity = 0.f;
+            entity.speed = 0.f;
+            entity.horizontalVelocity = 0.f;
+            entity.slideVelocity = 0.f;
 
-            if (player.currentState == player.falling)
+            if (entity.currentState == entity.falling)
             {
-                if (player.headSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
+                if (entity.headSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
                 {
-                    player.changeState(player.wallSlide);
+                    entity.changeState(entity.wallSlide);
                     break;
                 }
                 else
                 {
-                    player.position.y = platformTop + playerBounds.size.y;
-                    player.changeState(player.climb);
+                    entity.position.y = platformTop + entityBounds.size.y;
+                    entity.changeState(entity.climb);
                     break;
                 }
             }
@@ -343,30 +343,30 @@ void Level::handleCollision(Player& player, Platform& platform)
 
     case CollisionType::Right:
 
-        if (player.currentState == player.climb || player.currentState == player.wallSlide && player.isGrounded)
+        if (entity.currentState == entity.climb || entity.currentState == entity.wallSlide && entity.isGrounded)
             break;
 
-        if (player.facing == Direction::LEFT)
+        if (entity.facing == Direction::LEFT)
         {
-            player.speed = 0.f;
-            player.horizontalVelocity = 0.f;
-            player.slideVelocity = 0.f;
+            entity.speed = 0.f;
+            entity.horizontalVelocity = 0.f;
+            entity.slideVelocity = 0.f;
 
             float platformRight = platformBounds.position.x + platformBounds.size.x;
-            float playerWidth = playerBounds.size.x;
-            player.position.x = platformRight + (playerWidth / 2.0f);
+            float entityWidth = entityBounds.size.x;
+            entity.position.x = platformRight + (entityWidth / 2.0f);
 
-            if (player.currentState == player.falling)
+            if (entity.currentState == entity.falling)
             {
-                if (player.headSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
+                if (entity.headSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
                 {
-                    player.changeState(player.wallSlide);
+                    entity.changeState(entity.wallSlide);
                     break;
                 }
                 else
                 {
-                    player.position.y = platformTop + playerBounds.size.y;
-                    player.changeState(player.climb);
+                    entity.position.y = platformTop + entityBounds.size.y;
+                    entity.changeState(entity.climb);
                     break;
                 }
             }
@@ -374,19 +374,19 @@ void Level::handleCollision(Player& player, Platform& platform)
         break;
 
     case CollisionType::Bottom:
-        if (player.currentState == player.wallSlide && !player.isGrounded)
+        if (entity.currentState == entity.wallSlide && !entity.isGrounded)
             break;
 
-        if (player.isGrounded)
+        if (entity.isGrounded)
         {
-            player.crouching = true;
-            player.changeState(player.idleToCrouch);
+            entity.crouching = true;
+            entity.changeState(entity.idleToCrouch);
         }
         else
         {
-            player.verticalVelocity = 0;
-            player.verticalVelocity += player.gravity;
-            player.changeState(player.falling);
+            entity.verticalVelocity = 0;
+            entity.verticalVelocity += entity.gravity;
+            entity.changeState(entity.falling);
         }
         break;
 

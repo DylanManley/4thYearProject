@@ -17,14 +17,22 @@ void Player::update()
 
     if (pressingLeft)
     {
-        !pressingRight;
-        facing = Direction::LEFT;
+        if (currentState != wallSlide &&
+            currentState != slide)
+        {
+            !pressingRight;
+            facing = Direction::LEFT;
+        }
     }
 
     if (pressingRight)
     {
-        !pressingLeft;
-        facing = Direction::RIGHT;
+        if (currentState != wallSlide &&
+            currentState != slide)
+        {
+            !pressingLeft;
+            facing = Direction::RIGHT;
+        }
     }
 
     if (facing == Direction::LEFT)
