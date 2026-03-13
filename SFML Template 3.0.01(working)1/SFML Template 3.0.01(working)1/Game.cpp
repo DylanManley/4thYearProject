@@ -32,7 +32,7 @@ Game::Game() :
 /// </summary>
 Game::~Game()
 {
-}
+ }
 
 
 /// <summary>
@@ -146,7 +146,7 @@ void Game::update(sf::Time t_deltaTime)
 		{
 			if (player.attacking)
 			{
-				enemy1.takeDamage(5);
+				enemy1.takeDamage(20);
 			}
 		}
 

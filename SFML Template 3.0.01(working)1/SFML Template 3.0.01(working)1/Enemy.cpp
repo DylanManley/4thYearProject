@@ -16,7 +16,7 @@ void Enemy::takeDamage(int damage)
         if (health <= 0)
         {
             health = 0;
-            isDead = true;
+            changeState(dead);
             std::cout << "THIS ENEMY IS DEAD" << std::endl;
         }
 
@@ -27,6 +27,8 @@ void Enemy::takeDamage(int damage)
 
 void Enemy::update(Entity& player)
 {
+    float xDistance = player.position.x - position.x;
+
     if (!isDead)
     {
         body.setPosition(position);
@@ -98,14 +100,38 @@ void Enemy::update(Entity& player)
 
         if (player.position.x > position.x)
         {
-            pressingLeft = false;
-            pressingRight = true;
+            if (xDistance < 100 && isGrounded)
+            {
+                attacking = true;
+            }
+            else
+            {
+                attacking = false;
+                pressingLeft = false;
+                pressingRight = true;
+            }
         }
 
         if (player.position.x < position.x)
         {
-            pressingRight = false;
-            pressingLeft = true;
+            if (xDistance > -100 && isGrounded)
+            {
+                attacking = true;
+            }
+            else
+            {
+                attacking = false;
+                pressingRight = false;
+                pressingLeft = true;
+            }
+        }
+
+        if (!isGrounded)
+        {
+            if (player.position.y > position.y + 250 && xDistance > -400 || player.position.y > position.y + 250 && xDistance < 400)
+            {
+                attacking = true;
+            }
         }
 
         if (player.position.y < position.y)
