@@ -32,7 +32,7 @@ Game::Game() :
 /// </summary>
 Game::~Game()
 {
- }
+}
 
 
 /// <summary>

@@ -11,6 +11,7 @@ void Player::update()
         isJumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space);
         running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
         attacking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+        blocking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
         bool suicide = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P);
 
         std::cout << "Pos X: " << position.x << " Pos Y: " << position.y << std::endl;

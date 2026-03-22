@@ -46,6 +46,11 @@ public:
             e.changeState(e.punch);
         }
 
+        if (e.blocking)
+        {
+            e.changeState(e.block);
+        }
+
     }
 };
 
@@ -899,6 +904,37 @@ public:
         if (e.animate(25, 238, 298, false))
         {
             e.isDead = true;
+        }
+    }
+};
+
+class StateBlocking : public StateMachine
+{
+public:
+    void enter(Entity& e) override
+    {
+        e.canTakeDamage = false;
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
+        {
+            e.body.setTexture(e.blockLTex);
+        }
+        else
+        {
+            e.body.setTexture(e.blockRTex);
+        }
+    }
+
+    void update(Entity& e) override
+    {
+        e.canTakeDamage = false;
+        e.attacking = false;
+        e.animate(4, 238, 298, false);
+
+        if (!e.blocking)
+        {
+            e.canTakeDamage = true;
+            e.changeState(e.idle);
         }
     }
 };

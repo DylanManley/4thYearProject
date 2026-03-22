@@ -154,11 +154,11 @@ void Enemy::update(Entity& player)
         }
 
         if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 0.6f)
-        {
-            canTakeDamage = true;
-            damageClock.stop();
-            damageClock.reset();
-        }
+    {
+        canTakeDamage = true;
+        damageClock.stop();
+        damageClock.reset();
+    }
 
         currentState->update(*this);
     }

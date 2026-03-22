@@ -124,12 +124,17 @@ void Entity::loadCombatTextures()
     {
         std::cout << "Couldn't load damage texture\n";
     }
+     //block
+    if (!blockLTex.loadFromFile("ASSETS\\IMAGES\\Player\\BlockL.png"))
+        std::cout << "Couldnt load block Texture\n";
+    if (!blockRTex.loadFromFile("ASSETS\\IMAGES\\Player\\BlockR.png"))
+        std::cout << "Couldnt load drop block Texture\n";
 
     //death
     if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathL.png"))
-        std::cout << "Couldnt load drop kick Texture\n";
+        std::cout << "Couldnt load death Texture\n";
     if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathR.png"))
-        std::cout << "Couldnt load drop kick Texture\n";
+        std::cout << "Couldnt load death Texture\n";
 }
 
 void Entity::setStates()
@@ -160,6 +165,7 @@ void Entity::setStates()
 
     //Combat States
     punch = new StatePunch();
+    block = new StateBlocking();
     dropKick = new StateDropKick();
     damageState = new SateDamage();
     dead = new StateDeath();

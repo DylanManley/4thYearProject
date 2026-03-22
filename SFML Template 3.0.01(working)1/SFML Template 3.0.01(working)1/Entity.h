@@ -32,6 +32,7 @@ public:
     bool justJumped = false;
     bool isGrounded = false;
     bool attacking = false;
+    bool blocking = false;
     bool canTakeDamage = true;
     virtual void Render(sf::RenderWindow& m_window, bool m_debug);
 
@@ -64,6 +65,7 @@ public:
     StateMachine* dropKick;
     StateMachine* damageState;
     StateMachine* dead;
+    StateMachine* block;
 
     StateMachine* currentState;
 
@@ -119,6 +121,8 @@ public:
     sf::Texture deathRTex;
     sf::Texture dmgLTex;
     sf::Texture dmgRTex;
+    sf::Texture blockLTex;
+    sf::Texture blockRTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;
