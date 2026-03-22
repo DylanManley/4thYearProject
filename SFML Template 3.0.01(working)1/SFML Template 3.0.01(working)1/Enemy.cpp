@@ -10,6 +10,7 @@ void Enemy::takeDamage(int damage)
         if (!canTakeDamage)
             return;
 
+        changeState(damageState);
         health -= damage;
         std::cout << damage << std::endl;
 

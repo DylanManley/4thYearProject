@@ -849,6 +849,31 @@ public:
     }
 };
 
+class SateDamage : public StateMachine
+{
+    void enter(Entity& e) override
+    {
+        e.currentFrame = 0;
+        if (e.facing == Direction::LEFT)
+        {
+            e.body.setTexture(e.dmgLTex);
+        }
+        else
+        {
+            e.body.setTexture(e.dmgRTex);
+        }
+            
+    }
+
+    void update(Entity& e)
+    {
+        if (e.animate(8, 238, 298, false))
+        {
+            e.changeState(e.idle);
+        }
+    }
+};
+
 class StateDeath : public StateMachine
 {
 public:

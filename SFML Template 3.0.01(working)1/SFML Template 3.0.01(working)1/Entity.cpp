@@ -102,14 +102,30 @@ void Entity::loadMovementTextures()
 
 void Entity::loadCombatTextures()
 {
+    //punch
     if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\Player\\punchL.png"))
         std::cout << "Couldnt load puch Texture\n";
     if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\Player\\punchR.png"))
         std::cout << "Couldnt load punch Texture\n";
+
+    //dropkick
     if (!dropKickLTex.loadFromFile("ASSETS\\IMAGES\\Player\\dropKickL.png"))
         std::cout << "Couldnt load drop kick Texture\n";
     if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\Player\\dropKickR.png"))
         std::cout << "Couldnt load drop kick Texture\n";
+
+    //take damage
+    if (!dmgLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\dmgL.png"))
+    {
+        std::cout << "Couldn't load damage texture\n";
+    }
+
+    if (!dmgRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\dmgR.png"))
+    {
+        std::cout << "Couldn't load damage texture\n";
+    }
+
+    //death
     if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathL.png"))
         std::cout << "Couldnt load drop kick Texture\n";
     if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathR.png"))
@@ -145,6 +161,7 @@ void Entity::setStates()
     //Combat States
     punch = new StatePunch();
     dropKick = new StateDropKick();
+    damageState = new SateDamage();
     dead = new StateDeath();
 }
 

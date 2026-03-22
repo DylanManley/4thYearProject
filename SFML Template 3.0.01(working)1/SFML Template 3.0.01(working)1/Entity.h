@@ -60,6 +60,7 @@ public:
     //Combat States
     StateMachine* punch;
     StateMachine* dropKick;
+    StateMachine* damageState;
     StateMachine* dead;
 
     StateMachine* currentState;
@@ -114,6 +115,8 @@ public:
     sf::Texture dropKickRTex;
     sf::Texture deathLTex;
     sf::Texture deathRTex;
+    sf::Texture dmgLTex;
+    sf::Texture dmgRTex;
 
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;
