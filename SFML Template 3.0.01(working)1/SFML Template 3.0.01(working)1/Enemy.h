@@ -13,5 +13,7 @@ public:
 
 private:
 	AI_STATE aiState = AI_STATE::PATROL;
+	sf::Clock patrolClock;
+	bool clockRunning = false;
 };
 

@@ -32,7 +32,7 @@ Game::Game() :
 /// </summary>
 Game::~Game()
 {
-}
+ }
 
 
 /// <summary>
@@ -270,7 +270,7 @@ void Game::setupSprites()
 	debugView.setSize({ 12800, 7200 });
 
 	player.setUp({300.f, 1530.f});
-	enemy1.setUp({ 300.f, 1530.f });
+	enemy1.setUp({ 3950.f, 1530.f });
 
 	
 }

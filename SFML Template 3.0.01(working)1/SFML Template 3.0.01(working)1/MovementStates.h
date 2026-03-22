@@ -874,6 +874,14 @@ class SateDamage : public StateMachine
     void update(Entity& e)
     {
         e.attacking = false;
+        if (e.facing == Direction::LEFT)
+        {
+            e.position.x = e.position.x + 1;
+        }
+        else
+        {
+            e.position.x = e.position.x - 1;
+        }
         if (e.animate(8, 238, 298, false))
         {
             e.changeState(e.idle);

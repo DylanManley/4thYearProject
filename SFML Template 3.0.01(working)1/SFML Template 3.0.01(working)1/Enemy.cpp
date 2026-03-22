@@ -6,75 +6,136 @@ void Enemy::update(Entity& player)
 {
     float xDistance = player.position.x - position.x;
 
-    if (!isDead)
+    if (isDead)
     {
-        body.setPosition(position);
-        collider.setPosition(position);
+        return;
+    }
+    
+    body.setPosition(position);
+    collider.setPosition(position);
 
 
-        if (pressingLeft)
+     if (pressingLeft)
+     {
+        if (currentState != wallSlide &&
+            currentState != slide &&
+            currentState != jumping &&
+            currentState != falling &&
+            currentState != wallJump &&
+            currentState != climb)
         {
-            if (currentState != wallSlide &&
-                currentState != slide &&
-                currentState != jumping &&
-                currentState != falling &&
-                currentState != wallJump &&
-                currentState != climb)
+            facing = Direction::LEFT;
+        }
+     }
+
+    if (pressingRight)
+    {
+        if (currentState != wallSlide &&
+            currentState != slide &&
+            currentState != jumping &&
+            currentState != falling &&
+            currentState != wallJump &&
+            currentState != climb)
+        {
+            facing = Direction::RIGHT;
+        }
+    }
+
+    if (facing == Direction::LEFT)
+    {
+        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
+
+        if (currentState != slide && currentState != dropKick)
+        {
+            hitSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 200 });
+        }
+    }
+    else
+    {
+        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
+
+        if (currentState != slide && currentState != dropKick)
+        {                
+            hitSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 200 });
+        }
+    }
+
+
+    if (currentState == walk || currentState == run)
+    {
+        verticalVelocity = jumpStrength;
+        if (isJumping) {
+            if (currentState == wallSlide)
             {
-                !pressingRight;
-                facing = Direction::LEFT;
+                changeState(wallJump);
             }
-        }
-
-        if (pressingRight)
-        {
-            if (currentState != wallSlide &&
-                currentState != slide &&
-                currentState != jumping &&
-                currentState != falling &&
-                currentState != wallJump &&
-                currentState != climb)
+            else
             {
-                !pressingLeft;
-                facing = Direction::RIGHT;
+                changeState(jumping);
             }
         }
+    }
 
-        if (facing == Direction::LEFT)
+    if (!isGrounded)
+    {
+        if (currentState != jumping &&
+            currentState != idleToJump &&
+            currentState != landing &&
+            currentState != wallSlideStart &&
+            currentState != wallSlide &&
+            currentState != wallJump &&
+            currentState != climb &&
+            currentState != dropKick)
         {
-            headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
+            collider.setScale({ 1, 1 });
+            changeState(falling);
+        }
+    }
 
-            if (currentState != slide && currentState != dropKick)
+    if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 0.6f)
+    {
+        canTakeDamage = true;
+        damageClock.stop();
+        damageClock.reset();
+    }
+
+    switch (aiState)
+    {
+    case AI_STATE::PATROL:
+
+        if (!clockRunning)
+        {
+            patrolClock.start();
+            pressingLeft = true;
+            clockRunning = true;
+        }
+
+        if (patrolClock.getElapsedTime().asSeconds() >= 2.0f)
+        {
+            pressingLeft = false;
+            pressingRight = false;
+        }
+
+        if (patrolClock.getElapsedTime().asSeconds() >= 3.5f)
+        {
+            if (facing == Direction::LEFT)
             {
-                hitSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 200 });
+                pressingRight = true;
             }
-        }
-        else
-        {
-            headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
-
-            if (currentState != slide && currentState != dropKick)
+            else
             {
-                hitSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 200 });
+                pressingLeft = true;
             }
+            patrolClock.restart();
         }
 
-
-        if (currentState == walk || currentState == run)
+        if (abs(xDistance) < 200)
         {
-            verticalVelocity = jumpStrength;
-            if (isJumping) {
-                if (currentState == wallSlide)
-                {
-                    changeState(wallJump);
-                }
-                else
-                {
-                    changeState(jumping);
-                }
-            }
+            aiState = AI_STATE::CHASE;
+            patrolClock.stop();
         }
-
+        break;
+    case AI_STATE::CHASE:
         if (player.position.x > position.x)
         {
             if (xDistance < 100 && isGrounded)
@@ -136,30 +197,10 @@ void Enemy::update(Entity& player)
         {
             crouching = false;
         }
-
-        if (!isGrounded)
-        {
-            if (currentState != jumping &&
-                currentState != idleToJump &&
-                currentState != landing &&
-                currentState != wallSlideStart &&
-                currentState != wallSlide &&
-                currentState != wallJump &&
-                currentState != climb &&
-                currentState != dropKick)
-            {
-                collider.setScale({ 1, 1 });
-                changeState(falling);
-            }
-        }
-
-        if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 0.6f)
-    {
-        canTakeDamage = true;
-        damageClock.stop();
-        damageClock.reset();
+        break;
+    default:
+        break;
     }
 
-        currentState->update(*this);
-    }
+    currentState->update(*this);
 }
