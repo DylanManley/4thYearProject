@@ -2,30 +2,6 @@
 #include <iostream>
 
 
-
-void Enemy::takeDamage(int damage)
-{
-    if (!isDead)
-    {
-        if (!canTakeDamage)
-            return;
-
-        changeState(damageState);
-        health -= damage;
-        std::cout << damage << std::endl;
-
-        if (health <= 0)
-        {
-            health = 0;
-            changeState(dead);
-            std::cout << "THIS ENEMY IS DEAD" << std::endl;
-        }
-
-        canTakeDamage = false;
-        damageClock.restart();
-    }
-}
-
 void Enemy::update(Entity& player)
 {
     float xDistance = player.position.x - position.x;
@@ -180,6 +156,8 @@ void Enemy::update(Entity& player)
         if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 0.6f)
         {
             canTakeDamage = true;
+            damageClock.stop();
+            damageClock.reset();
         }
 
         currentState->update(*this);

@@ -17,6 +17,7 @@ public:
     virtual void loadCombatTextures();
     virtual void setStates();
     virtual void setUp(sf::Vector2f t_position);
+    virtual void takeDamage(int t_damage);
 
     virtual bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
     virtual void changeState(StateMachine* newState);
@@ -31,6 +32,7 @@ public:
     bool justJumped = false;
     bool isGrounded = false;
     bool attacking = false;
+    bool canTakeDamage = true;
     virtual void Render(sf::RenderWindow& m_window, bool m_debug);
 
     //movement states
@@ -151,4 +153,6 @@ public:
     int damage = 5;
     sf::RectangleShape hitSensor;
     bool isDead = false;
+
+    sf::Clock damageClock;
 };

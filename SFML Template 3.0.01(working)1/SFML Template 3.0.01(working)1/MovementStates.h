@@ -854,6 +854,7 @@ class SateDamage : public StateMachine
     void enter(Entity& e) override
     {
         e.currentFrame = 0;
+        e.damageClock.start();
         if (e.facing == Direction::LEFT)
         {
             e.body.setTexture(e.dmgLTex);
@@ -867,6 +868,7 @@ class SateDamage : public StateMachine
 
     void update(Entity& e)
     {
+        e.attacking = false;
         if (e.animate(8, 238, 298, false))
         {
             e.changeState(e.idle);
@@ -879,6 +881,7 @@ class StateDeath : public StateMachine
 public:
     void enter(Entity& e) override
     {
+        e.canTakeDamage = false;
         e.currentFrame = 0;
         if (e.facing == Direction::LEFT)
         {
@@ -892,6 +895,7 @@ public:
 
     void update(Entity& e) override
     {
+        e.canTakeDamage = false;
         if (e.animate(25, 238, 298, false))
         {
             e.isDead = true;

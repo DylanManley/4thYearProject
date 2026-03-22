@@ -191,6 +191,26 @@ void Entity::setUp(sf::Vector2f t_position)
     hitSensor.setSize(sf::Vector2f{ 50 , 15 });
 }
 
+void Entity::takeDamage(int t_damage)
+{
+    if (!isDead)
+    {
+        if (!canTakeDamage)
+            return;
+
+        canTakeDamage = false;
+        health -= t_damage;
+        changeState(damageState);
+        std::cout << t_damage << std::endl;
+
+        if (health <= 0)
+        {
+            health = 0;
+            changeState(dead);
+        }
+    }
+}
+
 bool Entity::animate(int frameCount, int frameWidth, int frameHeight, bool loop)
 {
     animationFinished = false;

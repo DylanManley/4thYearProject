@@ -150,6 +150,14 @@ void Game::update(sf::Time t_deltaTime)
 			}
 		}
 
+		if (enemy1.hitSensor.getGlobalBounds().findIntersection(player.collider.getGlobalBounds()))
+		{
+			if (enemy1.attacking)
+			{
+				player.takeDamage(5);
+			}
+		}
+
 		if (player.isDead)
 		{
 			gameState = GameState::MENU;
