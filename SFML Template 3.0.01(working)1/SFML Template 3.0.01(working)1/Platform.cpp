@@ -7,7 +7,7 @@ void Platform::setup(sf::Texture &texture, sf::Vector2f position, sf::Vector2f c
     platSprite->setPosition(position);
     
     collider.setSize(sf::Vector2f(texture.getSize()));
-    collider.setFillColor(sf::Color::Green);
+    collider.setFillColor(grey);
     collider.setPosition(position);
 }
 

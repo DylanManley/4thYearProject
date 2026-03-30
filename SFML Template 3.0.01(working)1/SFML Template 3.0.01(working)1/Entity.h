@@ -34,7 +34,7 @@ public:
     bool attacking = false;
     bool blocking = false;
     bool canTakeDamage = true;
-    virtual void Render(sf::RenderWindow& m_window, bool m_debug);
+    virtual void Render(sf::RenderWindow& m_window, bool mapView);
 
     //movement states
     StateMachine* idle;

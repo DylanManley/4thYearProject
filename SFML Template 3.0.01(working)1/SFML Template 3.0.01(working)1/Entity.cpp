@@ -184,7 +184,7 @@ void Entity::setUp(sf::Vector2f t_position)
     body.setOrigin({ 119, 298 });
 
     collider.setPosition(position);
-    collider.setFillColor(sf::Color::Green);
+    collider.setFillColor(sf::Color::Blue);
     collider.setSize(sf::Vector2f{ 100,250 });
     collider.setOrigin({ 50.f, 250.f });
 
@@ -250,9 +250,9 @@ void Entity::changeState(StateMachine* newState)
     currentState->enter(*this);
 }
 
-void Entity::Render(sf::RenderWindow& m_window, bool m_debug)
+void Entity::Render(sf::RenderWindow& m_window, bool mapView)
 {
-    if (m_debug)
+    if (mapView)
     {
         m_window.draw(collider);
         m_window.draw(headSensor);

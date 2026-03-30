@@ -14,7 +14,7 @@ public:
 
     void setupTextures();
     void load();
-    void render(sf::RenderWindow& window, bool debug);
+    void render(sf::RenderWindow& window, bool mapView);
     void checkCollisions(Entity& entity);
     void handleCollision(Entity& entity, Platform& platform);
 

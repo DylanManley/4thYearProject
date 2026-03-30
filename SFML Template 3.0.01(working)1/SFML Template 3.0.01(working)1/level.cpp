@@ -208,15 +208,18 @@ void Level::load()
     }
 }
 
-void Level::render(sf::RenderWindow& window, bool debug)
+void Level::render(sf::RenderWindow& window, bool mapView)
 {
-    for (int y = 0; y < Height; y++)
+    if (!mapView)
     {
-        for (int x = 0; x < Width; x++)
+        for (int y = 0; y < Height; y++)
         {
-            if (backgroundSprites[y][x])
+            for (int x = 0; x < Width; x++)
             {
-                window.draw(*backgroundSprites[y][x]);
+                if (backgroundSprites[y][x])
+                {
+                    window.draw(*backgroundSprites[y][x]);
+                }
             }
         }
     }
@@ -227,7 +230,7 @@ void Level::render(sf::RenderWindow& window, bool debug)
         {
             if (levelData[y][x] != 0)
             {
-                tiles[y][x].Render(window, debug);
+                tiles[y][x].Render(window, mapView);
             }
         }
     }

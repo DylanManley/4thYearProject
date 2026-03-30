@@ -92,17 +92,6 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 		m_DELETEexitGame = true; 
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z))
-	{
-		if (seeDebug)
-		{
-			seeDebug = false;
-		}
-		else
-		{
-			seeDebug = true;
-		}
-	}
 }
 
 /// <summary>
@@ -164,7 +153,7 @@ void Game::update(sf::Time t_deltaTime)
 		}
 
 		camera.setCenter({ player.body.getPosition().x, player.body.getPosition().y - 200 });
-		debugView.setCenter({ player.body.getPosition() });
+		miniMap.setCenter({ player.body.getPosition() });
 		background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150 });
 		break;
 	default:
@@ -180,6 +169,11 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::Black);
+	sf::RectangleShape border(sf::Vector2f(sf::Vector2f({ winSize.x * 0.25f - 2 * uiPadding, winSize.y * 0.25f - 2 * uiPadding })));
+	border.setPosition(sf::Vector2f{ uiPadding, winSize.y * 0.75f + uiPadding });
+	border.setFillColor(sf::Color::Black);
+	border.setOutlineColor(sf::Color::White);
+	border.setOutlineThickness(2.f);
 
 	switch (gameState)
 	{
@@ -189,19 +183,26 @@ void Game::render()
 		m_window.draw(title);
 		break;
 	case GameState::GAMEPLAY:
-		if (!seeDebug)
-		{
-			m_window.setView(camera);
-		}
-		else
-		{
-			m_window.setView(debugView);
-		}
+		m_window.setView(camera);
 		m_window.draw(background);
-		level.render(m_window, seeDebug);
-		enemy1.Render(m_window, seeDebug);
+		level.render(m_window, false);
+		enemy1.Render(m_window, false);
 
-		player.Render(m_window, seeDebug);
+		player.Render(m_window, false);
+		m_window.draw(border);
+
+		//UI
+		m_window.setView(m_window.getDefaultView());
+		m_window.draw(border);
+
+		//minimap
+		m_window.setView(miniMap);
+
+		level.render(m_window, true);
+		enemy1.Render(m_window, true);
+
+		player.Render(m_window, true);
+
 		break;
 	default:
 		break;
@@ -267,13 +268,14 @@ void Game::setupSprites()
 
 	level.setupTextures();
 	camera.setSize({ 1280.f, 720.f });
-	debugView.setSize({ 12800, 7200 });
+	miniMap.setSize({ 12800, 7200 });
 
-	player.setUp({300.f, 1530.f});
+	player.setUp({ 300.f, 1530.f });
 	enemy1.setUp({ 3950.f, 1530.f });
 
-	
+	miniMap.setViewport(sf::FloatRect({ mapX, mapY }, { mapWidth, mapHeight }));
 }
+
 
 /// <summary>
 /// load sound file and assign buffers

@@ -72,8 +72,16 @@ private:
 	sf::Sprite titleOptions{ titleOptionsTex };
 	sf::View camera;
 
-	bool seeDebug = false;
-	sf::View debugView;
+
+	float uiPadding = 10.f;
+	sf::Vector2u winSize = m_window.getSize();
+
+	float mapX = uiPadding / winSize.x;
+	float mapY = 0.75f + (uiPadding / winSize.y);
+	float mapWidth = 0.25f - (2 * uiPadding / winSize.x);
+	float mapHeight = 0.25f - (2 * uiPadding / winSize.y);
+
+	sf::View miniMap;
 
 };
 
