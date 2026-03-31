@@ -178,9 +178,11 @@ void Entity::setUp(sf::Vector2f t_position)
     collider.setSize(sf::Vector2f{ 100,250 });
     collider.setOrigin({ 50.f, 250.f });
 
+
     loadMovementTextures();
     loadCombatTextures();
     setStates();
+    isDead = false;
     currentState = idle;
     idle->enter(*this);
     position = sf::Vector2f{t_position};
@@ -254,7 +256,10 @@ void Entity::Render(sf::RenderWindow& m_window, bool mapView)
 {
     if (mapView)
     {
-        m_window.draw(collider);
+        if (!isDead)
+        {
+            m_window.draw(collider);
+        }
 
     }
     else

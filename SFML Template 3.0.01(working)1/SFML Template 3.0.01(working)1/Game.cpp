@@ -123,6 +123,7 @@ void Game::update(sf::Time t_deltaTime)
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
 		{
 			gameState = GameState::GAMEPLAY;
+			setupSprites();
 		}
 		break;
 	case GameState::GAMEPLAY:
@@ -178,6 +179,7 @@ void Game::render()
 	switch (gameState)
 	{
 	case GameState::MENU:
+		m_window.setView(m_window.getDefaultView());
 		m_window.draw(titleScreen);
 		m_window.draw(titleOptions);
 		m_window.draw(title);

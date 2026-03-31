@@ -11,6 +11,7 @@ class Enemy : public  Entity
 public:
 	void update(Entity& player);
 	virtual void loadMovementTextures() override;
+	virtual void loadCombatTextures()override;
 
 private:
 	AI_STATE aiState = AI_STATE::PATROL;

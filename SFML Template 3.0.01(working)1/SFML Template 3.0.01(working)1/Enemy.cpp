@@ -302,3 +302,40 @@ void Enemy::loadMovementTextures()
     if (!climbRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\climbR.png"))
         std::cout << "Couldnt load climb Texture\n";
 }
+
+void Enemy::loadCombatTextures()
+{
+    //punch
+    if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\punchL.png"))
+        std::cout << "Couldnt load puch Texture\n";
+    if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\punchR.png"))
+        std::cout << "Couldnt load punch Texture\n";
+
+    //dropkick
+    if (!dropKickLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dropKickL.png"))
+        std::cout << "Couldnt load drop kick Texture\n";
+    if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dropKickR.png"))
+        std::cout << "Couldnt load drop kick Texture\n";
+
+    //take damage
+    if (!dmgLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dmgL.png"))
+    {
+        std::cout << "Couldn't load damage texture\n";
+    }
+
+    if (!dmgRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dmgR.png"))
+    {
+        std::cout << "Couldn't load damage texture\n";
+    }
+    //block
+    if (!blockLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\BlockL.png"))
+        std::cout << "Couldnt load block Texture\n";
+    if (!blockRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\BlockR.png"))
+        std::cout << "Couldnt load drop block Texture\n";
+
+    //death
+    if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\DeathL.png"))
+        std::cout << "Couldnt load death Texture\n";
+    if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\DeathR.png"))
+        std::cout << "Couldnt load death Texture\n";
+}
