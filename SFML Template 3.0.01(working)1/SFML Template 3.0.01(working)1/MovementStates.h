@@ -245,12 +245,6 @@ public:
         e.animate(3, 238, 298, true);
         e.fallTimer = e.fallTimer + 1;
 
-        if (e.pressingRight) e.horizontalVelocity += e.airAcceleration;
-        if (e.pressingLeft)  e.horizontalVelocity -= e.airAcceleration;
-
-        if (!e.pressingRight && !e.pressingLeft)
-            e.horizontalVelocity *= (1.f - e.airFriction);
-
         e.position.x += e.horizontalVelocity;
 
 
@@ -672,6 +666,7 @@ public:
 
     void update(Entity& e) override
     {
+        e.position.x += e.speed;
 
         if (e.animate(5, 238, 298, false))
         {

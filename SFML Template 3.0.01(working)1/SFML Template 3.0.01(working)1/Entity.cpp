@@ -7,95 +7,95 @@ void Entity::loadMovementTextures()
     // Load all movement textures
 
     //Idle and Walk
-    if (!idleLeftTex.loadFromFile("ASSETS\\IMAGES\\Player\\IdleLeft.png"))
+    if (!idleLeftTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\IdleLeft.png"))
         std::cout << "Couldn't load Idle texture\n";
-    if (!idleRightTex.loadFromFile("ASSETS\\IMAGES\\Player\\IdleRight.png"))
+    if (!idleRightTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\IdleRight.png"))
         std::cout << "Couldn't load Idle texture\n";
-    if (!idleToWalkLTex.loadFromFile("ASSETS\\IMAGES\\Player\\IdleToWalkL.png"))
+    if (!idleToWalkLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\IdleToWalkL.png"))
         std::cout << "Couldn't load IdleToWalk texture\n";
-    if (!idleToWalkRTex.loadFromFile("ASSETS\\IMAGES\\Player\\IdleToWalkR.png"))
+    if (!idleToWalkRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\IdleToWalkR.png"))
         std::cout << "Couldn't load IdleToWalk texture\n";
-    if (!walkRightTex.loadFromFile("ASSETS\\IMAGES\\Player\\Walk_Right.png"))
+    if (!walkRightTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\Walk_Right.png"))
         std::cout << "Couldn't load Walk texture\n";
-    if (!walkLeftTex.loadFromFile("ASSETS\\IMAGES\\Player\\Walk_Left.png"))
+    if (!walkLeftTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\Walk_Left.png"))
         std::cout << "Couldn't load Walk texture\n";
 
     //running
-    if (!runLeftTex.loadFromFile("ASSETS\\IMAGES\\Player\\RunL.png"))
+    if (!runLeftTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\RunL.png"))
         std::cout << "Couldn't load run texture\n";
-    if (!runRightTex.loadFromFile("ASSETS\\IMAGES\\Player\\RunR.png"))
+    if (!runRightTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\RunR.png"))
         std::cout << "Couldn't load run texture\n";
 
     //Crouching and Sliding
-    if (!crouchDownTex.loadFromFile("ASSETS\\IMAGES\\Player\\IdleToCrouch.png"))
+    if (!crouchDownTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\IdleToCrouch.png"))
         std::cout << "Couldn't load Crouch texture\n";
-    if (!standUpTex.loadFromFile("ASSETS\\IMAGES\\Player\\CrouchToIdle.png"))
+    if (!standUpTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\CrouchToIdle.png"))
         std::cout << "Couldn't load Crouch texture\n";
-    if (!crouchTex.loadFromFile("ASSETS\\IMAGES\\Player\\CrouchIdle.png"))
+    if (!crouchTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\CrouchIdle.png"))
         std::cout << "Couldn't load Crouch texture\n";
-    if (!cWalkRTex.loadFromFile("ASSETS\\IMAGES\\Player\\CrouchWalkRight.png"))
+    if (!cWalkRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\CrouchWalkRight.png"))
         std::cout << "Couldn't load Crouch texture\n";
-    if (!cWalkLTex.loadFromFile("ASSETS\\IMAGES\\Player\\CrouchWalkLeft.png"))
+    if (!cWalkLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\CrouchWalkLeft.png"))
         std::cout << "Couldn't load Crouch texture\n";
 
-    if (!slideStartRTex.loadFromFile("ASSETS\\IMAGES\\Player\\slide_startR.png"))
+    if (!slideStartRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\slide_startR.png"))
         std::cout << "Couldn't load slide texture\n";
-    if (!slideStartLTex.loadFromFile("ASSETS\\IMAGES\\Player\\slide_startL.png"))
+    if (!slideStartLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\slide_startL.png"))
         std::cout << "Couldn't load slide texture\n";
-    if (!slideEndRTex.loadFromFile("ASSETS\\IMAGES\\Player\\slide_EndR.png"))
+    if (!slideEndRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\slide_EndR.png"))
         std::cout << "Couldn't load slide texture\n";
-    if (!slideEndLTex.loadFromFile("ASSETS\\IMAGES\\Player\\slide_EndL.png"))
+    if (!slideEndLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\slide_EndL.png"))
         std::cout << "Couldn't load slide texture\n";
-    if (!slideRTex.loadFromFile("ASSETS\\IMAGES\\Player\\SlideR.png"))
+    if (!slideRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\SlideR.png"))
         std::cout << "Couldn't load slide texture\n";
-    if (!slideLTex.loadFromFile("ASSETS\\IMAGES\\Player\\SlideL.png"))
+    if (!slideLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\SlideL.png"))
         std::cout << "Couldn't load slide texture\n";
 
 
     //isJumping
-    if (!JumpStartL.loadFromFile("ASSETS\\IMAGES\\Player\\JumpStartL.png"))
+    if (!JumpStartL.loadFromFile("ASSETS\\IMAGES\\PLAYER\\JumpStartL.png"))
         std::cout << "Couldn't load jump texture\n";
-    if (!JumpLTex.loadFromFile("ASSETS\\IMAGES\\Player\\JumpL.png"))
+    if (!JumpLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\JumpL.png"))
         std::cout << "Couldn't load jump texture\n";
-    if (!JumpStartR.loadFromFile("ASSETS\\IMAGES\\Player\\JumpStartR.png"))
+    if (!JumpStartR.loadFromFile("ASSETS\\IMAGES\\PLAYER\\JumpStartR.png"))
         std::cout << "Couldn't load jump texture\n";
-    if (!JumpRTex.loadFromFile("ASSETS\\IMAGES\\Player\\JumpR.png"))
+    if (!JumpRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\JumpR.png"))
         std::cout << "Couldn't load jump texture\n";
 
     //Falling and Landing
-    if (!FallRTex.loadFromFile("ASSETS\\IMAGES\\Player\\FallingR.png"))
+    if (!FallRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\FallingR.png"))
         std::cout << "Couldn't load jump texture\n";
-    if (!LandRTex.loadFromFile("ASSETS\\IMAGES\\Player\\LandR.png"))
+    if (!LandRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\LandR.png"))
         std::cout << "Couldn't load jump texture\n";
-    if (!FallLTex.loadFromFile("ASSETS\\IMAGES\\Player\\FallingL.png"))
+    if (!FallLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\FallingL.png"))
         std::cout << "Couldn't load jump texture\n";
-    if (!LandLTex.loadFromFile("ASSETS\\IMAGES\\Player\\LandL.png"))
+    if (!LandLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\LandL.png"))
         std::cout << "Couldn't load jump texture\n";
 
     //WallSliding
-    if (!WallSlideStartRTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallSlideRStart.png"))
+    if (!WallSlideStartRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallSlideRStart.png"))
         std::cout << "Couldn't load wallslide texture\n";
-    if (!WallSlideStartLTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallSlideLStart.png"))
+    if (!WallSlideStartLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallSlideLStart.png"))
         std::cout << "Couldn't load wallslide texture\n";
-    if (!wallSlideREndTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallSlideREnd.png"))
+    if (!wallSlideREndTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallSlideREnd.png"))
         std::cout << "Couldn't load wallslide texture\n";
-    if (!WallSlideLEndTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallSlideLEnd.png"))
+    if (!WallSlideLEndTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallSlideLEnd.png"))
         std::cout << "Couldn't load wallslide texture\n";
-    if (!wallSlideRTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallSlideR.png"))
+    if (!wallSlideRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallSlideR.png"))
         std::cout << "Couldn't load wallslide texture\n";
-    if (!wallSlideLTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallSlideL.png"))
+    if (!wallSlideLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallSlideL.png"))
         std::cout << "Couldn't load wall jump texture\n";
 
     //wallJumping
-    if (!wallJumpRTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallJumpR.png"))
+    if (!wallJumpRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallJumpR.png"))
         std::cout << "Couldn't load wallslide texture\n";
-    if (!wallJumpLTex.loadFromFile("ASSETS\\IMAGES\\Player\\wallJumpL.png"))
+    if (!wallJumpLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\wallJumpL.png"))
         std::cout << "Couldn't load wall jump texture\n";
 
     //wallClimb
-    if (!climbLTex.loadFromFile("ASSETS\\IMAGES\\Player\\climbL.png"))
+    if (!climbLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\climbL.png"))
         std::cout << "Couldnt load climb Texture\n";
-    if (!climbRTex.loadFromFile("ASSETS\\IMAGES\\Player\\climbR.png"))
+    if (!climbRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\climbR.png"))
         std::cout << "Couldnt load climb Texture\n";
 
 }
@@ -103,15 +103,15 @@ void Entity::loadMovementTextures()
 void Entity::loadCombatTextures()
 {
     //punch
-    if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\Player\\punchL.png"))
+    if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\punchL.png"))
         std::cout << "Couldnt load puch Texture\n";
-    if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\Player\\punchR.png"))
+    if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\punchR.png"))
         std::cout << "Couldnt load punch Texture\n";
 
     //dropkick
-    if (!dropKickLTex.loadFromFile("ASSETS\\IMAGES\\Player\\dropKickL.png"))
+    if (!dropKickLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\dropKickL.png"))
         std::cout << "Couldnt load drop kick Texture\n";
-    if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\Player\\dropKickR.png"))
+    if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\dropKickR.png"))
         std::cout << "Couldnt load drop kick Texture\n";
 
     //take damage
@@ -125,15 +125,15 @@ void Entity::loadCombatTextures()
         std::cout << "Couldn't load damage texture\n";
     }
      //block
-    if (!blockLTex.loadFromFile("ASSETS\\IMAGES\\Player\\BlockL.png"))
+    if (!blockLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\BlockL.png"))
         std::cout << "Couldnt load block Texture\n";
-    if (!blockRTex.loadFromFile("ASSETS\\IMAGES\\Player\\BlockR.png"))
+    if (!blockRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\BlockR.png"))
         std::cout << "Couldnt load drop block Texture\n";
 
     //death
-    if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathL.png"))
+    if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\DeathL.png"))
         std::cout << "Couldnt load death Texture\n";
-    if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\Player\\DeathR.png"))
+    if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\PLAYER\\DeathR.png"))
         std::cout << "Couldnt load death Texture\n";
 }
 
@@ -173,6 +173,11 @@ void Entity::setStates()
 
 void Entity::setUp(sf::Vector2f t_position)
 {
+    collider.setPosition(position);
+    collider.setFillColor(sf::Color::Blue);
+    collider.setSize(sf::Vector2f{ 100,250 });
+    collider.setOrigin({ 50.f, 250.f });
+
     loadMovementTextures();
     loadCombatTextures();
     setStates();
@@ -182,11 +187,6 @@ void Entity::setUp(sf::Vector2f t_position)
 
     body.setPosition(position);
     body.setOrigin({ 119, 298 });
-
-    collider.setPosition(position);
-    collider.setFillColor(sf::Color::Blue);
-    collider.setSize(sf::Vector2f{ 100,250 });
-    collider.setOrigin({ 50.f, 250.f });
 
     headSensor.setPosition(sf::Vector2f{ position.x + 12, position.y + 100 });
     headSensor.setFillColor(sf::Color::Blue);
@@ -255,9 +255,10 @@ void Entity::Render(sf::RenderWindow& m_window, bool mapView)
     if (mapView)
     {
         m_window.draw(collider);
-        m_window.draw(headSensor);
-        m_window.draw(hitSensor);
-    }
 
-    m_window.draw(body);
+    }
+    else
+    {
+       m_window.draw(body);
+    }
 }
