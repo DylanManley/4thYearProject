@@ -1,22 +1,51 @@
 #include "Enemy.h"
 #include <iostream>
 
+float Enemy::mClose(float dist) {
+    if (dist <= 10) return 1.f;
+    if (dist <= 100) return (100.f - dist) / (100.f - 10.f);
+    return 0.f;
+}
+
+float Enemy::mFar(float dist) {
+    if (dist <= 350) return 0.f;
+    if (dist <= 450) return (dist - 350.f) / (350.f - 250.f);
+    return 0.f;
+}
+
+float Enemy::mPlayerAttacking(bool playerAttacking) {
+    return playerAttacking ? 1.f : 0.f;
+}
+
+float Enemy::fuzzyAttack(float dist) {
+    return mClose(dist);
+}
+
+float Enemy::fuzzyBlock(float dist, bool playerAttacking) {
+    float proximity = mClose(dist);
+    float threatBonus = mPlayerAttacking(playerAttacking) * 0.9f;
+    return std::min(1.f, proximity + threatBonus);
+}
+
+float Enemy::fuzzyDropkick(float dist) {
+    return mFar(dist);
+}
 
 void Enemy::update(Entity& player)
 {
-    float xDistance = player.position.x - position.x;
+    float dist = std::abs(player.position.x - position.x);
 
     if (isDead)
     {
         return;
     }
-    
+
     body.setPosition(position);
     collider.setPosition(position);
 
 
-     if (pressingLeft)
-     {
+    if (pressingLeft)
+    {
         if (currentState != wallSlide &&
             currentState != slide &&
             currentState != jumping &&
@@ -26,7 +55,7 @@ void Enemy::update(Entity& player)
         {
             facing = Direction::LEFT;
         }
-     }
+    }
 
     if (pressingRight)
     {
@@ -55,7 +84,7 @@ void Enemy::update(Entity& player)
         headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
 
         if (currentState != slide && currentState != dropKick)
-        {                
+        {
             hitSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 200 });
         }
     }
@@ -129,74 +158,50 @@ void Enemy::update(Entity& player)
             patrolClock.restart();
         }
 
-        if (abs(xDistance) < 200)
+        if (abs(dist) < 200)
         {
             aiState = AI_STATE::CHASE;
             patrolClock.stop();
         }
         break;
     case AI_STATE::CHASE:
-        if (player.position.x > position.x)
+        if (dist > 50)
         {
-            if (xDistance < 100 && isGrounded)
-            {
-                attacking = true;
-            }
-            else
-            {
-                attacking = false;
-                pressingLeft = false;
+            if (player.position.x > position.x) {
                 pressingRight = true;
+                pressingLeft = false;
             }
-        }
-
-        if (player.position.x < position.x)
-        {
-            if (xDistance > -100 && isGrounded)
-            {
-                attacking = true;
-            }
-            else
-            {
-                attacking = false;
-                pressingRight = false;
+            else {
                 pressingLeft = true;
+                pressingRight = false;
             }
-        }
-
-        if (!isGrounded)
-        {
-            if (player.position.y > position.y + 250 && xDistance > -400 || player.position.y > position.y + 250 && xDistance < 400)
-            {
-                attacking = true;
-            }
-        }
-
-        if (player.position.y < position.y)
-        {
-            isJumping = true;
+            running = dist > 300;
         }
         else
         {
-            isJumping = false;
-        }
-
-        if (player.position.x > position.x + 200 || player.position.x < position.x - 200)
-        {
-            running = true;
-        }
-        else
+            pressingLeft = false;
+            pressingRight = false;
             running = false;
+        }
 
 
-        if (player.crouching)
+        if (currentState != wallSlide &&
+            currentState != slide &&
+            currentState != jumping &&
+            currentState != falling &&
+            currentState != wallJump &&
+            currentState != climb)
         {
-            crouching = true;
+
+            if (player.position.x > position.x)
+                facing = Direction::RIGHT;
+            else
+                facing = Direction::LEFT;
         }
-        else
-        {
-            crouching = false;
-        }
+
+
+        crouching = player.crouching;
+        applyFuzzyResult(player);
         break;
     default:
         break;
@@ -338,4 +343,60 @@ void Enemy::loadCombatTextures()
         std::cout << "Couldnt load death Texture\n";
     if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\DeathR.png"))
         std::cout << "Couldnt load death Texture\n";
+}
+
+void Enemy::applyFuzzyResult(const Entity& player)
+{
+    float dist = std::abs(player.position.x - position.x);
+    float attackScore = fuzzyAttack(dist);
+    float blockScore = fuzzyBlock(dist, player.attacking);
+    float dropkickScore = fuzzyDropkick(dist);
+
+    if (!canAttack && attackCooldown.getElapsedTime().asSeconds() > 1.0f)
+    {
+        canAttack = true;
+        attackCooldown.stop();
+        attackCooldown.reset();
+    }
+
+    if (!canBlock && blockCooldown.getElapsedTime().asSeconds() > 1.5f)
+    {
+        canBlock = true;
+        blockCooldown.stop();
+        blockCooldown.reset();
+    }
+
+    if (dropkickScore > 0.3f && isGrounded && canAttack)
+    {
+        attacking = true;
+        isJumping = true;
+        blocking = false;
+        pressingLeft = false;
+        pressingRight = false;
+        canAttack = false;
+        attackCooldown.restart();
+        return;
+    }
+
+    //block
+    if (canBlock && blockScore > attackScore && blockScore > 0.3f)
+    {
+        blocking = true;
+        attacking = false;
+        canBlock = false;
+        blockCooldown.restart();
+        return;
+    }
+
+    blocking = false;
+
+    //punch
+    if (attackScore > 0.3f && canAttack)
+    {
+        isJumping = false;
+        attacking = true;
+        canAttack = false;
+        attackCooldown.restart();
+        return;
+    }
 }

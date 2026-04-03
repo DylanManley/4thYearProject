@@ -217,6 +217,7 @@ public:
  
         if (e.verticalVelocity > 0)
         {
+            e.isJumping = false;
             e.currentFrame = 0;
             e.changeState(e.falling);
         }
@@ -399,6 +400,7 @@ public:
         if (e.facing == Direction::RIGHT)
         {
             e.position.x += e.slideVelocity;
+            e.hitSensor.setPosition(sf::Vector2f{ e.position.x + 100, e.position.y - 50});
             e.hitSensor.setPosition(sf::Vector2f{ e.position.x + 100, e.position.y - 50});
         }
         else
@@ -792,6 +794,7 @@ public:
     {
         if (e.animate(7, 238, 298, false))
         {
+            e.attacking = false;
             e.changeState(e.idle);
         }
     }

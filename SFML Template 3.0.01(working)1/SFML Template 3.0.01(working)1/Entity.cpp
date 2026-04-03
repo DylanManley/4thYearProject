@@ -183,6 +183,7 @@ void Entity::setUp(sf::Vector2f t_position)
     loadCombatTextures();
     setStates();
     isDead = false;
+    canTakeDamage = true;
     currentState = idle;
     idle->enter(*this);
     position = sf::Vector2f{t_position};

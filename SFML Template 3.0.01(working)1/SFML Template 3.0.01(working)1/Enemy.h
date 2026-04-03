@@ -17,5 +17,23 @@ private:
 	AI_STATE aiState = AI_STATE::PATROL;
 	sf::Clock patrolClock;
 	bool clockRunning = false;
+
+    sf::Clock blockCooldown;
+    bool canBlock = true;
+    sf::Clock attackCooldown;
+    bool canAttack = true;
+
+    // Membership functions
+    float mClose(float dist);
+    float mFar(float dist);
+    float mPlayerAttacking(bool playerAttacking);
+
+    // Fuzzy rules
+    float fuzzyAttack(float dist);
+    float fuzzyBlock(float dist, bool playerAttacking);
+    float fuzzyDropkick(float dist);
+
+    // Defuzzification
+    void applyFuzzyResult(const Entity& player);
 };
 
