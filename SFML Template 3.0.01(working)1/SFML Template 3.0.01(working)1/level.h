@@ -19,6 +19,7 @@ public:
     void handleCollision(Entity& entity, Platform& platform);
 
 private:
+    bool loadFromFile(const std::string& filename, int data[Height][Width]);
     Platform tiles[Height][Width];
     int levelData[Height][Width];
 

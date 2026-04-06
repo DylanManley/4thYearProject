@@ -142,7 +142,7 @@ void Game::update(sf::Time t_deltaTime)
 
 		if (enemy1.hitSensor.getGlobalBounds().findIntersection(player.collider.getGlobalBounds()))
 		{
-			if (enemy1.attacking)
+			if (enemy1.attacking && !enemy1.isDead)
 			{
 				player.takeDamage(5);
 			}

@@ -1,17 +1,25 @@
 #include "Enemy.h"
 #include <iostream>
 
-float Enemy::mClose(float dist) {
-    if (dist <= 10) return 1.f;
-    if (dist <= 100) return (100.f - dist) / (100.f - 10.f);
+float Enemy::mFar(float dist) {
+    if (dist <= 200) return 0.f;
+    if (dist <= 400) return (dist - 200.f) / (400.f - 200.f);
+    return 1.f;
+}
+
+float Enemy::mMedium(float dist) {
+    if (dist <= 80)  return 0.f;
+    if (dist <= 200) return (dist - 80.f) / (200.f - 80.f);
+    if (dist <= 300) return (300.f - dist) / (300.f - 200.f);
     return 0.f;
 }
 
-float Enemy::mFar(float dist) {
-    if (dist <= 350) return 0.f;
-    if (dist <= 450) return (dist - 350.f) / (350.f - 250.f);
+float Enemy::mClose(float dist) {
+    if (dist <= 20) return 1.f;
+    if (dist <= 300) return (300.f - dist) / (300.f - 20.f);
     return 0.f;
 }
+
 
 float Enemy::mPlayerAttacking(bool playerAttacking) {
     return playerAttacking ? 1.f : 0.f;
@@ -25,6 +33,10 @@ float Enemy::fuzzyBlock(float dist, bool playerAttacking) {
     float proximity = mClose(dist);
     float threatBonus = mPlayerAttacking(playerAttacking) * 0.9f;
     return std::min(1.f, proximity + threatBonus);
+}
+
+float Enemy::fuzzyCloseGap(float dist) {
+    return mMedium(dist);
 }
 
 float Enemy::fuzzyDropkick(float dist) {
@@ -158,14 +170,61 @@ void Enemy::update(Entity& player)
             patrolClock.restart();
         }
 
-        if (abs(dist) < 200)
+        if (dist < 250)
         {
             aiState = AI_STATE::CHASE;
             patrolClock.stop();
         }
         break;
     case AI_STATE::CHASE:
-        if (dist > 50)
+
+        if (player.position.x > position.x)
+        {
+            pressingLeft = false;
+            pressingRight = true;
+
+        }
+
+        if (player.position.x < position.x)
+        {
+            pressingRight = false;
+            pressingLeft = true;
+        }
+
+        if (dist < 300)
+        {
+            aiState = AI_STATE::ATTACK;
+        }
+
+        if (player.position.y < position.y)
+        {
+            isJumping = true;
+        }
+        else
+        {
+            isJumping = false;
+        }
+
+        if (dist > 200)
+        {
+            running = true;
+        }
+        else
+            running = false;
+
+
+        if (player.crouching)
+        {
+            crouching = true;
+        }
+        else
+        {
+            crouching = false;
+        }
+        break;
+
+    case AI_STATE::ATTACK:
+        if (dist < 50)
         {
             if (player.position.x > position.x) {
                 pressingRight = true;
@@ -175,7 +234,6 @@ void Enemy::update(Entity& player)
                 pressingLeft = true;
                 pressingRight = false;
             }
-            running = dist > 300;
         }
         else
         {
@@ -202,6 +260,12 @@ void Enemy::update(Entity& player)
 
         crouching = player.crouching;
         applyFuzzyResult(player);
+
+        if (dist > 350)
+        {
+            attacking = false;
+            aiState = AI_STATE::CHASE;
+        }
         break;
     default:
         break;
@@ -350,6 +414,7 @@ void Enemy::applyFuzzyResult(const Entity& player)
     float dist = std::abs(player.position.x - position.x);
     float attackScore = fuzzyAttack(dist);
     float blockScore = fuzzyBlock(dist, player.attacking);
+    float closeGapScore = fuzzyCloseGap(dist);
     float dropkickScore = fuzzyDropkick(dist);
 
     if (!canAttack && attackCooldown.getElapsedTime().asSeconds() > 1.0f)
@@ -366,19 +431,6 @@ void Enemy::applyFuzzyResult(const Entity& player)
         blockCooldown.reset();
     }
 
-    if (dropkickScore > 0.3f && isGrounded && canAttack)
-    {
-        attacking = true;
-        isJumping = true;
-        blocking = false;
-        pressingLeft = false;
-        pressingRight = false;
-        canAttack = false;
-        attackCooldown.restart();
-        return;
-    }
-
-    //block
     if (canBlock && blockScore > attackScore && blockScore > 0.3f)
     {
         blocking = true;
@@ -390,7 +442,34 @@ void Enemy::applyFuzzyResult(const Entity& player)
 
     blocking = false;
 
-    //punch
+    if (dropkickScore > 0.3f && isGrounded && canAttack)
+    {
+        attacking = true;
+        isJumping = true;
+        pressingLeft = false;
+        pressingRight = false;
+        canAttack = false;
+        attackCooldown.restart();
+        return;
+    }
+
+    if (closeGapScore > 0.3f && canAttack)
+    {
+        blocking = false;
+        attacking = false;
+        if (player.position.x > position.x) {
+            pressingRight = true;
+            pressingLeft = false;
+        }
+        else {
+            pressingLeft = true;
+            pressingRight = false;
+        }
+        running = true;
+        return;
+    }
+
+
     if (attackScore > 0.3f && canAttack)
     {
         isJumping = false;

@@ -4,6 +4,7 @@
 enum class AI_STATE {
 	PATROL,
 	CHASE,
+    ATTACK,
 };
 
 class Enemy : public  Entity
@@ -27,11 +28,13 @@ private:
     float mClose(float dist);
     float mFar(float dist);
     float mPlayerAttacking(bool playerAttacking);
+    float mMedium(float dist);
 
     // Fuzzy rules
     float fuzzyAttack(float dist);
     float fuzzyBlock(float dist, bool playerAttacking);
     float fuzzyDropkick(float dist);
+    float fuzzyCloseGap(float dist);
 
     // Defuzzification
     void applyFuzzyResult(const Entity& player);

@@ -55,6 +55,7 @@ void Platform::Render(sf::RenderWindow& m_window, bool m_debug)
 {
     m_window.draw(*platSprite);
 
+
     if (m_debug)
     {
         m_window.draw(collider);
