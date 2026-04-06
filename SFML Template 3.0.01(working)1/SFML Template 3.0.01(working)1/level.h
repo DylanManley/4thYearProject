@@ -12,11 +12,13 @@ public:
     static const int TileWidth = 512;
     static const int TileHeight = 255;
 
-    void setupTextures();
-    void load();
+    void setupTextures(int levelNum);
+    void load(int levelNum);
     void render(sf::RenderWindow& window, bool mapView);
     void checkCollisions(Entity& entity);
     void handleCollision(Entity& entity, Platform& platform);
+
+    bool levelFinished;
 
 private:
     bool loadFromFile(const std::string& filename, int data[Height][Width]);
@@ -35,6 +37,7 @@ private:
     sf::Texture roofWindow2;
     sf::Texture halfRoof;
     sf::Texture crawlSpace;
+    sf::Texture exitDoor;
 
     //background details
     sf::Texture railingTex;

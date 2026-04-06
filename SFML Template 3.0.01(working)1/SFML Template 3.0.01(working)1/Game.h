@@ -41,6 +41,7 @@ private:
 	void checkKeyboardState();
 	void update(sf::Time t_deltaTime);
 	void render();
+	void nextLevel();
 	
 	void setupTexts();
 	void setupSprites();
@@ -72,6 +73,7 @@ private:
 	sf::Sprite titleOptions{ titleOptionsTex };
 	sf::View camera;
 
+	int levelNum = 1;
 
 	float uiPadding = 10.f;
 	sf::Vector2u winSize = m_window.getSize();

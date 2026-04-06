@@ -71,7 +71,7 @@ bool Level::loadFromFile(const std::string& filename, int data[Height][Width])
     return true;
 }
 
-void Level::setupTextures()
+void Level::setupTextures(int levelNum)
 {
     platformTex.loadFromFile("ASSETS\\IMAGES\\Platform.png");
     houseWall.loadFromFile("ASSETS\\IMAGES\\brickWall.png");
@@ -82,6 +82,7 @@ void Level::setupTextures()
     roofWall.loadFromFile("ASSETS\\IMAGES\\RoofWall.png");
     halfRoof.loadFromFile("ASSETS\\IMAGES\\RoofWallSlab.png");
     crawlSpace.loadFromFile("ASSETS\\IMAGES\\crawlspace.png");
+    exitDoor.loadFromFile("ASSETS\\IMAGES\\ExitDoor.png");
 
 
     //backgrounds
@@ -93,14 +94,15 @@ void Level::setupTextures()
     roofVents.loadFromFile("ASSETS\\IMAGES\\roofVents.png");
     vent.loadFromFile("ASSETS\\IMAGES\\vent.jpg");
 
-    load();
+    levelFinished = false;
+    load(levelNum);
 }
 
-void Level::load()
+void Level::load(int levelNum)
 {
     //load Level and background files
-    loadFromFile("ASSETS\\LEVELS\\level1.txt", levelData);
-    loadFromFile("ASSETS\\LEVELS\\background1.txt", backgroundData);
+    loadFromFile("ASSETS\\LEVELS\\level" + std::to_string(levelNum) + ".txt", levelData);
+    loadFromFile("ASSETS\\LEVELS\\background" + std::to_string(levelNum) + ".txt", backgroundData);
 
     //background
     for (int y = 0; y < Height; y++)
@@ -171,7 +173,7 @@ void Level::load()
 
                 sf::Vector2f size(TileWidth, TileHeight);
 
-                tiles[y][x].setup(platformTex, pos, size);
+                tiles[y][x].setup(platformTex, pos, size, 1);
             }
             else if (levelData[y][x] == 2)
             {
@@ -181,15 +183,15 @@ void Level::load()
 
                 if (y < 1)
                 {
-                    tiles[y][x].setup(roofWall, pos, size);
+                    tiles[y][x].setup(roofWall, pos, size, 2);
                 }
                 else if (levelData[y-1][x] == 0)
                 {
-                    tiles[y][x].setup(roofWall, pos, size);
+                    tiles[y][x].setup(roofWall, pos, size, 2);
                 }
                 else
                 {
-                    tiles[y][x].setup(houseWall, pos, size);
+                    tiles[y][x].setup(houseWall, pos, size, 2);
                 }
             }
             else if (levelData[y][x] == 3)
@@ -203,24 +205,24 @@ void Level::load()
                 if (y < 1)
                 {
                     if (lit == 1)
-                        tiles[y][x].setup(roofWindow, pos, size);
+                        tiles[y][x].setup(roofWindow, pos, size, 3);
                     else
-                        tiles[y][x].setup(roofWindow2, pos, size);
+                        tiles[y][x].setup(roofWindow2, pos, size, 3);
 
                 }
                 else if (levelData[y - 1][x] == 0)
                 {
                         if (lit == 1)
-                            tiles[y][x].setup(roofWindow, pos, size);
+                            tiles[y][x].setup(roofWindow, pos, size, 3);
                         else
-                            tiles[y][x].setup(roofWindow2, pos, size);
+                            tiles[y][x].setup(roofWindow2, pos, size, 3);
                 }
                 else
                 {
                         if (lit == 1)
-                            tiles[y][x].setup(houseWindow, pos, size);
+                            tiles[y][x].setup(houseWindow, pos, size, 3);
                         else
-                            tiles[y][x].setup(houseWindow2, pos, size);
+                            tiles[y][x].setup(houseWindow2, pos, size, 3);
                 }
             }
             else if (levelData[y][x] == 4)
@@ -229,7 +231,7 @@ void Level::load()
 
                 sf::Vector2f size(TileWidth, TileHeight);
 
-                tiles[y][x].setup(halfRoof, pos, size);
+                tiles[y][x].setup(halfRoof, pos, size, 4);
             }
             else if (levelData[y][x] == 5)
             {
@@ -237,7 +239,15 @@ void Level::load()
 
                 sf::Vector2f size(TileWidth, TileHeight);
 
-                tiles[y][x].setup(crawlSpace, pos, size);
+                tiles[y][x].setup(crawlSpace, pos, size, 5);
+            }
+            else if (levelData[y][x] == 6)
+            {
+                sf::Vector2f pos(x* TileWidth + (TileWidth / 2), y* TileHeight);
+
+                sf::Vector2f size(exitDoor.getSize().x, exitDoor.getSize().y);
+
+                tiles[y][x].setup(exitDoor, pos, size, 6);
             }
         }
     }
@@ -336,6 +346,10 @@ void Level::handleCollision(Entity& entity, Platform& platform)
     float entityTop = entityBounds.position.y;
     float entityWidth = entityBounds.size.x;
     
+    if (platform.id == 6)
+    {
+        levelFinished = true;
+    }
 
     switch (col)
     {
@@ -417,6 +431,12 @@ void Level::handleCollision(Entity& entity, Platform& platform)
     case CollisionType::Bottom:
         if (entity.currentState == entity.wallSlide && !entity.isGrounded)
             break;
+
+        if (entity.currentState == entity.climb)
+        {
+            entity.isGrounded = true;
+            break;
+        }
 
         if (entity.isGrounded)
         {

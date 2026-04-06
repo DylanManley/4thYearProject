@@ -1,6 +1,6 @@
 #include "Platform.h"
 
-void Platform::setup(sf::Texture &texture, sf::Vector2f position, sf::Vector2f colliderSize)
+void Platform::setup(sf::Texture &texture, sf::Vector2f position, sf::Vector2f colliderSize, int newId)
 {
     platSprite = new sf::Sprite{ texture };
     platSprite->setTexture(texture, true);
@@ -9,6 +9,8 @@ void Platform::setup(sf::Texture &texture, sf::Vector2f position, sf::Vector2f c
     collider.setSize(sf::Vector2f(texture.getSize()));
     collider.setFillColor(grey);
     collider.setPosition(position);
+
+    id = newId;
 }
 
 CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)

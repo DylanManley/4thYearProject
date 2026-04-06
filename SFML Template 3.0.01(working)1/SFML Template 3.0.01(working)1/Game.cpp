@@ -32,7 +32,7 @@ Game::Game() :
 /// </summary>
 Game::~Game()
 {
- }
+}
 
 
 /// <summary>
@@ -150,7 +150,13 @@ void Game::update(sf::Time t_deltaTime)
 
 		if (player.isDead)
 		{
+			levelNum = 1;
 			gameState = GameState::MENU;
+		}
+
+		if (level.levelFinished)
+		{
+			nextLevel();
 		}
 
 		camera.setCenter({ player.body.getPosition().x, player.body.getPosition().y - 200 });
@@ -214,6 +220,12 @@ void Game::render()
 	m_window.display();
 }
 
+void Game::nextLevel()
+{
+	levelNum++;
+	setupSprites();
+}
+
 /// <summary>
 /// load the font and setup the text message for screen
 /// </summary>
@@ -268,7 +280,7 @@ void Game::setupSprites()
 	background.setOrigin(sf::Vector2f{ 640, 853 });
 	background.setScale(sf::Vector2f{ 1.5,1.5 });
 
-	level.setupTextures();
+	level.setupTextures(levelNum);
 	camera.setSize({ 1280.f, 720.f });
 	miniMap.setSize({ 12800, 7200 });
 
