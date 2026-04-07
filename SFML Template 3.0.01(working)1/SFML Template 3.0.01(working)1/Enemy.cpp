@@ -45,11 +45,40 @@ float Enemy::fuzzyDropkick(float dist) {
 
 void Enemy::update(Entity& player)
 {
-    float dist = std::abs(player.position.x - position.x);
+    float distX = std::abs(player.position.x - position.x);
+    float distY = std::abs(player.position.y - position.y);
+
+    bool differentLevel = distY > 100;
 
     if (isDead)
     {
         return;
+    }
+
+    if (ceilingAhead)
+    {
+        isJumping = false;
+    }
+
+    if (isGrounded)
+    {
+        if (!floorAhead)
+        {
+            isJumping = true;
+        }
+    }
+
+    if (isGrounded)
+    {
+        if (wallAhead && !halfAhead)
+        {
+            crouching = true;
+        }
+
+        if (!wallAhead && halfAhead)
+        {
+            isJumping = true;
+        }
     }
 
     body.setPosition(position);
@@ -82,26 +111,6 @@ void Enemy::update(Entity& player)
         }
     }
 
-    if (facing == Direction::LEFT)
-    {
-        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
-
-        if (currentState != slide && currentState != dropKick)
-        {
-            hitSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 200 });
-        }
-    }
-    else
-    {
-        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
-
-        if (currentState != slide && currentState != dropKick)
-        {
-            hitSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 200 });
-        }
-    }
-
-
     if (currentState == walk || currentState == run)
     {
         verticalVelocity = jumpStrength;
@@ -114,6 +123,14 @@ void Enemy::update(Entity& player)
             {
                 changeState(jumping);
             }
+        }
+    }
+
+    if (currentState == crouchIdle || currentState == crouchWalk)
+    {
+        if (ceilingAhead)
+        {
+            crouching = true;
         }
     }
 
@@ -170,7 +187,7 @@ void Enemy::update(Entity& player)
             patrolClock.restart();
         }
 
-        if (dist < 250)
+        if (distX < 250)
         {
             aiState = AI_STATE::CHASE;
             patrolClock.stop();
@@ -178,53 +195,74 @@ void Enemy::update(Entity& player)
         break;
     case AI_STATE::CHASE:
 
-        if (player.position.x > position.x)
+        if (wallAhead)
         {
-            pressingLeft = false;
-            pressingRight = true;
-
+            if (currentState == wallSlide && player.position.y < position.y)
+            {
+                isJumping = true;
+            }
         }
 
-        if (player.position.x < position.x)
+        if (!differentLevel)
         {
-            pressingRight = false;
-            pressingLeft = true;
+            if (player.position.x > position.x)
+            {
+                pressingLeft = false;
+                pressingRight = true;
+
+            }
+
+            if (player.position.x < position.x)
+            {
+                pressingRight = false;
+                pressingLeft = true;
+            }
         }
 
-        if (dist < 300)
+        if (differentLevel)
+        {
+            running = true;
+            if (facing == Direction::LEFT)
+            {
+                pressingRight = false;
+                pressingLeft = true;
+            }
+            else
+            {
+                pressingLeft = false;
+                pressingRight = true;
+            }
+
+            if (!floorAhead && isGrounded)
+            {
+                isJumping = true;
+            }
+
+            if (wallAhead && !ceilingAhead)
+            {
+                if (player.position.y < position.y)
+                {
+                    isJumping = true;
+                }
+            }
+        }
+
+        
+        if (distX < 300 && isGrounded)
         {
             aiState = AI_STATE::ATTACK;
         }
 
-        if (player.position.y < position.y)
-        {
-            isJumping = true;
-        }
-        else
-        {
-            isJumping = false;
-        }
-
-        if (dist > 200)
+        if (distX > 200)
         {
             running = true;
         }
         else
             running = false;
-
-
-        if (player.crouching)
-        {
-            crouching = true;
-        }
-        else
-        {
-            crouching = false;
-        }
         break;
 
     case AI_STATE::ATTACK:
-        if (dist < 50)
+        if (distX < 80)
         {
             if (player.position.x > position.x) {
                 pressingRight = true;
@@ -256,27 +294,40 @@ void Enemy::update(Entity& player)
             else
                 facing = Direction::LEFT;
         }
-
-
-        crouching = player.crouching;
         applyFuzzyResult(player);
 
-        if (dist > 350)
+        if (distX > 350 || differentLevel)
         {
             attacking = false;
             aiState = AI_STATE::CHASE;
         }
+
         break;
     default:
         break;
     }
 
     currentState->update(*this);
+
+    wallAhead = false;
+    floorAhead = false;
+    ceilingAhead = false;
+    halfAhead = false;
+    updateSensors(facing);
 }
 
 void Enemy::loadMovementTextures()
 {
+    //sensorse amd colliders
     collider.setFillColor(sf::Color::Red);
+    wallAheadSensor.setSize(sf::Vector2f{ 10.f, 60.f });
+    wallAheadSensor.setFillColor(sf::Color::Red);
+    floorAheadSensor.setSize(sf::Vector2f{ 20.f, 10.f });
+    floorAheadSensor.setFillColor(sf::Color::Red);
+    ceilingAheadSensor.setSize(sf::Vector2f{ 20.f, 10.f });
+    halfAheadSensor.setSize(sf::Vector2f{ 10.f, 20.f });
+    halfAheadSensor.setFillColor(sf::Color::White);
+
     // Load all movement textures
 
    //Idle and Walk
@@ -409,8 +460,48 @@ void Enemy::loadCombatTextures()
         std::cout << "Couldnt load death Texture\n";
 }
 
+void Enemy::updateSensors(Direction facingdir)
+{
+    if (facing == Direction::LEFT)
+    {
+        headSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 250 });
+
+        if (currentState != slide && currentState != dropKick)
+        {
+            hitSensor.setPosition(sf::Vector2f{ position.x - 100, position.y - 200 });
+        }
+
+        wallAheadSensor.setPosition(sf::Vector2f{ position.x - 200, position.y - 200 });
+        floorAheadSensor.setPosition(sf::Vector2f{ position.x - 230, position.y + 30 });
+        ceilingAheadSensor.setPosition(sf::Vector2f{ position.x - 20, position.y - 300 });
+        halfAheadSensor.setPosition(sf::Vector2f{ position.x - 200, position.y - 50 });
+
+    }
+    else
+    {
+        headSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 250 });
+
+        if (currentState != slide && currentState != dropKick)
+        {
+            hitSensor.setPosition(sf::Vector2f{ position.x + 50, position.y - 200 });
+        }
+
+        wallAheadSensor.setPosition(sf::Vector2f{ position.x + 150, position.y - 200 });
+        floorAheadSensor.setPosition(sf::Vector2f{ position.x + 180, position.y + 30 });
+        ceilingAheadSensor.setPosition(sf::Vector2f{ position.x, position.y - 300 });
+        halfAheadSensor.setPosition(sf::Vector2f{ position.x + 150, position.y - 50 });
+    }
+}
+
 void Enemy::applyFuzzyResult(const Entity& player)
 {
+    float distY = std::abs(player.position.y - position.y);
+
+    if (distY > 100.f)
+    {
+        return;
+    }
+
     float dist = std::abs(player.position.x - position.x);
     float attackScore = fuzzyAttack(dist);
     float blockScore = fuzzyBlock(dist, player.attacking);

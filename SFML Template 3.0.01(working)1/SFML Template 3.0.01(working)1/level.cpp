@@ -341,10 +341,30 @@ void Level::handleCollision(Entity& entity, Platform& platform)
     float platformBottom = platformBounds.position.y + platformBounds.size.y;
     float platformRight = platformBounds.position.x + platformBounds.size.x;
     float platformLeft = platformBounds.position.x;
-
     float entityBottom = entityBounds.position.y + entityBounds.size.y;
     float entityTop = entityBounds.position.y;
     float entityWidth = entityBounds.size.x;
+
+    //enemy sensors
+    if (entity.wallAheadSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
+    {
+        entity.checkWallAhead();
+    }
+
+    if (entity.floorAheadSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
+    {
+        entity.checkFloor();
+    }
+
+    if (entity.ceilingAheadSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
+    {
+        entity.checkCeiling();
+    }
+
+    if (entity.halfAheadSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
+    {
+        entity.checkHalf();
+    }
     
     if (platform.id == 6)
     {

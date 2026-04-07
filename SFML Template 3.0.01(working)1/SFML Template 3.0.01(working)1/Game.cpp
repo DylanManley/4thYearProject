@@ -128,8 +128,8 @@ void Game::update(sf::Time t_deltaTime)
 		break;
 	case GameState::GAMEPLAY:
 		level.checkCollisions(player);
-		level.checkCollisions(enemy1);
 		player.update();
+		level.checkCollisions(enemy1);
 		enemy1.update(player);
 
 		if (player.hitSensor.getGlobalBounds().findIntersection(enemy1.collider.getGlobalBounds()))
@@ -195,9 +195,12 @@ void Game::render()
 		m_window.draw(background);
 		level.render(m_window, false);
 		enemy1.Render(m_window, false);
+		m_window.draw(enemy1.wallAheadSensor);
+		m_window.draw(enemy1.floorAheadSensor);
+		m_window.draw(enemy1.ceilingAheadSensor);
+		m_window.draw(enemy1.halfAheadSensor);
 
 		player.Render(m_window, false);
-		m_window.draw(border);
 
 		//UI
 		m_window.setView(m_window.getDefaultView());
@@ -281,7 +284,7 @@ void Game::setupSprites()
 	background.setScale(sf::Vector2f{ 1.5,1.5 });
 
 	level.setupTextures(levelNum);
-	camera.setSize({ 1280.f, 720.f });
+	camera.setSize({ 1920.f, 1080.f });
 	miniMap.setSize({ 12800, 7200 });
 
 	player.setUp({ 300.f, 1530.f });

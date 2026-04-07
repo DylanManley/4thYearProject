@@ -18,6 +18,10 @@ public:
     virtual void setStates();
     virtual void setUp(sf::Vector2f t_position);
     virtual void takeDamage(int t_damage);
+    virtual void checkWallAhead() {}
+    virtual void checkFloor() {}
+    virtual void checkHalf(){}
+    virtual void checkCeiling() {}
 
     virtual bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);
     virtual void changeState(StateMachine* newState);
@@ -127,6 +131,11 @@ public:
     sf::Sprite body{ idleLeftTex };
     sf::RectangleShape collider;
     sf::RectangleShape headSensor;
+
+    sf::RectangleShape wallAheadSensor;
+    sf::RectangleShape floorAheadSensor;
+    sf::RectangleShape ceilingAheadSensor;
+    sf::RectangleShape halfAheadSensor;
 
 
     int currentFrame = 0;

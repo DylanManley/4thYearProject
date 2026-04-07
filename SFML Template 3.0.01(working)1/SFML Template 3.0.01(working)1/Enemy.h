@@ -24,6 +24,36 @@ private:
     sf::Clock attackCooldown;
     bool canAttack = true;
 
+    //sensors
+    bool wallAhead = false;
+    bool floorAhead = true;
+    bool ceilingAhead = false;
+    bool halfAhead = false;
+
+    void updateSensors(Direction facingdir);
+
+    virtual void checkWallAhead() override 
+    {
+        wallAhead = true;
+    }
+
+    virtual void checkFloor() override
+    {
+        floorAhead = true;
+    }
+
+    virtual void checkHalf() override
+    {
+        halfAhead = true;
+    }
+
+    virtual void checkCeiling() override
+    {
+        ceilingAhead = true;
+    }
+
+    bool canStand = false;
+
     // Membership functions
     float mClose(float dist);
     float mFar(float dist);
