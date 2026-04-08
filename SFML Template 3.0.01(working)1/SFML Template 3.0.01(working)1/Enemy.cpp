@@ -130,7 +130,7 @@ void Enemy::update(Entity& player)
     {
         if (ceilingAhead)
         {
-            crouching = true;
+            crouching = false;
         }
     }
 

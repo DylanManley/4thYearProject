@@ -52,8 +52,6 @@ private:
         ceilingAhead = true;
     }
 
-    bool canStand = false;
-
     // Membership functions
     float mClose(float dist);
     float mFar(float dist);

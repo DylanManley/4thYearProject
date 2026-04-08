@@ -195,10 +195,6 @@ void Game::render()
 		m_window.draw(background);
 		level.render(m_window, false);
 		enemy1.Render(m_window, false);
-		m_window.draw(enemy1.wallAheadSensor);
-		m_window.draw(enemy1.floorAheadSensor);
-		m_window.draw(enemy1.ceilingAheadSensor);
-		m_window.draw(enemy1.halfAheadSensor);
 
 		player.Render(m_window, false);
 
@@ -284,7 +280,7 @@ void Game::setupSprites()
 	background.setScale(sf::Vector2f{ 1.5,1.5 });
 
 	level.setupTextures(levelNum);
-	camera.setSize({ 1920.f, 1080.f });
+	camera.setSize({ 1280.f, 720.f });
 	miniMap.setSize({ 12800, 7200 });
 
 	player.setUp({ 300.f, 1530.f });
