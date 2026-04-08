@@ -129,23 +129,19 @@ void Game::update(sf::Time t_deltaTime)
 	case GameState::GAMEPLAY:
 		level.checkCollisions(player);
 		player.update();
-		level.checkCollisions(enemy1);
-		enemy1.update(player);
 
-		if (player.hitSensor.getGlobalBounds().findIntersection(enemy1.collider.getGlobalBounds()))
+		for (auto& enemy : enemies)
 		{
-			if (player.attacking)
-			{
-				enemy1.takeDamage(20);
-			}
-		}
+			level.checkCollisions(enemy);
+			enemy.update(player);
 
-		if (enemy1.hitSensor.getGlobalBounds().findIntersection(player.collider.getGlobalBounds()))
-		{
-			if (enemy1.attacking && !enemy1.isDead)
-			{
-				player.takeDamage(5);
-			}
+			if (player.hitSensor.getGlobalBounds().findIntersection(enemy.collider.getGlobalBounds()))
+				if (player.attacking)
+					enemy.takeDamage(20);
+
+			if (enemy.hitSensor.getGlobalBounds().findIntersection(player.collider.getGlobalBounds()))
+				if (enemy.attacking && !enemy.isDead)
+					player.takeDamage(5);
 		}
 
 		if (player.isDead)
@@ -194,7 +190,11 @@ void Game::render()
 		m_window.setView(camera);
 		m_window.draw(background);
 		level.render(m_window, false);
-		enemy1.Render(m_window, false);
+
+		for (auto& enemy : enemies)
+		{
+			enemy.Render(m_window, false);
+		}
 
 		player.Render(m_window, false);
 
@@ -206,7 +206,11 @@ void Game::render()
 		m_window.setView(miniMap);
 
 		level.render(m_window, true);
-		enemy1.Render(m_window, true);
+
+		for (auto& enemy : enemies)
+		{
+			enemy.Render(m_window, true);
+		}
 
 		player.Render(m_window, true);
 
@@ -222,6 +226,8 @@ void Game::render()
 void Game::nextLevel()
 {
 	levelNum++;
+	player.position = sf::Vector2f{ 800.f, 1530.f };
+	player.health = 100;
 	setupSprites();
 }
 
@@ -244,6 +250,18 @@ void Game::setupTexts()
 
 }
 
+std::vector<sf::Vector2f> Game::getEnemySpawns(int level)
+{
+	switch (level)
+	{
+	case 1:
+		return { {3950.f, 1530.f}, {6000.f, 765.f}, { 15491.f, 2040.f } };
+	case 2: 
+		return { {4316.5f, 3825.f}, {8878.f, 2040.f}, {15433.f, 1912.f}, {16567.3, 2167} };
+	default: return {};
+	}
+	return std::vector<sf::Vector2f>();
+}
 
 /// <summary>
 /// load the texture and setup the sprite for the logo
@@ -283,8 +301,16 @@ void Game::setupSprites()
 	camera.setSize({ 1280.f, 720.f });
 	miniMap.setSize({ 12800, 7200 });
 
-	player.setUp({ 300.f, 1530.f });
-	enemy1.setUp({ 3950.f, 1530.f });
+	player.setUp({ 800.f, 1530.f });
+
+	enemies.clear();
+	auto spawns = getEnemySpawns(levelNum);
+	enemies.reserve(spawns.size()); // prevents reallocation
+	for (auto& spawnPos : spawns)
+	{
+		enemies.emplace_back();
+		enemies.back().setUp(spawnPos);
+	}
 
 	miniMap.setViewport(sf::FloatRect({ mapX, mapY }, { mapWidth, mapHeight }));
 }

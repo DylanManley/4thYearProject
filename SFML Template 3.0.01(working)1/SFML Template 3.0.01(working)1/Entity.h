@@ -20,7 +20,7 @@ public:
     virtual void takeDamage(int t_damage);
     virtual void checkWallAhead() {}
     virtual void checkFloor() {}
-    virtual void checkHalf(){}
+    virtual void checkHalf() {}
     virtual void checkCeiling() {}
 
     virtual bool animate(int frameCount, int frameWidth, int frameHeight, bool loop = true);

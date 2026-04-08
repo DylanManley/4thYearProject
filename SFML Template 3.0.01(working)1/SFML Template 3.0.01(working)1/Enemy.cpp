@@ -2,21 +2,21 @@
 #include <iostream>
 
 float Enemy::mFar(float dist) {
-    if (dist <= 200) return 0.f;
-    if (dist <= 400) return (dist - 200.f) / (400.f - 200.f);
+    if (dist <= 250) return 0.f;
+    if (dist <= 400) return (dist - 250.f) / (400.f - 250.f);
     return 1.f;
 }
 
 float Enemy::mMedium(float dist) {
-    if (dist <= 80)  return 0.f;
-    if (dist <= 200) return (dist - 80.f) / (200.f - 80.f);
-    if (dist <= 300) return (300.f - dist) / (300.f - 200.f);
+    if (dist <= 100)  return 0.f;
+    if (dist <= 150) return (dist - 80.f) / (150.f - 80.f);
+    if (dist <= 300) return (300.f - dist) / (300.f - 100.f);
     return 0.f;
 }
 
 float Enemy::mClose(float dist) {
-    if (dist <= 20) return 1.f;
-    if (dist <= 300) return (300.f - dist) / (300.f - 20.f);
+    if (dist <= 80) return 1.f;
+    if (dist <= 100) return (100.f - dist) / (100.f - 80.f);
     return 0.f;
 }
 
@@ -128,9 +128,16 @@ void Enemy::update(Entity& player)
 
     if (currentState == crouchIdle || currentState == crouchWalk)
     {
-        if (ceilingAhead)
+        if (currentState == crouchIdle || currentState == crouchWalk)
         {
-            crouching = false;
+            if (ceilingAhead)
+            {
+                crouching = false;
+            }
+            else
+            {
+                crouching = true;
+            }
         }
     }
 
@@ -187,7 +194,7 @@ void Enemy::update(Entity& player)
             patrolClock.restart();
         }
 
-        if (distX < 250)
+        if (distX < 250 && !differentLevel)
         {
             aiState = AI_STATE::CHASE;
             patrolClock.stop();
@@ -195,13 +202,14 @@ void Enemy::update(Entity& player)
         break;
     case AI_STATE::CHASE:
 
-        if (wallAhead)
+        if (!wallAhead)
         {
             if (currentState == wallSlide && player.position.y < position.y)
             {
                 isJumping = true;
             }
         }
+
 
         if (!differentLevel)
         {
@@ -218,8 +226,7 @@ void Enemy::update(Entity& player)
                 pressingLeft = true;
             }
         }
-
-        if (differentLevel)
+        else if (differentLevel)
         {
             running = true;
             if (facing == Direction::LEFT)
@@ -245,12 +252,29 @@ void Enemy::update(Entity& player)
                     isJumping = true;
                 }
             }
+
+            if (floorAhead && ceilingAhead && wallAhead)
+            {
+                if (pressingLeft)
+                {
+                    pressingLeft = false;
+                    pressingRight = true;
+                }
+                else
+                {
+                    pressingRight = false;
+                    pressingLeft = true;
+                }
+            }
         }
 
         
-        if (distX < 300 && isGrounded)
+        if (distX < 400 && isGrounded)
         {
-            aiState = AI_STATE::ATTACK;
+            if (!differentLevel)
+            {
+                aiState = AI_STATE::ATTACK;
+            }
         }
 
         if (distX > 200)
@@ -296,7 +320,7 @@ void Enemy::update(Entity& player)
         }
         applyFuzzyResult(player);
 
-        if (distX > 350 || differentLevel)
+        if (distX > 400 || differentLevel)
         {
             attacking = false;
             aiState = AI_STATE::CHASE;
@@ -535,8 +559,8 @@ void Enemy::applyFuzzyResult(const Entity& player)
 
     if (dropkickScore > 0.3f && isGrounded && canAttack)
     {
-        attacking = true;
         isJumping = true;
+        attacking = true;
         pressingLeft = false;
         pressingRight = false;
         canAttack = false;

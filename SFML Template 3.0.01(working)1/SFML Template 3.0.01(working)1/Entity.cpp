@@ -198,6 +198,8 @@ void Entity::setUp(sf::Vector2f t_position)
     hitSensor.setPosition(sf::Vector2f{ position.x + 12, position.y + 70 });
     hitSensor.setFillColor(sf::Color::Red);
     hitSensor.setSize(sf::Vector2f{ 50 , 15 });
+
+    health = 100;
 }
 
 void Entity::takeDamage(int t_damage)

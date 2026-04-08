@@ -62,7 +62,9 @@ private:
 
 	Player player;
 	Level level;
-	Enemy enemy1;
+	std::vector<Enemy> enemies;
+	std::vector<sf::Vector2f>getEnemySpawns(int level);
+
 	GameState gameState = GameState::MENU;
 
 	sf::Texture titleScreenTex;

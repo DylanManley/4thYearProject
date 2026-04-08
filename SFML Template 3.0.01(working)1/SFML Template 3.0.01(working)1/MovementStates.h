@@ -316,6 +316,7 @@ public:
     void enter(Entity& e) override
     {
         e.body.setTexture(e.crouchTex);
+        e.crouching = false;
     }
 
     void update(Entity& e) override
@@ -344,6 +345,7 @@ public:
             e.body.setTexture(e.cWalkLTex);
 
         e.currentFrame = 0;
+        e.crouching = false;
     }
 
     void update(Entity& e) override
@@ -590,6 +592,7 @@ public:
         e.collider.setScale({ 1, 0.6 });
         e.currentFrame = 0;
         e.body.setTexture(e.crouchDownTex);
+        e.crouching = false;
     }
 
     void update(Entity& e) override
@@ -610,6 +613,7 @@ public:
         e.collider.setScale({ 1, 1 });
         e.currentFrame = 0;
         e.body.setTexture(e.standUpTex);
+        e.crouching = false;
     }
 
     void update(Entity& e) override
