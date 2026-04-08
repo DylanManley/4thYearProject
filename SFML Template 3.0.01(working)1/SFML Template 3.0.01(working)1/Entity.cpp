@@ -199,6 +199,14 @@ void Entity::setUp(sf::Vector2f t_position)
     hitSensor.setFillColor(sf::Color::Red);
     hitSensor.setSize(sf::Vector2f{ 50 , 15 });
 
+    healthBarBg.setSize(sf::Vector2f{ 150.f, 20.f });
+    healthBarBg.setFillColor(sf::Color::Black);
+    healthBarBg.setPosition({ 20.f, 20.f });
+
+    healthBar.setSize(sf::Vector2f{ 150.f, 10.f });
+    healthBar.setFillColor(sf::Color::Red);
+    healthBar.setPosition({ 20.f, 20.f });
+
     health = 100;
 }
 
@@ -267,6 +275,8 @@ void Entity::Render(sf::RenderWindow& m_window, bool mapView)
     }
     else
     {
+       m_window.draw(healthBarBg);
+       m_window.draw(healthBar);
        m_window.draw(body);
     }
 }

@@ -3,6 +3,7 @@
 
 void Player::update()
 {
+
     if (!isDead)
     {
         pressingRight = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D);
@@ -17,6 +18,11 @@ void Player::update()
         std::cout << "Pos X: " << position.x << " Pos Y: " << position.y << std::endl;
         body.setPosition(position);
         collider.setPosition(position);
+
+        healthBarBg.setPosition(sf::Vector2f{ position.x - collider.getSize().x, position.y - collider.getSize().y - 30 });
+        healthBar.setPosition(sf::Vector2f{ position.x - collider.getSize().x, position.y - collider.getSize().y - 25});
+
+        healthBar.setSize({ 150.f * (health / 100.f), 10.f });
 
         if (pressingLeft)
         {

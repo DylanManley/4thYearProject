@@ -50,6 +50,11 @@ void Enemy::update(Entity& player)
 
     bool differentLevel = distY > 100;
 
+    healthBarBg.setPosition(sf::Vector2f{ position.x - collider.getSize().x, position.y - collider.getSize().y - 20 });
+    healthBar.setPosition(sf::Vector2f{ position.x - collider.getSize().x, position.y - collider.getSize().y - 15 });
+
+    healthBar.setSize({ 150.f * (health / 100.f), 10.f });
+
     if (isDead)
     {
         return;

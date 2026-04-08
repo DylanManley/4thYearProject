@@ -13,6 +13,9 @@ class Entity
 public:
     Entity() = default;
 
+    sf::RectangleShape healthBarBg;
+    sf::RectangleShape healthBar;
+
     virtual void loadMovementTextures();
     virtual void loadCombatTextures();
     virtual void setStates();
