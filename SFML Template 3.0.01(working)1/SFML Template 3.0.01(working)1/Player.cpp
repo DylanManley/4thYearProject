@@ -24,12 +24,17 @@ void Player::update()
 
         healthBar.setSize({ 150.f * (health / 100.f), 10.f });
 
+
         if (pressingLeft)
         {
             if (currentState != wallSlide &&
-                currentState != slide)
+                currentState != slide &&
+                currentState != jumping &&
+                currentState != falling &&
+                currentState != wallJump &&
+                currentState != climb)
             {
-                !pressingRight;
+                pressingRight = false;
                 facing = Direction::LEFT;
             }
         }
@@ -37,9 +42,13 @@ void Player::update()
         if (pressingRight)
         {
             if (currentState != wallSlide &&
-                currentState != slide)
+                currentState != slide &&
+                currentState != jumping &&
+                currentState != falling &&
+                currentState != wallJump &&
+                currentState != climb)
             {
-                !pressingLeft;
+                pressingLeft = false;
                 facing = Direction::RIGHT;
             }
         }

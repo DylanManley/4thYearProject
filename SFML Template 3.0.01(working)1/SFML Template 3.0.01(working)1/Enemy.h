@@ -64,6 +64,8 @@ private:
     float fuzzyDropkick(float dist);
     float fuzzyCloseGap(float dist);
 
+    bool isCrouched = false;
+
     // Defuzzification
     void applyFuzzyResult(const Entity& player);
 };

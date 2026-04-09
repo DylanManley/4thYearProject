@@ -257,7 +257,7 @@ std::vector<sf::Vector2f> Game::getEnemySpawns(int level)
 	case 1:
 		return { {3950.f, 1530.f}, {6000.f, 765.f}, { 15491.f, 2040.f } };
 	case 2: 
-		return { {4316.5f, 3825.f}, {8878.f, 2040.f}, {15433.f, 1912.f}, {16567.3, 2167} };
+		return { {6636.f, 1530.f}, {8878.f, 2040.f}, {15433.f, 1912.f}, {16567.3, 2167} };
 	default: return {};
 	}
 	return std::vector<sf::Vector2f>();

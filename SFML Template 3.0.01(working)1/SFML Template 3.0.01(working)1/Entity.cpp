@@ -174,7 +174,7 @@ void Entity::setStates()
 void Entity::setUp(sf::Vector2f t_position)
 {
     collider.setPosition(position);
-    collider.setFillColor(sf::Color::Blue);
+    collider.setFillColor(sf::Color::Green);
     collider.setSize(sf::Vector2f{ 100,250 });
     collider.setOrigin({ 50.f, 250.f });
 

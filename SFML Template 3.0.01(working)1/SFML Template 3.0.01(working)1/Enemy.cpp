@@ -8,15 +8,15 @@ float Enemy::mFar(float dist) {
 }
 
 float Enemy::mMedium(float dist) {
-    if (dist <= 100)  return 0.f;
-    if (dist <= 150) return (dist - 80.f) / (150.f - 80.f);
-    if (dist <= 300) return (300.f - dist) / (300.f - 100.f);
+    if (dist <= 60)  return 0.f;
+    if (dist <= 150) return (dist - 150.f) / (150.f - 80.f);
+    if (dist <= 300) return (300.f - dist) / (300.f - 150.f);
     return 0.f;
 }
 
 float Enemy::mClose(float dist) {
-    if (dist <= 80) return 1.f;
-    if (dist <= 100) return (100.f - dist) / (100.f - 80.f);
+    if (dist <= 60) return 1.f;
+    if (dist <= 80) return (80.f - dist) / (80.f - 60.f);
     return 0.f;
 }
 
@@ -48,7 +48,7 @@ void Enemy::update(Entity& player)
     float distX = std::abs(player.position.x - position.x);
     float distY = std::abs(player.position.y - position.y);
 
-    bool differentLevel = distY > 100;
+    bool differentLevel = distY > 200;
 
     healthBarBg.setPosition(sf::Vector2f{ position.x - collider.getSize().x, position.y - collider.getSize().y - 20 });
     healthBar.setPosition(sf::Vector2f{ position.x - collider.getSize().x, position.y - collider.getSize().y - 15 });
@@ -75,17 +75,36 @@ void Enemy::update(Entity& player)
 
     if (isGrounded)
     {
-        if (wallAhead && !halfAhead)
-        {
-            crouching = true;
-        }
-
         if (!wallAhead && halfAhead)
         {
             isJumping = true;
         }
+
+        if (currentState != crouchWalk &&
+            currentState != crouchIdle &&
+            currentState != idleToCrouch &&
+            currentState != crouchToIdle &&
+            currentState != slide &&
+            currentState != RunToSlide &&
+            currentState != SlideToRun)
+        {
+            if (wallAhead && !halfAhead)
+            {
+                isCrouched = true;
+                crouching = true;
+            }
+        }
     }
 
+    if (isCrouched && !ceilingAhead)
+    {
+        if (currentState == crouchIdle || currentState == crouchWalk)
+        {
+            crouching = true;
+            isCrouched = false;
+        }
+    }
+        
     body.setPosition(position);
     collider.setPosition(position);
 
@@ -131,21 +150,6 @@ void Enemy::update(Entity& player)
         }
     }
 
-    if (currentState == crouchIdle || currentState == crouchWalk)
-    {
-        if (currentState == crouchIdle || currentState == crouchWalk)
-        {
-            if (ceilingAhead)
-            {
-                crouching = false;
-            }
-            else
-            {
-                crouching = true;
-            }
-        }
-    }
-
     if (!isGrounded)
     {
         if (currentState != jumping &&
@@ -159,6 +163,43 @@ void Enemy::update(Entity& player)
         {
             collider.setScale({ 1, 1 });
             changeState(falling);
+        }
+    }
+
+    if (!floorAhead && isGrounded)
+    {
+        isJumping = true;
+    }
+
+    if (wallAhead && !ceilingAhead)
+    {
+        if (player.position.y < position.y)
+        {
+            isJumping = true;
+        }
+    }
+
+    if (currentState != crouchWalk &&
+        currentState != crouchIdle &&
+        currentState != idleToCrouch &&
+        currentState != crouchToIdle &&
+        currentState != slide &&
+        currentState != RunToSlide &&
+        currentState != SlideToRun)
+    {
+
+        if (floorAhead && ceilingAhead && wallAhead)
+        {
+            if (pressingLeft)
+            {
+                pressingLeft = false;
+                pressingRight = true;
+            }
+            else
+            {
+                pressingRight = false;
+                pressingLeft = true;
+            }
         }
     }
 
@@ -244,37 +285,10 @@ void Enemy::update(Entity& player)
                 pressingLeft = false;
                 pressingRight = true;
             }
-
-            if (!floorAhead && isGrounded)
-            {
-                isJumping = true;
-            }
-
-            if (wallAhead && !ceilingAhead)
-            {
-                if (player.position.y < position.y)
-                {
-                    isJumping = true;
-                }
-            }
-
-            if (floorAhead && ceilingAhead && wallAhead)
-            {
-                if (pressingLeft)
-                {
-                    pressingLeft = false;
-                    pressingRight = true;
-                }
-                else
-                {
-                    pressingRight = false;
-                    pressingLeft = true;
-                }
-            }
         }
 
-        
-        if (distX < 400 && isGrounded)
+
+        if (distX < 300 && isGrounded)
         {
             if (!differentLevel)
             {
@@ -291,19 +305,8 @@ void Enemy::update(Entity& player)
         break;
 
     case AI_STATE::ATTACK:
-        if (distX < 80)
-        {
-            if (player.position.x > position.x) {
-                pressingRight = true;
-                pressingLeft = false;
-            }
-            else {
-                pressingLeft = true;
-                pressingRight = false;
-            }
-        }
-        else
-        {
+        if (distX < 60)
+        { 
             pressingLeft = false;
             pressingRight = false;
             running = false;
@@ -325,7 +328,7 @@ void Enemy::update(Entity& player)
         }
         applyFuzzyResult(player);
 
-        if (distX > 400 || differentLevel)
+        if (distX > 450 || differentLevel)
         {
             attacking = false;
             aiState = AI_STATE::CHASE;
@@ -502,7 +505,6 @@ void Enemy::updateSensors(Direction facingdir)
 
         wallAheadSensor.setPosition(sf::Vector2f{ position.x - 200, position.y - 200 });
         floorAheadSensor.setPosition(sf::Vector2f{ position.x - 230, position.y + 30 });
-        ceilingAheadSensor.setPosition(sf::Vector2f{ position.x - 20, position.y - 300 });
         halfAheadSensor.setPosition(sf::Vector2f{ position.x - 200, position.y - 50 });
 
     }
@@ -517,9 +519,25 @@ void Enemy::updateSensors(Direction facingdir)
 
         wallAheadSensor.setPosition(sf::Vector2f{ position.x + 150, position.y - 200 });
         floorAheadSensor.setPosition(sf::Vector2f{ position.x + 180, position.y + 30 });
-        ceilingAheadSensor.setPosition(sf::Vector2f{ position.x, position.y - 300 });
         halfAheadSensor.setPosition(sf::Vector2f{ position.x + 150, position.y - 50 });
     }
+
+    if (currentState != crouchWalk &&
+        currentState != crouchIdle &&
+        currentState != idleToCrouch &&
+        currentState != crouchToIdle &&
+        currentState != slide &&
+        currentState != RunToSlide &&
+        currentState != SlideToRun)
+    {
+        ceilingAheadSensor.setPosition(sf::Vector2f{ position.x, position.y - 300 });
+    }
+    else
+    {
+        ceilingAheadSensor.setPosition(sf::Vector2f{ position.x, position.y - 200 });
+    }
+
+
 }
 
 void Enemy::applyFuzzyResult(const Entity& player)

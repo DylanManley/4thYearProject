@@ -227,8 +227,11 @@ public:
 class StateFalling : public StateMachine
 {
 public:
+    int startHeight;
+
     void enter(Entity& e) override
     {
+        startHeight = e.position.y;
         if (e.facing == Direction::RIGHT)
         {
             e.body.setTexture(e.FallRTex);
@@ -256,9 +259,17 @@ public:
         // Landing check
         if (e.isGrounded)
         {
-            e.verticalVelocity = 0;
-            e.currentFrame = 0;
-            e.changeState(e.landing);
+            if (e.fallTimer >= e.fatalFall)
+            {
+                e.changeState(e.dead);
+            }
+            else
+            {
+                e.fallTimer = 0;
+                e.verticalVelocity = 0;
+                e.currentFrame = 0;
+                e.changeState(e.landing);
+            }
         }
 
         if (e.attacking)
@@ -286,12 +297,6 @@ public:
 
     void update(Entity& e) override
     {
-
-        if (e.fallTimer >= e.fatalFall)
-        {
-            e.changeState(e.dead);
-        }
-        e.fallTimer = 0;
 
         if (e.animate(4, 238, 298, false))
         {
