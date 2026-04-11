@@ -2,14 +2,14 @@
 #include <iostream>
 
 float Enemy::mFar(float dist) {
-    if (dist <= 250) return 0.f;
-    if (dist <= 400) return (dist - 250.f) / (400.f - 250.f);
+    if (dist <= 200) return 0.f;
+    if (dist <= 450) return (dist - 200.f) / (450.f - 200.f);
     return 1.f;
 }
 
 float Enemy::mMedium(float dist) {
-    if (dist <= 60)  return 0.f;
-    if (dist <= 150) return (dist - 150.f) / (150.f - 80.f);
+    if (dist <= 80)  return 0.f;
+    if (dist <= 150) return (dist - 80.f) / (150.f - 80.f);
     if (dist <= 300) return (300.f - dist) / (300.f - 150.f);
     return 0.f;
 }
@@ -19,7 +19,6 @@ float Enemy::mClose(float dist) {
     if (dist <= 80) return (80.f - dist) / (80.f - 60.f);
     return 0.f;
 }
-
 
 float Enemy::mPlayerAttacking(bool playerAttacking) {
     return playerAttacking ? 1.f : 0.f;
@@ -288,7 +287,7 @@ void Enemy::update(Entity& player)
         }
 
 
-        if (distX < 300 && isGrounded)
+        if (distX < 400 && isGrounded)
         {
             if (!differentLevel)
             {
@@ -569,7 +568,7 @@ void Enemy::applyFuzzyResult(const Entity& player)
         blockCooldown.reset();
     }
 
-    if (canBlock && blockScore > attackScore && blockScore > 0.3f)
+    if (canBlock && blockScore > attackScore && blockScore > 0.1f)
     {
         blocking = true;
         attacking = false;
@@ -580,7 +579,7 @@ void Enemy::applyFuzzyResult(const Entity& player)
 
     blocking = false;
 
-    if (dropkickScore > 0.3f && isGrounded && canAttack)
+    if (dropkickScore > 0.2f && isGrounded && canAttack)
     {
         isJumping = true;
         attacking = true;
@@ -591,7 +590,7 @@ void Enemy::applyFuzzyResult(const Entity& player)
         return;
     }
 
-    if (closeGapScore > 0.3f && canAttack)
+    if (closeGapScore > 0.1f && canAttack)
     {
         blocking = false;
         attacking = false;
@@ -608,7 +607,7 @@ void Enemy::applyFuzzyResult(const Entity& player)
     }
 
 
-    if (attackScore > 0.3f && canAttack)
+    if (attackScore > 0.4f && canAttack)
     {
         isJumping = false;
         attacking = true;

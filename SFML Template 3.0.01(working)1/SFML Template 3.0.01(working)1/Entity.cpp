@@ -275,8 +275,11 @@ void Entity::Render(sf::RenderWindow& m_window, bool mapView)
     }
     else
     {
-       m_window.draw(healthBarBg);
-       m_window.draw(healthBar);
+        if (!isDead)
+        {
+            m_window.draw(healthBarBg);
+            m_window.draw(healthBar);
+        }
        m_window.draw(body);
     }
 }

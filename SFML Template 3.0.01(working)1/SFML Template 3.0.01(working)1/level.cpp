@@ -185,7 +185,7 @@ void Level::load(int levelNum)
                 {
                     tiles[y][x].setup(roofWall, pos, size, 2);
                 }
-                else if (levelData[y-1][x] == 0)
+                else if (levelData[y-1][x] == 0 || levelData[y - 1][x] == 6)
                 {
                     tiles[y][x].setup(roofWall, pos, size, 2);
                 }
@@ -366,7 +366,7 @@ void Level::handleCollision(Entity& entity, Platform& platform)
         entity.checkHalf();
     }
     
-    if (platform.id == 6)
+    if (platform.id == 6 && col != CollisionType::None)
     {
         levelFinished = true;
     }
@@ -395,6 +395,11 @@ void Level::handleCollision(Entity& entity, Platform& platform)
         entity.horizontalVelocity = 0.f;
         entity.slideVelocity = 0.f;
         entity.position.x = platformLeft - (entityWidth / 2.0f);
+
+        if (platform.id == 4 || platform.id == 5)
+        {
+            return;
+        }
 
         if (entity.facing == Direction::RIGHT)
         {
@@ -428,6 +433,12 @@ void Level::handleCollision(Entity& entity, Platform& platform)
         entity.speed = 0.f;
         entity.horizontalVelocity = 0.f;
         entity.slideVelocity = 0.f;
+
+        if (platform.id == 4 || platform.id == 5)
+        {
+            return;
+        }
+
 
         if (entity.facing == Direction::LEFT)
         {

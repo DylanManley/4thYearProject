@@ -13,7 +13,6 @@ void Player::update()
         running = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift);
         attacking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
         blocking = sf::Mouse::isButtonPressed(sf::Mouse::Button::Right);
-        bool suicide = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P);
 
         std::cout << "Pos X: " << position.x << " Pos Y: " << position.y << std::endl;
         body.setPosition(position);
@@ -110,11 +109,6 @@ void Player::update()
                 collider.setScale({ 1, 1 });
                 changeState(falling);
             }
-        }
-
-        if (suicide)
-        {
-            changeState(dead);
         }
 
         if (!canTakeDamage && damageClock.getElapsedTime().asSeconds() >= 1.0f)

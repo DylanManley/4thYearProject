@@ -261,6 +261,7 @@ public:
         {
             if (e.fallTimer >= e.fatalFall)
             {
+                e.health = 0;
                 e.changeState(e.dead);
             }
             else
