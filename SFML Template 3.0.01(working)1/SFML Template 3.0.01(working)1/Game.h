@@ -78,7 +78,7 @@ private:
 	sf::Sprite titleOptions{ titleOptionsTex };
 	sf::View camera;
 
-	int levelNum = 3;
+	int levelNum = 1;
 
 	float uiPadding = 10.f;
 	sf::Vector2u winSize = m_window.getSize();
