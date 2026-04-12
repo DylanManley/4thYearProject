@@ -265,6 +265,7 @@ void Entity::changeState(StateMachine* newState)
 
 void Entity::Render(sf::RenderWindow& m_window, bool mapView)
 {
+    //draw the colliders only on the minimap
     if (mapView)
     {
         if (!isDead)

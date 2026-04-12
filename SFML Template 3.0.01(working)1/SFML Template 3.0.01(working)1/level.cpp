@@ -55,11 +55,13 @@ bool Level::loadFromFile(const std::string& filename, int data[Height][Width])
     std::string line;
     int y = 0;
 
+    // Read each row until end of file or grid height is reached
     while (std::getline(file, line) && y < Height)
     {
         std::stringstream ss(line);
         int x = 0;
 
+        // Parse each value in the row into the grid
         while (ss >> data[y][x] && x < Width)
         {
             x++;
@@ -295,12 +297,16 @@ void Level::checkCollisions(Entity& entity)
     sf::FloatRect entityBounds = entity.collider.getGlobalBounds();
     float entityBottom = entityBounds.position.y + entityBounds.size.y;
 
-    // Check tiles around entity
+    // Check tiles around entity (3x3)
     for (int y = tileY - 1; y <= tileY + 1; ++y)
     {
+
+
+        //skip out of bounds rows 
         if (y < 0 || y >= Height) continue;
         for (int x = tileX - 1; x <= tileX + 1; ++x)
         {
+            //out of bounds columns
             if (x < 0 || x >= Width) continue;
 
             if (levelData[y][x] != 0)
@@ -308,8 +314,10 @@ void Level::checkCollisions(Entity& entity)
                 sf::FloatRect platformBounds = tiles[y][x].collider.getGlobalBounds();
                 float platformTop = platformBounds.position.y;
 
+                
                 float distanceToTop = entityBottom - platformTop;
 
+                //check if close to top of tile
                 if (distanceToTop >= -5.0f && distanceToTop <= 5.0f)
                 {
                     float entityLeft = entityBounds.position.x;
@@ -337,6 +345,7 @@ void Level::handleCollision(Entity& entity, Platform& platform)
     sf::FloatRect platformBounds = platform.collider.getGlobalBounds();
     sf::FloatRect entityBounds = entity.collider.getGlobalBounds();
 
+    //set up bounds 
     float platformTop = platformBounds.position.y;
     float platformBottom = platformBounds.position.y + platformBounds.size.y;
     float platformRight = platformBounds.position.x + platformBounds.size.x;

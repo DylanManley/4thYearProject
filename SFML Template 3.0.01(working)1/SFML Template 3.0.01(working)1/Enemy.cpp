@@ -186,7 +186,7 @@ void Enemy::update(Entity& player)
         currentState != RunToSlide &&
         currentState != SlideToRun)
     {
-
+        //if hits a dead end, turn around
         if (floorAhead && ceilingAhead && wallAhead)
         {
             if (pressingLeft)
@@ -211,6 +211,7 @@ void Enemy::update(Entity& player)
 
     switch (aiState)
     {
+        //walk left and right until player is closeby
     case AI_STATE::PATROL:
 
         if (!clockRunning)
@@ -255,7 +256,7 @@ void Enemy::update(Entity& player)
             }
         }
 
-
+        //chase player
         if (!differentLevel)
         {
             if (player.position.x > position.x)
@@ -273,6 +274,7 @@ void Enemy::update(Entity& player)
         }
         else if (differentLevel)
         {
+            //run in one direction until it finds the player again
             running = true;
             if (facing == Direction::LEFT)
             {
@@ -548,12 +550,14 @@ void Enemy::applyFuzzyResult(const Entity& player)
         return;
     }
 
+    // Get distance and calculate fuzzy scores for each possible action
     float dist = std::abs(player.position.x - position.x);
     float attackScore = fuzzyAttack(dist);
     float blockScore = fuzzyBlock(dist, player.attacking);
     float closeGapScore = fuzzyCloseGap(dist);
     float dropkickScore = fuzzyDropkick(dist);
 
+    // Reset attack and block if cooldown is over
     if (!canAttack && attackCooldown.getElapsedTime().asSeconds() > 1.0f)
     {
         canAttack = true;
@@ -590,6 +594,7 @@ void Enemy::applyFuzzyResult(const Entity& player)
         return;
     }
 
+    // Move toward the player if the close gap score is high enough
     if (closeGapScore > 0.1f && canAttack)
     {
         blocking = false;

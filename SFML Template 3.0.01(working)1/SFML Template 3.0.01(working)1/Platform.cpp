@@ -47,6 +47,8 @@ CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)
     float overlapX = std::min(collideLeft, collideRight);
     float overlapY = std::min(collideTop, collideBottom);
 
+
+    //check side with least overlap to determine if x or Y axis first
     if (overlapY < overlapX)
         return (collideTop < collideBottom) ? CollisionType::Top : CollisionType::Bottom;
     else
