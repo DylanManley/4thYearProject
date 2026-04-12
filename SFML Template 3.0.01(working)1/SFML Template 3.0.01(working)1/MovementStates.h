@@ -227,11 +227,8 @@ public:
 class StateFalling : public StateMachine
 {
 public:
-    int startHeight;
-
     void enter(Entity& e) override
     {
-        startHeight = e.position.y;
         if (e.facing == Direction::RIGHT)
         {
             e.body.setTexture(e.FallRTex);
@@ -902,6 +899,7 @@ class StateDeath : public StateMachine
 public:
     void enter(Entity& e) override
     {
+        e.fallTimer = 0;
         e.canTakeDamage = false;
         e.currentFrame = 0;
         if (e.facing == Direction::LEFT)

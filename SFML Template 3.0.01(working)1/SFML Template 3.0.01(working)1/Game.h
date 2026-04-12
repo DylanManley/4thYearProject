@@ -24,6 +24,7 @@ enum class GameState
 {
 	MENU,
 	GAMEPLAY,
+	END,
 };
 
 
@@ -69,13 +70,15 @@ private:
 
 	sf::Texture titleScreenTex;
 	sf::Sprite titleScreen{ titleScreenTex };
+	sf::Texture endScreenTex;
+	sf::Sprite endScreen{ endScreenTex };
 	sf::Texture titleTex;
 	sf::Sprite title{ titleTex };
 	sf::Texture titleOptionsTex;
 	sf::Sprite titleOptions{ titleOptionsTex };
 	sf::View camera;
 
-	int levelNum = 1;
+	int levelNum = 3;
 
 	float uiPadding = 10.f;
 	sf::Vector2u winSize = m_window.getSize();

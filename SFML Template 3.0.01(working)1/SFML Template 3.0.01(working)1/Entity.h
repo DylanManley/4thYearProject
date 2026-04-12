@@ -151,7 +151,7 @@ public:
 
     sf::Clock clock;
     int fallTimer = 0;
-    int fatalFall = 73;
+    int fatalFall = 90;
 
     float verticalVelocity = 0.f;
     float gravity = 0.5f;

@@ -159,6 +159,12 @@ void Game::update(sf::Time t_deltaTime)
 		miniMap.setCenter({ player.body.getPosition() });
 		background.setPosition(sf::Vector2f{ player.body.getPosition().x, player.body.getPosition().y + 150 });
 		break;
+	case GameState::END:
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Enter))
+		{
+			levelNum = 1;
+			gameState = GameState::MENU;
+		}
 	default:
 		break;
 	}
@@ -215,6 +221,9 @@ void Game::render()
 		player.Render(m_window, true);
 
 		break;
+	case GameState::END:
+		m_window.setView(m_window.getDefaultView());
+		m_window.draw(endScreen);
 	default:
 		break;
 	}
@@ -225,6 +234,11 @@ void Game::render()
 
 void Game::nextLevel()
 {
+	if (levelNum >= 3)
+	{
+		levelNum = 1;
+		gameState = GameState::END;
+	}
 	levelNum++;
 	player.position = sf::Vector2f{ 800.f, 1530.f };
 	player.health = 100;
@@ -258,6 +272,8 @@ std::vector<sf::Vector2f> Game::getEnemySpawns(int level)
 		return { {3950.f, 1530.f}, {6000.f, 765.f}, { 15491.f, 2040.f } };
 	case 2: 
 		return { {6636.f, 1530.f}, {8878.f, 2040.f}, {15433.f, 1912.f}, {16567.3, 2167} };
+	case 3:
+		return{ {11719.f, 1275.f}, {9214.f, 1275.f}, {3402.f, 1147.f}, {4704.f, 1147.f}, { 15594.f, 765.f} };
 	default: return {};
 	}
 	return std::vector<sf::Vector2f>();
@@ -273,6 +289,12 @@ void Game::setupSprites()
 		std::cout << "error loading title screen" << std::endl;
 	}
 	titleScreen.setTexture(titleScreenTex, true);
+
+	if (!endScreenTex.loadFromFile(("ASSETS\\IMAGES\\EndScreen.png")))
+	{
+		std::cout << "error loading end screen" << std::endl;
+	}
+	endScreen.setTexture(endScreenTex, true);
 
 	if (!titleTex.loadFromFile(("ASSETS\\IMAGES\\Title.png")))
 	{
