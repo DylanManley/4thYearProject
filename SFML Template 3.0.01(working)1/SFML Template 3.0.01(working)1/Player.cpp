@@ -23,7 +23,6 @@ void Player::update()
 
         healthBar.setSize({ 150.f * (health / 100.f), 10.f });
 
-        // prevent changing directions in these states
         if (pressingLeft)
         {
             if (currentState != wallSlide &&
@@ -71,7 +70,6 @@ void Player::update()
             }
         }
 
-        // jumping and wall jumping
         if (currentState == walk || currentState == run)
         {
             verticalVelocity = jumpStrength;

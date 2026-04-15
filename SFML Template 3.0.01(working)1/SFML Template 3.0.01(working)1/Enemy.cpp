@@ -186,7 +186,6 @@ void Enemy::update(Entity& player)
         currentState != RunToSlide &&
         currentState != SlideToRun)
     {
-        //if hits a dead end, turn around
         if (floorAhead && ceilingAhead && wallAhead)
         {
             if (pressingLeft)
@@ -211,7 +210,6 @@ void Enemy::update(Entity& player)
 
     switch (aiState)
     {
-        //walk left and right until player is closeby
     case AI_STATE::PATROL:
 
         if (!clockRunning)
@@ -256,7 +254,6 @@ void Enemy::update(Entity& player)
             }
         }
 
-        //chase player
         if (!differentLevel)
         {
             if (player.position.x > position.x)
@@ -274,7 +271,6 @@ void Enemy::update(Entity& player)
         }
         else if (differentLevel)
         {
-            //run in one direction until it finds the player again
             running = true;
             if (facing == Direction::LEFT)
             {
@@ -351,7 +347,6 @@ void Enemy::update(Entity& player)
 
 void Enemy::loadMovementTextures()
 {
-    //sensorse amd colliders
     collider.setFillColor(sf::Color::Red);
     wallAheadSensor.setSize(sf::Vector2f{ 10.f, 60.f });
     wallAheadSensor.setFillColor(sf::Color::Red);
@@ -361,9 +356,6 @@ void Enemy::loadMovementTextures()
     halfAheadSensor.setSize(sf::Vector2f{ 10.f, 20.f });
     halfAheadSensor.setFillColor(sf::Color::White);
 
-    // Load all movement textures
-
-   //Idle and Walk
     if (!idleLeftTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\IdleLeft.png"))
         std::cout << "Couldn't load Idle texture\n";
     if (!idleRightTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\IdleRight.png"))
@@ -377,13 +369,11 @@ void Enemy::loadMovementTextures()
     if (!walkLeftTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\Walk_Left.png"))
         std::cout << "Couldn't load Walk texture\n";
 
-    //running
     if (!runLeftTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\RunL.png"))
         std::cout << "Couldn't load run texture\n";
     if (!runRightTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\RunR.png"))
         std::cout << "Couldn't load run texture\n";
 
-    //Crouching and Sliding
     if (!crouchDownTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\IdleToCrouch.png"))
         std::cout << "Couldn't load Crouch texture\n";
     if (!standUpTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\CrouchToIdle.png"))
@@ -409,7 +399,6 @@ void Enemy::loadMovementTextures()
         std::cout << "Couldn't load slide texture\n";
 
 
-    //isJumping
     if (!JumpStartL.loadFromFile("ASSETS\\IMAGES\\ENEMY\\JumpStartL.png"))
         std::cout << "Couldn't load jump texture\n";
     if (!JumpLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\JumpL.png"))
@@ -419,7 +408,6 @@ void Enemy::loadMovementTextures()
     if (!JumpRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\JumpR.png"))
         std::cout << "Couldn't load jump texture\n";
 
-    //Falling and Landing
     if (!FallRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\FallingR.png"))
         std::cout << "Couldn't load jump texture\n";
     if (!LandRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\LandR.png"))
@@ -429,7 +417,6 @@ void Enemy::loadMovementTextures()
     if (!LandLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\LandL.png"))
         std::cout << "Couldn't load jump texture\n";
 
-    //WallSliding
     if (!WallSlideStartRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\wallSlideRStart.png"))
         std::cout << "Couldn't load wallslide texture\n";
     if (!WallSlideStartLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\wallSlideLStart.png"))
@@ -443,13 +430,11 @@ void Enemy::loadMovementTextures()
     if (!wallSlideLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\wallSlideL.png"))
         std::cout << "Couldn't load wall jump texture\n";
 
-    //wallJumping
     if (!wallJumpRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\wallJumpR.png"))
         std::cout << "Couldn't load wallslide texture\n";
     if (!wallJumpLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\wallJumpL.png"))
         std::cout << "Couldn't load wall jump texture\n";
 
-    //wallClimb
     if (!climbLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\climbL.png"))
         std::cout << "Couldnt load climb Texture\n";
     if (!climbRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\climbR.png"))
@@ -458,19 +443,16 @@ void Enemy::loadMovementTextures()
 
 void Enemy::loadCombatTextures()
 {
-    //punch
     if (!punchLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\punchL.png"))
         std::cout << "Couldnt load puch Texture\n";
     if (!punchRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\punchR.png"))
         std::cout << "Couldnt load punch Texture\n";
 
-    //dropkick
     if (!dropKickLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dropKickL.png"))
         std::cout << "Couldnt load drop kick Texture\n";
     if (!dropKickRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dropKickR.png"))
         std::cout << "Couldnt load drop kick Texture\n";
 
-    //take damage
     if (!dmgLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\dmgL.png"))
     {
         std::cout << "Couldn't load damage texture\n";
@@ -480,13 +462,11 @@ void Enemy::loadCombatTextures()
     {
         std::cout << "Couldn't load damage texture\n";
     }
-    //block
     if (!blockLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\BlockL.png"))
         std::cout << "Couldnt load block Texture\n";
     if (!blockRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\BlockR.png"))
         std::cout << "Couldnt load drop block Texture\n";
 
-    //death
     if (!deathLTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\DeathL.png"))
         std::cout << "Couldnt load death Texture\n";
     if (!deathRTex.loadFromFile("ASSETS\\IMAGES\\ENEMY\\DeathR.png"))
@@ -550,14 +530,12 @@ void Enemy::applyFuzzyResult(const Entity& player)
         return;
     }
 
-    // Get distance and calculate fuzzy scores for each possible action
     float dist = std::abs(player.position.x - position.x);
     float attackScore = fuzzyAttack(dist);
     float blockScore = fuzzyBlock(dist, player.attacking);
     float closeGapScore = fuzzyCloseGap(dist);
     float dropkickScore = fuzzyDropkick(dist);
 
-    // Reset attack and block if cooldown is over
     if (!canAttack && attackCooldown.getElapsedTime().asSeconds() > 1.0f)
     {
         canAttack = true;
@@ -594,7 +572,6 @@ void Enemy::applyFuzzyResult(const Entity& player)
         return;
     }
 
-    // Move toward the player if the close gap score is high enough
     if (closeGapScore > 0.1f && canAttack)
     {
         blocking = false;

@@ -3,7 +3,6 @@
 #include "StateMachine.h"
 
 
-//BASE STATES
 class StateIdle : public StateMachine
 {
 public:
@@ -172,7 +171,6 @@ public:
     }
 };
 
-//JUMPING STATES
 class StateJumping : public StateMachine
 {
 public:
@@ -253,7 +251,6 @@ public:
         e.position.y += e.verticalVelocity;
 
 
-        // Landing check
         if (e.isGrounded)
         {
             if (e.fallTimer >= e.fatalFall)
@@ -312,7 +309,6 @@ public:
     }
 };
 
-//CROUCH STATES
 class StateCrouchIdle : public StateMachine
 {
 public:
@@ -560,7 +556,6 @@ public:
 
 
 
-//TRANSITION STATES
 class StateIdleToWalk : public StateMachine
 {
 public:
@@ -780,7 +775,6 @@ public:
 };
 
 
-//combat states(MOVE TO OWN FILE LATER)
 class StatePunch : public StateMachine
 {
 public:

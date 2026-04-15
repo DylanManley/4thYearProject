@@ -43,7 +43,6 @@ public:
     bool canTakeDamage = true;
     virtual void Render(sf::RenderWindow& m_window, bool mapView);
 
-    //movement states
     StateMachine* idle;
     StateMachine* walk;
     StateMachine* run;
@@ -56,7 +55,6 @@ public:
     StateMachine* wallSlide;
     StateMachine* wallJump;
 
-    //transition states
     StateMachine* idleToWalk;
     StateMachine* idleToCrouch;
     StateMachine* crouchToIdle;
@@ -67,7 +65,6 @@ public:
     StateMachine* wallSlideEnd;
     StateMachine* climb;
 
-    //Combat States
     StateMachine* punch;
     StateMachine* dropKick;
     StateMachine* damageState;
@@ -76,7 +73,6 @@ public:
 
     StateMachine* currentState;
 
-    //Movement Textures
     sf::Texture idleRightTex;
     sf::Texture idleLeftTex;
     sf::Texture idleToWalkLTex;
@@ -119,7 +115,6 @@ public:
     sf::Texture climbLTex;
     sf::Texture climbRTex;
 
-    //Combat Textures
     sf::Texture punchRTex;
     sf::Texture punchLTex;
     sf::Texture dropKickLTex;
@@ -164,7 +159,6 @@ public:
     float slideVelocity;
     float slideDeceleration = 0.1f;
 
-    //combat
     int health = 100;
     int damage = 5;
     sf::RectangleShape hitSensor;

@@ -22,7 +22,6 @@ CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)
     if (!intersection.has_value())
         return CollisionType::None;
 
-    // Entity bounds
     sf::Vector2f EntPos = EntityBounds.position;
     sf::Vector2f EntSize = EntityBounds.size;
     float EntityTop = EntPos.y;
@@ -30,7 +29,6 @@ CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)
     float EntityLeft = EntPos.x;
     float EntityRight = EntPos.x + EntSize.x;
 
-    // Platform bounds
     sf::Vector2f platPos = platformBounds.position;
     sf::Vector2f platSize = platformBounds.size;
     float platformTop = platPos.y;
@@ -38,7 +36,6 @@ CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)
     float platformLeft = platPos.x;
     float platformRight = platPos.x + platSize.x;
 
-    // collision distances
     float collideTop = EntityBottom - platformTop;
     float collideBottom = platformBottom - EntityTop;
     float collideLeft = EntityRight - platformLeft;
@@ -48,7 +45,6 @@ CollisionType Platform::isColliding(sf::RectangleShape& EntityCol)
     float overlapY = std::min(collideTop, collideBottom);
 
 
-    //check side with least overlap to determine if x or Y axis first
     if (overlapY < overlapX)
         return (collideTop < collideBottom) ? CollisionType::Top : CollisionType::Bottom;
     else

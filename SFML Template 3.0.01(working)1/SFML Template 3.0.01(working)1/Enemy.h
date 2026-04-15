@@ -24,7 +24,6 @@ private:
     sf::Clock attackCooldown;
     bool canAttack = true;
 
-    //sensors
     bool wallAhead = false;
     bool floorAhead = true;
     bool ceilingAhead = false;
@@ -52,13 +51,11 @@ private:
         ceilingAhead = true;
     }
 
-    // Membership functions
     float mClose(float dist);
     float mFar(float dist);
     float mPlayerAttacking(bool playerAttacking);
     float mMedium(float dist);
 
-    // Fuzzy rules
     float fuzzyAttack(float dist);
     float fuzzyBlock(float dist, bool playerAttacking);
     float fuzzyDropkick(float dist);
@@ -66,7 +63,6 @@ private:
 
     bool isCrouched = false;
 
-    // Defuzzification
     void applyFuzzyResult(const Entity& player);
 };
 

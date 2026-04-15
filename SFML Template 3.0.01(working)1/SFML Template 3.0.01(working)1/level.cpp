@@ -3,46 +3,6 @@
 #include <fstream>
 #include <sstream>
 
-//static int levelTemplate[Level::Height][Level::Width] =
-//{
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,2,2,3,2,3,3,2,2,4,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,2,2,3,2,2,3,2,2,2,3,2,2,3,2,0,0,0,0,2,2,3,3,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,2,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,2,2,2,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,5,5,5,0,0,0,0,0,0,0,0,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,1,1,1,0,0,0,0,0,2,2,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,3,2,2,3,2,2,3,2,0,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,3,2,2,3,2,2,3,2,2,2,2,3,2,2,3,2,2,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 }
-//};
-//
-//static int BackgroundTemplate[Level::Height][Level::Width] =
-//{
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,3,1,1,2,1,1,1,2,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 1,1,2,1,1,2,1,1,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,7,7,7,4,4,5,4,4,5,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,7,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
-//    { 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 },
-//    { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
-//};
-
 bool Level::loadFromFile(const std::string& filename, int data[Height][Width])
 {
     std::ifstream file(filename);
@@ -55,13 +15,11 @@ bool Level::loadFromFile(const std::string& filename, int data[Height][Width])
     std::string line;
     int y = 0;
 
-    // Read each row until end of file or grid height is reached
     while (std::getline(file, line) && y < Height)
     {
         std::stringstream ss(line);
         int x = 0;
 
-        // Parse each value in the row into the grid
         while (ss >> data[y][x] && x < Width)
         {
             x++;
@@ -87,7 +45,6 @@ void Level::setupTextures(int levelNum)
     exitDoor.loadFromFile("ASSETS\\IMAGES\\ExitDoor.png");
 
 
-    //backgrounds
     railingTex.loadFromFile("ASSETS\\IMAGES\\Rail.png");
     lampPost.loadFromFile("ASSETS\\IMAGES\\lampPost.png");
     railLampPost.loadFromFile("ASSETS\\IMAGES\\railLampPost.png");
@@ -102,17 +59,13 @@ void Level::setupTextures(int levelNum)
 
 void Level::load(int levelNum)
 {
-    //load Level and background files
     loadFromFile("ASSETS\\LEVELS\\level" + std::to_string(levelNum) + ".txt", levelData);
     loadFromFile("ASSETS\\LEVELS\\background" + std::to_string(levelNum) + ".txt", backgroundData);
 
-    //background
     for (int y = 0; y < Height; y++)
     {
         for (int x = 0; x < Width; x++)
         {
-            //backgroundData[y][x] = BackgroundTemplate[y][x];
-
             if (backgroundData[y][x] == 1)
             {
                 sf::Sprite sprite(railingTex);
@@ -162,13 +115,10 @@ void Level::load(int levelNum)
         }
     }
 
-    //playable area
     for (int y = 0; y < Height; y++)
     {
         for (int x = 0; x < Width; x++)
         {
-            //levelData[y][x] = levelTemplate[y][x];
-
             if (levelData[y][x] == 1)
             {
                 sf::Vector2f pos(x * TileWidth, y * TileHeight);
@@ -297,16 +247,13 @@ void Level::checkCollisions(Entity& entity)
     sf::FloatRect entityBounds = entity.collider.getGlobalBounds();
     float entityBottom = entityBounds.position.y + entityBounds.size.y;
 
-    // Check tiles around entity (3x3)
     for (int y = tileY - 1; y <= tileY + 1; ++y)
     {
 
 
-        //skip out of bounds rows 
         if (y < 0 || y >= Height) continue;
         for (int x = tileX - 1; x <= tileX + 1; ++x)
         {
-            //out of bounds columns
             if (x < 0 || x >= Width) continue;
 
             if (levelData[y][x] != 0)
@@ -317,7 +264,6 @@ void Level::checkCollisions(Entity& entity)
                 
                 float distanceToTop = entityBottom - platformTop;
 
-                //check if close to top of tile
                 if (distanceToTop >= -5.0f && distanceToTop <= 5.0f)
                 {
                     float entityLeft = entityBounds.position.x;
@@ -345,7 +291,6 @@ void Level::handleCollision(Entity& entity, Platform& platform)
     sf::FloatRect platformBounds = platform.collider.getGlobalBounds();
     sf::FloatRect entityBounds = entity.collider.getGlobalBounds();
 
-    //set up bounds 
     float platformTop = platformBounds.position.y;
     float platformBottom = platformBounds.position.y + platformBounds.size.y;
     float platformRight = platformBounds.position.x + platformBounds.size.x;
@@ -354,7 +299,6 @@ void Level::handleCollision(Entity& entity, Platform& platform)
     float entityTop = entityBounds.position.y;
     float entityWidth = entityBounds.size.x;
 
-    //enemy sensors
     if (entity.wallAheadSensor.getGlobalBounds().findIntersection(platformBounds).has_value())
     {
         entity.checkWallAhead();

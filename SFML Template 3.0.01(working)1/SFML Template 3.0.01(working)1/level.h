@@ -39,7 +39,6 @@ private:
     sf::Texture crawlSpace;
     sf::Texture exitDoor;
 
-    //background details
     sf::Texture railingTex;
     sf::Texture hallway;
     sf::Texture hallway2;
